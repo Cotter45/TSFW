@@ -12,6 +12,7 @@ class CustomLink extends HTMLElement {
   private activeClass = "!text-emerald-600 dark:!text-emerald-400";
   private defaultClass =
     "text-left text-base/6 text-zinc-500 sm:text-sm/6 dark:text-zinc-400";
+  private isRendered = false; // Prevent repeated render
 
   constructor() {
     super();
@@ -19,15 +20,15 @@ class CustomLink extends HTMLElement {
   }
 
   connectedCallback() {
-    this.render();
+    if (!this.isRendered) {
+      this.render();
+      this.isRendered = true;
+    }
     this.updateActiveClass();
 
     const button = this.shadowRoot?.querySelector("button");
-    if (button) {
-      button.setAttribute("tabindex", "0");
-      button.addEventListener("click", this.handleClick);
-      button.addEventListener("keydown", this.handleKeyDown);
-    }
+    button?.addEventListener("click", this.handleClick);
+    button?.addEventListener("keydown", this.handleKeyDown);
 
     window.addEventListener("routechange", this.updateActiveClass);
     window.addEventListener("popstate", this.updateActiveClass);
@@ -47,9 +48,13 @@ class CustomLink extends HTMLElement {
     oldValue: string,
     newValue: RoutePaths
   ) {
-    if (name === "href") {
+    if (name === "href" && newValue !== oldValue) {
       this.href = newValue;
       this.updateActiveClass();
+
+      // Re-render if href changes to update slot and button attributes
+      this.isRendered = false;
+      this.render();
     }
   }
 
@@ -92,6 +97,10 @@ class CustomLink extends HTMLElement {
   };
 
   private render() {
+    if (this.shadowRoot) {
+      this.shadowRoot.innerHTML = "";
+    }
+
     const button = document.createElement("button");
     button.className = clsx(this.defaultClass);
     button.innerHTML = `<slot></slot>`;
