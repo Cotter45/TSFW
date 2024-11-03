@@ -80,7 +80,7 @@ function autoUpdateRoutesPlugin() {
 }
 
 export default defineConfig({
-  root: "./",
+  root: "./src",
   build: {
     rollupOptions: {
       input: path.resolve(__dirname, "src/index.html"),
