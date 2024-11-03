@@ -111,10 +111,6 @@ export default defineConfig({
       registerType: "autoUpdate",
       injectRegister: "script-defer",
       manifestFilename: "manifest.json",
-      devOptions: {
-        enabled: true,
-        type: "module",
-      },
       workbox: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
       },

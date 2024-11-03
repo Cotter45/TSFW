@@ -13,7 +13,7 @@ import {
 
 export default function App() {
   return (
-    <div class="relative w-full flex flex-col md:flex-row px-2 pb-24 md:px-0 md:pt-2 md:pr-2 md:pb-2 bg-zinc-100 dark:bg-zinc-950">
+    <div class="relative w-full min-h-screen flex flex-col md:flex-row px-2 pb-24 md:px-0 md:pt-2 md:pr-2 md:pb-2 bg-zinc-100 dark:bg-zinc-950">
       <div class="w-full max-w-full md:max-w-[300px] min-w-[300px]">
         {/* Sidebar for larger screens */}
         <div class="sticky top-1 left-0 max-w-0 max-h-0 md:max-h-screen overflow-y-auto overflow-x-hidden md:w-full md:max-w-full md:flex flex-col gap-4 -my-1 rounded-r-md md:pb-4 md:p-4">
@@ -40,7 +40,6 @@ function Routes() {
   return (
     <div className="pl-2 flex flex-col">
       <Link href="/">Welcome</Link>
-      <Link href="/why-jsx">Why JSX</Link>
       <Link href="/getting-started">Getting Started</Link>
       <Link href="/router">Router</Link>
       <Link href="/state">State</Link>

@@ -1,11 +1,8 @@
 import { jsx } from "@core/jsx";
 import App from "@pages/Index";
 import Custom404 from "@pages/Custom404";
-import FetchPage, { fetchData, FetchLoading } from "@pages/Fetch";
 
 import { initRouter, registerRoute, setNotFoundComponent } from "@core/router";
-import { ReactyData } from "@components/Reacty";
-import MemoryPage from "@pages/Memory";
 import WelcomePage from "@pages/Welcome";
 
 (globalThis as any).jsx = jsx;
@@ -22,10 +19,6 @@ registerRoute({
     {
       path: "/getting-started",
       component: async () => await import("@pages/GettingStarted"),
-    },
-    {
-      path: "/why-jsx",
-      component: async () => await import("@pages/WhyJSX"),
     },
     {
       path: "/router",
