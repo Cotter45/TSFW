@@ -80,13 +80,16 @@ function autoUpdateRoutesPlugin() {
 }
 
 export default defineConfig({
-  root: "./src",
+  root: "./",
   build: {
-    outDir: "../dist",
     rollupOptions: {
       input: path.resolve(__dirname, "src/index.html"),
+      output: {
+        dir: "dist",
+      },
     },
   },
+
   resolve: {
     alias: {
       "@components": path.resolve(__dirname, "./src/components"),

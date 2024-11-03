@@ -9,7 +9,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && cp -r src/public dist && cp dist/src/index.html dist/index.html",
     "serve": "npx serve@latest dist",
     "test": "vitest",
     "test:coverage": "vitest run --coverage"
