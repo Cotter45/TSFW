@@ -65,11 +65,16 @@ export function ToggleThemeButton() {
       : "🌞 Light Mode";
 
     themeState.setState({ theme });
+
+    const themeText = document.querySelector("#theme-text");
+    if (themeText) {
+      themeText.textContent = theme;
+    }
   }
 
   return (
     <Button onClick={toggleTheme} variant="plain" class="mx-2">
-      <span data-bind="theme.theme">{themeState.getState().theme}</span>
+      <span id="theme-text">{themeState.getState().theme}</span>
     </Button>
   );
 }
