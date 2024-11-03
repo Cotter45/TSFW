@@ -110,7 +110,7 @@ export function Dialog({
       const dialogElement = (
         <div
           className={clsx(
-            "dialog-backdrop fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 dialog-enter",
+            "dialog-backdrop fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 dialog-enter z-[1000]",
             className
           )}
           onClick={() => closeDialog(uniqueId)}

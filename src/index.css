@@ -6,7 +6,6 @@ html,
 body,
 #app {
   min-height: 100dvh;
-  height: 100%;
   overscroll-behavior: none;
 }
 

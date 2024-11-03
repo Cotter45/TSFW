@@ -13,10 +13,10 @@ import {
 
 export default function App() {
   return (
-    <div class="w-full h-full flex flex-col md:flex-row px-2 pb-2 md:px-0 md:pt-2 md:pr-2 bg-zinc-100 dark:bg-zinc-950 max-h-screen overflow-hidden">
-      <div class="relative w-full max-w-full md:max-w-[300px] min-w-[300px]">
+    <div class="relative w-full flex flex-col md:flex-row px-2 pb-24 md:px-0 md:pt-2 md:pr-2 md:pb-2 bg-zinc-100 dark:bg-zinc-950">
+      <div class="w-full max-w-full md:max-w-[300px] min-w-[300px]">
         {/* Sidebar for larger screens */}
-        <div class="max-w-0 max-h-0 md:max-h-screen overflow-y-auto overflow-x-hidden md:w-full md:max-w-full md:flex flex-col gap-4 -my-1 rounded-r-md md:pb-4 md:p-4">
+        <div class="sticky top-0 left-0 max-w-0 max-h-0 md:max-h-screen overflow-y-auto overflow-x-hidden md:w-full md:max-w-full md:flex flex-col gap-4 -my-1 rounded-r-md md:pb-4 md:p-4">
           <Heading>TSFW</Heading>
           <Routes />
 
@@ -30,7 +30,7 @@ export default function App() {
       {/* Main Content */}
       <main
         data-outlet
-        class="w-full h-full transition-all duration-300 ease-in-out rounded-xl md:rounded-md bg-white p-4 md:p-6 shadow-sm ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10 overflow-y-auto"
+        class="relative top-16 md:top-0 w-full min-h-[calc(100dvh-3rem)] transition-all duration-300 ease-in-out rounded-xl md:rounded-md bg-white p-4 md:p-6 shadow-sm ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10"
       />
     </div>
   );
@@ -81,7 +81,7 @@ export function ToggleThemeButton() {
 
 function MobileMenu() {
   return (
-    <div class="md:hidden w-full flex items-center justify-between py-2">
+    <div class="fixed top-0 left-0 z-10 md:hidden w-full flex items-center justify-between py-2">
       <DialogTrigger uniqueId="mobile-menu">
         <svg
           xmlns="http://www.w3.org/2000/svg"
