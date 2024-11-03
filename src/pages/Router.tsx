@@ -1,55 +1,3 @@
-// import { Heading, Text } from "@components/ui/Text";
-
-// export default function RouterPage() {
-//   const code = `
-//   import { Router, Route, MemoryRouter }
-//   import { createState } from "@core/state";
-//   import { Link } from "@components/ui/Link";
-
-//   export default function App() {
-//     return (
-//       <MemoryRouter>
-//         <Router>
-//           <Route path="/">
-//             <Home />
-//           </Route>
-//           <Route path="/about">
-//             <About />
-//           </Route>
-//         </Router>
-//       </MemoryRouter>
-//     );
-//   }
-//     `;
-//   return (
-//     <div>
-//       <Heading>Router</Heading>
-//       <pre>
-//         <code class="language-javascript">
-//           {`import { Router, Route, MemoryRouter }
-//   import { createState } from "@core/state";
-//   import { Link } from "@components/ui/Link";
-
-//   export default function App() {
-//     return (
-//       <MemoryRouter>
-//         <Router>
-//           <Route path="/">
-//             <Home />
-//           </Route>
-//           <Route path="/about">
-//             <About />
-//           </Route>
-//         </Router>
-//       </MemoryRouter>
-//     );
-//   }`}
-//         </code>
-//       </pre>
-//     </div>
-//   );
-// }
-
 import Prism from "prismjs";
 import "prismjs/plugins/line-numbers/prism-line-numbers.css";
 import "prismjs/plugins/line-numbers/prism-line-numbers.min.js";
@@ -58,17 +6,14 @@ import { Heading, SubHeading, Text } from "@components/ui/Text";
 import { Badge } from "@components/ui/Badge";
 
 export default function RouterPage() {
-  // Regex to detect Tailwind classes with color utilities
   const regex =
     /(text|bg|border)-(teal-|gray-)(100|200|300|400|500|600|700|800|900)(?:$|^|)/gi;
 
-  // Prism hook to add inline color swatches for Tailwind classes
   Prism.hooks.add("after-highlight", function (env) {
     env.highlightedCode = env.highlightedCode.replace(regex, function (match) {
       return `<span class="inline-flex w-3 h-3 rounded ring-1 ring-gray-900/30 mr-1"></span>${match}`;
     });
 
-    // Update the innerHTML of the element with highlighted code and color swatches
     env.element.innerHTML = env.highlightedCode;
   });
 
