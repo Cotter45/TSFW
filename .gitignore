@@ -2,5 +2,6 @@ dist
 node_modules
 tw
 coverage
+dev-dist
 
 .DS_Store

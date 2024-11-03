@@ -1,6 +1,7 @@
-import { defineConfig } from "vite";
-import path from "path";
 import fs from "fs";
+import path from "path";
+import { defineConfig } from "vite";
+import { VitePWA } from "vite-plugin-pwa";
 
 const registeredPaths = new Set<string>();
 
@@ -81,15 +82,6 @@ function autoUpdateRoutesPlugin() {
 
 export default defineConfig({
   root: "./src",
-  build: {
-    rollupOptions: {
-      input: path.resolve(__dirname, "src/index.html"),
-      output: {
-        dir: "dist",
-      },
-    },
-  },
-
   resolve: {
     alias: {
       "@components": path.resolve(__dirname, "./src/components"),
@@ -99,6 +91,10 @@ export default defineConfig({
       "@types": path.resolve(__dirname, "./src/types"),
     },
   },
+  build: {
+    emptyOutDir: true,
+    outDir: path.resolve(__dirname, "dist"),
+  },
   server: {
     host: "0.0.0.0",
     port: 3000,
@@ -107,5 +103,77 @@ export default defineConfig({
   esbuild: {
     target: "esnext",
   },
-  plugins: [autoUpdateRoutesPlugin()],
+  plugins: [
+    autoUpdateRoutesPlugin(),
+    VitePWA({
+      scope: "/",
+      base: "/",
+      registerType: "autoUpdate",
+      injectRegister: "script-defer",
+      manifestFilename: "manifest.json",
+      devOptions: {
+        enabled: true,
+        type: "module",
+      },
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+      },
+      manifest: {
+        name: "TSFW",
+        short_name: "tsfw",
+        start_url: "/",
+        display: "standalone",
+        background_color: "#000000",
+        theme_color: "#000000",
+        lang: "en",
+        scope: "/",
+        icons: [
+          {
+            src: "/android-icon-36x36.png",
+            sizes: "36x36",
+            type: "image/png",
+          },
+          {
+            src: "/android-icon-48x48.png",
+            sizes: "48x48",
+            type: "image/png",
+          },
+          {
+            src: "/android-icon-72x72.png",
+            sizes: "72x72",
+            type: "image/png",
+          },
+          {
+            src: "/android-icon-96x96.png",
+            sizes: "96x96",
+            type: "image/png",
+          },
+          {
+            src: "/android-icon-144x144.png",
+            sizes: "144x144",
+            type: "image/png",
+          },
+          {
+            src: "/android-icon-192x192.png",
+            sizes: "192x192",
+            type: "image/png",
+          },
+        ],
+        screenshots: [
+          {
+            src: "/screenshot1.png",
+            sizes: "1280x1200",
+            type: "image/png",
+            form_factor: "wide",
+          },
+          {
+            src: "/screenshot2.png",
+            sizes: "720x1280",
+            type: "image/png",
+            form_factor: "narrow",
+          },
+        ],
+      },
+    }),
+  ],
 });

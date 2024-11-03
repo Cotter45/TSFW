@@ -52,7 +52,7 @@ export function AccordionPanel({
     >
       <button
         className={clsx(
-          "accordion-header w-full text-left p-2 flex justify-between items-center",
+          "accordion-header w-full text-left py-2 px-1 flex justify-between items-center",
           "focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:rounded-md",
           "data-[disabled]:opacity-50"
         )}
@@ -96,7 +96,7 @@ export function AccordionPanel({
         aria-labelledby={`accordion-header-${id}`}
         style={{ maxHeight: 0, opacity: 0 }}
       >
-        <Text class="px-1 pb-2">{children}</Text>
+        <Text class="pb-2 !text-sm px-2">{children}</Text>
       </div>
     </div>
   );
