@@ -1,6 +1,6 @@
 dist
 node_modules
 ui
-
+coverage
 
 .DS_Store
