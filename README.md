@@ -71,7 +71,7 @@ To build your application for production, use:
 npm run build
 ```
 
-This outputs the optimized and minified files to the dist directory. There are zero dependencies out of the gate, so just copy your dist and public folders to your server and you're good to go!
+This outputs the optimized and minified files to the dist directory. There are zero dependencies out of the gate, so just copy your dist folder to your server and you're good to go!
 
 ## Core Concepts and Usage
 
