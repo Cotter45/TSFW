@@ -9,6 +9,7 @@ import {
   Dialog,
   DialogBody,
   DialogTitle,
+  closeDialog,
 } from "@components/ui/Dialog";
 
 export default function App() {
@@ -30,7 +31,7 @@ export default function App() {
       {/* Main Content */}
       <main
         data-outlet
-        class="relative top-16 md:top-0 w-full min-h-[calc(100dvh-3rem)] transition-all duration-300 ease-in-out rounded-xl md:rounded-md bg-white p-4 md:p-6 shadow-sm ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10"
+        class="w-full min-h-[calc(100dvh-3rem)] transition-all duration-300 ease-in-out rounded-xl md:rounded-md bg-white p-2 md:p-4 shadow-sm ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10"
       />
     </div>
   );
@@ -39,13 +40,27 @@ export default function App() {
 function Routes() {
   return (
     <div className="pl-2 flex flex-col">
-      <Link href="/">Welcome</Link>
-      <Link href="/getting-started">Getting Started</Link>
-      <Link href="/router">Router</Link>
-      <Link href="/state">State</Link>
-      <Link href="/testing">Testing</Link>
-      <Link href="/faq">Faq</Link>
-      <Link href="/examples">Examples</Link>
+      <Link href="/" onclick={() => closeDialog("mobile-menu")}>
+        Welcome
+      </Link>
+      <Link href="/getting-started" onclick={() => closeDialog("mobile-menu")}>
+        Getting Started
+      </Link>
+      <Link href="/router" onclick={() => closeDialog("mobile-menu")}>
+        Router
+      </Link>
+      <Link href="/state" onclick={() => closeDialog("mobile-menu")}>
+        State
+      </Link>
+      <Link href="/testing" onclick={() => closeDialog("mobile-menu")}>
+        Testing
+      </Link>
+      <Link href="/faq" onclick={() => closeDialog("mobile-menu")}>
+        Faq
+      </Link>
+      <Link href="/examples" onclick={() => closeDialog("mobile-menu")}>
+        Examples
+      </Link>
     </div>
   );
 }
@@ -65,14 +80,16 @@ export function ToggleThemeButton() {
 
     themeState.setState({ theme });
 
-    const themeText = document.querySelector("#theme-text");
-    if (themeText) {
-      themeText.textContent = theme;
+    const themeTexts = document.querySelectorAll("#theme-text");
+    if (themeTexts && themeTexts.length > 0) {
+      themeTexts.forEach((themeText) => {
+        themeText.textContent = theme;
+      });
     }
   }
 
   return (
-    <Button onClick={toggleTheme} variant="plain" class="mx-2">
+    <Button onClick={toggleTheme} variant="plain" class="mt-12 mx-2">
       <span id="theme-text">{themeState.getState().theme}</span>
     </Button>
   );
@@ -80,7 +97,11 @@ export function ToggleThemeButton() {
 
 function MobileMenu() {
   return (
-    <div class="fixed top-0 left-0 z-10 md:hidden w-full flex items-center justify-between py-2">
+    <div class="md:hidden w-full flex items-center justify-between py-4">
+      <Link href="/" class="!w-fit">
+        <Heading>TSFW</Heading>
+      </Link>
+
       <DialogTrigger uniqueId="mobile-menu">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -97,10 +118,6 @@ function MobileMenu() {
           />
         </svg>
       </DialogTrigger>
-
-      <Link href="/" class="!w-fit">
-        <Heading>TSFW</Heading>
-      </Link>
       <Dialog size="xs" variant="left" uniqueId="mobile-menu">
         <DialogTitle>TSFW</DialogTitle>
         <DialogBody>

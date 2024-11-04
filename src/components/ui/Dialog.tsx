@@ -70,6 +70,9 @@ export function openDialog(uniqueId: string) {
 }
 
 export function closeDialog(uniqueId: string) {
+  if (!dialogStates.has(uniqueId)) return;
+  if (!dialogStates.get(uniqueId)!.getState().isOpen) return;
+
   const root = document.getElementById(`dialog-root-${uniqueId}`);
   if (root) {
     const dialogElement = root.firstChild as HTMLElement;
