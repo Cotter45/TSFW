@@ -13,6 +13,8 @@ import {
 import "@components/web-components/WebComp";
 import { MemoryState } from "@components/examples/Memory";
 import { LocalState } from "@components/examples/Local";
+import { SessionState } from "@components/examples/Session";
+import { IDBState } from "@components/examples/IDB";
 
 export default function WelcomePage() {
   return (
@@ -169,14 +171,44 @@ export default function WelcomePage() {
 
         <div class="mt-12 space-y-4">
           <SubHeading>Memory State Example</SubHeading>
+          <Text class="mt-4">
+            This example demonstrates a simple counter using memory state that
+            is centralized to the current tab and does not persist across tabs
+            or refreshes.
+          </Text>
 
-          <MemoryState searchParams={new URLSearchParams()} />
+          <MemoryState />
         </div>
 
         <div class="mt-12 space-y-4">
           <SubHeading>Local Storage State Example</SubHeading>
+          <Text class="mt-4">
+            This example demonstrates a simple user list with age that is stored
+            in local storage. This state is synced across tabs and refreshes.
+          </Text>
 
           <LocalState />
+        </div>
+
+        <div class="mt-12 space-y-4">
+          <SubHeading>Session Storage State Example</SubHeading>
+          <Text class="mt-4">
+            This example demonstrates a simple user list with age that is stored
+            in session storage. This state is synced across tabs and refreshes.
+          </Text>
+
+          <SessionState />
+        </div>
+
+        <div class="mt-12 space-y-4">
+          <SubHeading>IDB Storage State Example</SubHeading>
+          <Text class="mt-4">
+            This example demonstrates a simple user list with age that is stored
+            in indexed DB storage. This state is synced across tabs and
+            refreshes.
+          </Text>
+
+          <IDBState />
         </div>
       </section>
     </div>

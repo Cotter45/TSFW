@@ -32,11 +32,7 @@ function DecrementButton() {
   );
 }
 
-export function MemoryState({
-  searchParams,
-}: {
-  searchParams: URLSearchParams;
-}) {
+export function MemoryState() {
   // Subscribe to counter state changes
   counterState.subscribe((state) => {
     console.log("Counter state changed", state);
@@ -47,11 +43,6 @@ export function MemoryState({
       countTextElement.textContent = `${state.count}`;
     }
   });
-
-  // Initialize the count if provided in searchParams
-  if (searchParams.has("count")) {
-    counterState.setState({ count: Number(searchParams.get("count")) });
-  }
 
   return (
     <div class="h-full w-full flex flex-col items-center justify-center gap-10">

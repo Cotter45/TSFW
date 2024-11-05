@@ -10,7 +10,7 @@ interface User {
 
 type UserState = User[];
 
-const userState = createPersistentState<UserState>("users-local", "local", [
+const userState = createPersistentState<UserState>("users-session", "session", [
   { id: 1, name: "Alice", age: 30 },
   { id: 2, name: "Bob", age: 25 },
   { id: 3, name: "Charlie", age: 35 },
@@ -55,14 +55,14 @@ function DecreaseAgeButton({ userId }: { userId: number }) {
   );
 }
 
-export function LocalState() {
+export function SessionState() {
   // Subscribe to user state changes to update the UI
   userState.subscribe((state) => {
-    console.log("Local user state changed", state);
+    console.log("Session user state changed", state);
 
     // Update age text directly by ID if needed
     state.forEach((user, index) => {
-      const ageElement = document.getElementById(`local-age-text-${index}`);
+      const ageElement = document.getElementById(`session-age-text-${index}`);
       if (ageElement) {
         ageElement.textContent = `${user.age}`;
       }
@@ -91,7 +91,7 @@ export function LocalState() {
               <Text>{user.name}</Text>
             </td>
             <td class="py-4 px-6 border-b border-zinc-300 dark:border-zinc-600">
-              <Text id={`local-age-text-${index}`}>{user.age}</Text>
+              <Text id={`session-age-text-${index}`}>{user.age}</Text>
             </td>
             <td class="py-4 px-6 border-b border-zinc-300 dark:border-zinc-600 flex justify-center gap-4">
               <IncreaseAgeButton userId={user.id} />
