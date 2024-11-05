@@ -39,24 +39,22 @@ export class TSFWState<T extends object> {
         }
 
         (target as T)[property as keyof T] = value;
-        this.renderBindings();
-        this.notifyListeners();
 
         if (this.broadcastingEnabled && this.storageType) {
           this.broadcastState();
           this.saveToStorage();
+        } else {
+          this.notifyListeners();
         }
 
         return true;
       },
     }) as T;
 
-    this.observeDOM();
-    this.listenForBroadcast();
-
     this.loadFromStorage().then(() => {
       this.broadcastingEnabled = true;
     });
+    this.listenForBroadcast();
   }
 
   getState(): T {
@@ -80,12 +78,10 @@ export class TSFWState<T extends object> {
       Object.assign(this.proxy, updates);
     }
 
-    this.renderBindings();
-    this.notifyListeners();
-
     if (this.broadcastingEnabled && this.storageType) {
-      this.broadcastState();
+      this.notifyListeners();
       this.saveToStorage();
+      this.broadcastState();
     }
   }
 
@@ -122,46 +118,6 @@ export class TSFWState<T extends object> {
     );
   }
 
-  private renderBindings() {
-    document
-      .querySelectorAll(`[data-bind^="${this.key}"]`)
-      .forEach((element) => {
-        const bindPath = element.getAttribute("data-bind") || "";
-        const pathParts = bindPath.replace(`${this.key}.`, "").split(".");
-
-        let value: any = this.proxy;
-        for (const part of pathParts) {
-          if (Array.isArray(value)) {
-            const match = part.match(/\[(\d+)\]/);
-            if (match) {
-              value = value[parseInt(match[1], 10)];
-            }
-          } else {
-            value = value?.[part];
-          }
-        }
-
-        if (element instanceof HTMLInputElement) {
-          element.type === "checkbox" || element.type === "radio"
-            ? (element.checked = Boolean(value))
-            : (element.value = value?.toString() || "");
-        } else if (element instanceof HTMLSelectElement) {
-          Array.from(element.options).forEach(
-            (option) => (option.selected = option.value === value?.toString())
-          );
-        } else if (element instanceof HTMLTextAreaElement) {
-          element.value = value?.toString() || "";
-        } else {
-          element.textContent = value?.toString() || "";
-        }
-      });
-  }
-
-  private observeDOM() {
-    const observer = new MutationObserver(() => this.renderBindings());
-    observer.observe(document.body, { childList: true, subtree: true });
-  }
-
   private broadcastState() {
     const tempChannel = new BroadcastChannel(this.key);
     tempChannel.postMessage({
@@ -184,7 +140,6 @@ export class TSFWState<T extends object> {
   private applyBroadcast(newState: T) {
     this.broadcastingEnabled = false;
     Object.assign(this.proxy, newState);
-    this.renderBindings();
     this.notifyListeners();
     this.broadcastingEnabled = true;
   }
@@ -242,17 +197,9 @@ export function createState<T extends object>(
   return stateInstance;
 }
 
-function saveToLocal(key: string, state: any) {
-  localStorage.setItem(key, JSON.stringify(state));
-}
-
 function loadFromLocal<T>(key: string, defaultState: T): T {
   const savedState = localStorage.getItem(key);
   return savedState ? JSON.parse(savedState) : defaultState;
-}
-
-function saveToSession(key: string, state: any) {
-  sessionStorage.setItem(key, JSON.stringify(state));
 }
 
 function loadFromSession<T>(key: string, defaultState: T): T {
@@ -305,8 +252,8 @@ function openDatabase(): Promise<IDBDatabase> {
 
 export function createPersistentState<T extends object>(
   key: string,
-  initialState: T,
   storageType: "local" | "session" | "idb" = "local",
+  initialState: T,
   validator?: (state: Partial<T>) => boolean
 ): TSFWState<T> {
   if (stateCache[key]) {
@@ -314,7 +261,6 @@ export function createPersistentState<T extends object>(
   }
 
   let startState: T | Promise<T>;
-  let broadcastingEnabled = false;
 
   if (storageType === "local") {
     startState = loadFromLocal(key, initialState);
@@ -336,21 +282,8 @@ export function createPersistentState<T extends object>(
   if (storageType === "idb" && startState instanceof Promise) {
     startState.then((resolvedState) => {
       stateInstance.setState(resolvedState);
-      broadcastingEnabled = true;
     });
-  } else {
-    broadcastingEnabled = true;
   }
-
-  stateInstance.subscribe(() => {
-    const currentState = stateInstance.getState();
-
-    if (broadcastingEnabled) {
-      if (storageType === "local") saveToLocal(key, currentState);
-      else if (storageType === "session") saveToSession(key, currentState);
-      else saveToIndexedDB(key, currentState);
-    }
-  });
 
   return stateInstance;
 }

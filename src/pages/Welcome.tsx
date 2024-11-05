@@ -11,6 +11,8 @@ import {
 } from "@components/ui/Dialog";
 
 import "@components/web-components/WebComp";
+import { MemoryState } from "@components/examples/Memory";
+import { LocalState } from "@components/examples/Local";
 
 export default function WelcomePage() {
   return (
@@ -163,6 +165,18 @@ export default function WelcomePage() {
               </Text>
             </DialogBody>
           </Dialog>
+        </div>
+
+        <div class="mt-12 space-y-4">
+          <SubHeading>Memory State Example</SubHeading>
+
+          <MemoryState searchParams={new URLSearchParams()} />
+        </div>
+
+        <div class="mt-12 space-y-4">
+          <SubHeading>Local Storage State Example</SubHeading>
+
+          <LocalState />
         </div>
       </section>
     </div>
