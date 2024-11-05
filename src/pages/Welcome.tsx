@@ -194,7 +194,9 @@ export default function WelcomePage() {
           <SubHeading>Session Storage State Example</SubHeading>
           <Text class="mt-4">
             This example demonstrates a simple user list with age that is stored
-            in session storage. This state is synced across tabs and refreshes.
+            in session storage. This state is synced across tabs and refreshes,
+            but NOT across sessions (new tabs, new windows etc) because ya know
+            - SESSION storage.
           </Text>
 
           <SessionState />
