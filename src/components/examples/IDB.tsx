@@ -31,7 +31,7 @@ function IncreaseAgeButton({ userId }: { userId: number }) {
 
   return (
     <Button color="teal" onClick={increaseAge}>
-      Age
+      +
     </Button>
   );
 }
@@ -50,7 +50,7 @@ function DecreaseAgeButton({ userId }: { userId: number }) {
 
   return (
     <Button color="red" onClick={decreaseAge}>
-      De-Age
+      -
     </Button>
   );
 }

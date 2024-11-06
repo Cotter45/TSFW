@@ -31,13 +31,14 @@ function IncreaseAgeButton({ userId }: { userId: number }) {
 
   return (
     <Button color="teal" onClick={increaseAge}>
-      Age
+      +
     </Button>
   );
 }
 
 function DecreaseAgeButton({ userId }: { userId: number }) {
   function decreaseAge() {
+    console.log("Decrease age for user", userId);
     const users = userState.getState();
     const userIndex = users.findIndex((user) => user.id === userId);
     if (userIndex >= 0) {
@@ -50,7 +51,7 @@ function DecreaseAgeButton({ userId }: { userId: number }) {
 
   return (
     <Button color="red" onClick={decreaseAge}>
-      De-Age
+      -
     </Button>
   );
 }
