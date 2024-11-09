@@ -1,4 +1,8 @@
 // src/components/App.tsx
+import Prism from "prismjs";
+import "prismjs/plugins/line-numbers/prism-line-numbers.css";
+import "prismjs/plugins/line-numbers/prism-line-numbers.min.js";
+
 import { createState } from "@core/state";
 
 import { Link } from "@components/ui/Link";
@@ -13,6 +17,21 @@ import {
 } from "@components/ui/Dialog";
 
 export default function App() {
+  const regex =
+    /(text|bg|border)-(teal-|gray-)(100|200|300|400|500|600|700|800|900)(?:$|^|)/gi;
+
+  Prism.hooks.add("after-highlight", function (env) {
+    env.highlightedCode = env.highlightedCode.replace(regex, function (match) {
+      return `<span class="inline-flex w-3 h-3 rounded ring-1 ring-gray-900/30 mr-1"></span>${match}`;
+    });
+
+    env.element.innerHTML = env.highlightedCode;
+  });
+
+  setTimeout(() => {
+    Prism.highlightAll();
+  }, 100);
+
   return (
     <div class="relative w-full min-h-screen flex flex-col md:flex-row px-2 pb-24 md:px-0 md:pt-2 md:pr-2 md:pb-2 bg-zinc-100 dark:bg-zinc-950">
       <div class="w-full max-w-full md:max-w-[300px] min-w-[300px]">
@@ -31,7 +50,7 @@ export default function App() {
       {/* Main Content */}
       <main
         data-outlet
-        class="w-full min-h-[calc(100dvh-3rem)] transition-all duration-300 ease-in-out rounded-xl md:rounded-md bg-white p-2 md:p-4 shadow-sm ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10"
+        class="w-full max-w-[100dvw] overflow-hidden min-h-[calc(100dvh-3rem)] transition-all duration-300 ease-in-out rounded-xl md:rounded-md bg-white p-2 md:p-4 shadow-sm ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10"
       />
     </div>
   );

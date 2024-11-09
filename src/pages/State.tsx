@@ -1,20 +1,8 @@
-import Prism from "prismjs";
-import "prismjs/plugins/line-numbers/prism-line-numbers.css";
-import "prismjs/plugins/line-numbers/prism-line-numbers.min.js";
-
 import { Heading, SubHeading, Text } from "@components/ui/Text";
 import { Badge } from "@components/ui/Badge";
 import { LocalState } from "@components/examples/Local";
 
 export default function StateManagementPage() {
-  Prism.hooks.add("after-highlight", function (env) {
-    env.element.innerHTML = env.highlightedCode;
-  });
-
-  setTimeout(() => {
-    Prism.highlightAll();
-  }, 100);
-
   return (
     <div className="flex flex-col gap-8 mx-auto px-4 py-8">
       <section className="space-y-4">
@@ -139,9 +127,19 @@ function addUser(name, age) {
         </Text>
 
         <pre className="language-javascript !rounded-md">
-          <code>{`const validatedState = createPersistentState("validated", "local", { count: 0 }, (state) => state.count >= 0);
+          <code>
+            {`const validatedState =
+  createPersistentState(
+    "validated",
+    "local",
+    { count: 0 },
+    (state) => state.count >= 0
+  );
 
-validatedState.setState({ count: -1 }); // This will not update because count < 0`}</code>
+// This will not update because count < 0
+validatedState.setState({ count: -1 });
+`}
+          </code>
         </pre>
 
         <Text>
@@ -159,7 +157,12 @@ validatedState.setState({ count: -1 }); // This will not update because count < 
         </Text>
 
         <pre className="language-javascript !rounded-md">
-          <code>{`const sharedState = createPersistentState("sharedCount", "local", { count: 0 });
+          <code>{`const sharedState =
+    createPersistentState(
+      "sharedCount",
+      "local",
+      { count: 0 }
+      );
 
 sharedState.subscribe((state) => {
   console.log("Shared count updated:", state.count);
@@ -209,6 +212,7 @@ sharedState.subscribe((state) => {
 
       <section className="space-y-4">
         <SubHeading>Full Example</SubHeading>
+
         <pre className="language-javascript !rounded-md">
           <code>{`import { createPersistentState } from "@core/state";
 import { Button } from "@components/ui/Button";
@@ -222,13 +226,20 @@ interface User {
 
 type UserState = User[];
 
-const userState = createPersistentState<UserState>("users-local", "local", [
-  { id: 1, name: "Alice", age: 30 },
-  { id: 2, name: "Bob", age: 25 },
-  { id: 3, name: "Charlie", age: 35 },
-]);
+const userState =
+  createPersistentState<UserState>(
+    "users-local",
+    "local",
+    [
+      { id: 1, name: "Alice", age: 30 },
+      { id: 2, name: "Bob", age: 25 },
+      { id: 3, name: "Charlie", age: 35 },
+    ]);
+`}</code>
+        </pre>
 
-function IncreaseAgeButton({ userId }: { userId: number }) {
+        <pre className="language-javascript !rounded-md">
+          <code>{`function IncreaseAgeButton({ userId }: { userId: number }) {
   function increaseAge() {
     console.log("Increase age for user", userId);
     const users = userState.getState();
@@ -246,9 +257,11 @@ function IncreaseAgeButton({ userId }: { userId: number }) {
       +
     </Button>
   );
-}
+}`}</code>
+        </pre>
 
-function DecreaseAgeButton({ userId }: { userId: number }) {
+        <pre className="language-javascript !rounded-md">
+          <code>{`function DecreaseAgeButton({ userId }: { userId: number }) {
   function decreaseAge() {
     const users = userState.getState();
     const userIndex = users.findIndex((user) => user.id === userId);
@@ -265,9 +278,11 @@ function DecreaseAgeButton({ userId }: { userId: number }) {
       -
     </Button>
   );
-}
+}`}</code>
+        </pre>
 
-export function LocalState() {
+        <pre className="language-javascript !rounded-md">
+          <code>{`export function LocalState() {
   // Subscribe to user state changes to update the UI
   userState.subscribe((state) => {
     console.log("Local user state changed", state);
@@ -285,13 +300,13 @@ export function LocalState() {
     <table class="w-full text-center border-collapse">
       <thead>
         <tr>
-          <th class="py-4 px-6 border-b-2 border-zinc-300 dark:border-zinc-600">
+          <th>
             <Text>Name</Text>
           </th>
-          <th class="py-4 px-6 border-b-2 border-zinc-300 dark:border-zinc-600">
+          <th>
             <Text>Age</Text>
           </th>
-          <th class="py-4 px-6 border-b-2 border-zinc-300 dark:border-zinc-600">
+          <th>
             <Text>Actions</Text>
           </th>
         </tr>
@@ -299,13 +314,13 @@ export function LocalState() {
       <tbody>
         {userState.getState().map((user, index) => (
           <tr key={user.id}>
-            <td class="py-4 px-6 border-b border-zinc-300 dark:border-zinc-600">
+            <td>
               <Text>{user.name}</Text>
             </td>
-            <td class="py-4 px-6 border-b border-zinc-300 dark:border-zinc-600">
+            <td>
               <Text id={\`local-age-text-\${index}\`}>{user.age}</Text>
             </td>
-            <td class="py-4 px-6 border-b border-zinc-300 dark:border-zinc-600 flex justify-center gap-4">
+            <td>
               <IncreaseAgeButton userId={user.id} />
               <DecreaseAgeButton userId={user.id} />
             </td>
@@ -314,19 +329,18 @@ export function LocalState() {
       </tbody>
     </table>
   );
-}
-`}</code>
+}`}</code>
         </pre>
 
-        <div class="flex items-center justify-center">
+        <div className="flex items-center justify-center">
           <LocalState />
         </div>
 
         <Text>
           In this example, we create a user list state that is stored in local
           storage. The user list is updated with buttons that increase or
-          decrease the age of each user. The UI is automatically can be updated
-          by subscribing to state changes, allowing for real-time updates and
+          decrease the age of each user. The UI is automatically updated by
+          subscribing to state changes, allowing for real-time updates and
           whatever else you can imagine.
         </Text>
       </section>

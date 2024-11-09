@@ -414,43 +414,31 @@ export async function getCacheState<T>(key: string, cacheType: CacheType) {
         data: T | null;
         expires: number;
         error: Error | null;
-      }>(
-        key,
-        {
-          data: null as T | null,
-          expires: 0,
-          error: null,
-        },
-        "local"
-      );
+      }>(key, "local", {
+        data: null as T | null,
+        expires: 0,
+        error: null,
+      });
     case "session":
       return createPersistentState<{
         data: T | null;
         expires: number;
         error: Error | null;
-      }>(
-        key,
-        {
-          data: null as T | null,
-          expires: 0,
-          error: null,
-        },
-        "session"
-      );
+      }>(key, "session", {
+        data: null as T | null,
+        expires: 0,
+        error: null,
+      });
     case "idb":
       return createPersistentState<{
         data: T | null;
         expires: number;
         error: Error | null;
-      }>(
-        key,
-        {
-          data: null as T | null,
-          expires: 0,
-          error: null,
-        },
-        "idb"
-      );
+      }>(key, "idb", {
+        data: null as T | null,
+        expires: 0,
+        error: null,
+      });
     case "none":
     default:
       return createState<{
