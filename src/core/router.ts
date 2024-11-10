@@ -1,5 +1,5 @@
 import type { RoutePaths } from "./routes";
-import { createState, createPersistentState } from "./state";
+import { createState, createPersistentState, storageTypes } from "./state";
 
 export let notFoundComponent: () => HTMLElement = () => {
   const notFoundElement = document.createElement("div");
@@ -8,7 +8,7 @@ export let notFoundComponent: () => HTMLElement = () => {
   return notFoundElement;
 };
 
-type CacheType = "memory" | "local" | "session" | "idb" | "none";
+type CacheType = (typeof storageTypes)[number];
 
 type LoaderFunction<T> = (
   params?: Record<string, string>,
@@ -65,6 +65,8 @@ interface RegisterRouteOptions<T = any> {
   children?: RegisterRouteOptions[];
 }
 
+const invalidPathCharacters = /[^a-zA-Z0-9_:/.-]/g;
+
 export function registerRoute<T>(
   {
     path,
@@ -79,6 +81,51 @@ export function registerRoute<T>(
   parentPath = "",
   parentComponent?: SyncComponent | AsyncComponent
 ) {
+  if (
+    !path ||
+    typeof path !== "string" ||
+    !path.startsWith("/") ||
+    path.endsWith(":")
+  ) {
+    throw new Error(`Invalid path: ${path}`);
+  }
+
+  if (invalidPathCharacters.test(path)) {
+    throw new Error(`Invalid path: ${path}`);
+  }
+
+  if (!component || typeof component !== "function") {
+    throw new Error(`Invalid component: ${component}`);
+  }
+
+  if (fallback && typeof fallback !== "function") {
+    throw new Error(`Invalid fallback component: ${fallback}`);
+  }
+
+  if (loader && typeof loader !== "function") {
+    throw new Error(`Invalid loader function: ${loader}`);
+  }
+
+  if (cacheLoader && typeof cacheLoader !== "string") {
+    throw new Error(`Invalid cache loader type: ${cacheLoader}`);
+  }
+
+  if (!storageTypes.includes(cacheLoader)) {
+    throw new Error(`Invalid cache loader type: ${cacheLoader}`);
+  }
+
+  if (cacheKey && typeof cacheKey !== "string") {
+    throw new Error(`Invalid cache key: ${cacheKey}`);
+  }
+
+  if (ttl && typeof ttl !== "number") {
+    throw new Error(`Invalid TTL: ${ttl}`);
+  }
+
+  if (ttl && ttl < 0) {
+    throw new Error(`Invalid TTL: ${ttl}`);
+  }
+
   const fullPath = `${parentPath}${path}`
     .replace(/\/+/g, "/")
     .replaceAll("//", "/");
@@ -193,7 +240,7 @@ export async function handleRoute() {
   });
 }
 
-async function renderRouteHierarchy(
+export async function renderRouteHierarchy(
   route: Route,
   searchParams: URLSearchParams,
   params: Record<string, string>,

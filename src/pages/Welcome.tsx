@@ -155,10 +155,10 @@ export default function WelcomePage() {
 
         {/* Interactive Example: Dialog */}
         <div class="mt-12 text-center">
-          <DialogTrigger uniqueId="example-dialog">
+          <DialogTrigger id="example-dialog">
             <Button>Open an Example Dialog</Button>
           </DialogTrigger>
-          <Dialog uniqueId="example-dialog">
+          <Dialog id="example-dialog">
             <DialogTitle>Just a Demo Dialog</DialogTitle>
             <DialogBody>
               <Text>

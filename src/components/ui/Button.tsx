@@ -1,5 +1,5 @@
 // src/components/ui/Button.tsx
-import { clsx } from "@core/clsx"; // Custom clsx utility for classnames
+import { clsx } from "@core/clsx";
 import { navigateTo } from "@core/router";
 
 import type { RoutePaths } from "@core/routes";

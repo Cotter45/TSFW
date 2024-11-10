@@ -4,6 +4,14 @@ type ListenerOnChangeEvent<T> = (state: T) => void;
 const stateCache: Record<string, TSFWState<any>> = {};
 const uniqueTabId = Math.random().toString(36).substring(2, 11);
 
+export const storageTypes = [
+  "memory",
+  "local",
+  "session",
+  "idb",
+  "none",
+] as const;
+
 export class TSFWState<T extends object> {
   private listeners: Map<string, Listener> = new Map();
   private listenersOnChangeEvent: Map<string, ListenerOnChangeEvent<T>> =
@@ -80,8 +88,11 @@ export class TSFWState<T extends object> {
 
     if (this.broadcastingEnabled && this.storageType) {
       this.notifyListeners();
-      this.saveToStorage();
       this.broadcastState();
+    }
+
+    if (this.storageType) {
+      this.saveToStorage();
     }
   }
 

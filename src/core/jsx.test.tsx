@@ -1,5 +1,4 @@
 import { describe, it, expect, vi } from "vitest";
-
 import { jsx } from "./jsx";
 
 describe("jsx function", () => {
@@ -12,6 +11,11 @@ describe("jsx function", () => {
     const element = jsx("button", { id: "test-button", class: "btn" });
     expect(element.getAttribute("id")).toBe("test-button");
     expect(element.getAttribute("class")).toBe("btn");
+  });
+
+  it("should apply data attributes to the element", () => {
+    const element = jsx("div", { "data-test": "value" });
+    expect(element.dataset.test).toBe("value");
   });
 
   it("should attach event listeners to the element", () => {
@@ -50,5 +54,46 @@ describe("jsx function", () => {
     const element = jsx("div", null, "No Props");
     expect(element.tagName).toBe("DIV");
     expect(element.textContent).toBe("No Props");
+  });
+
+  // New tests to cover missing lines
+  it("should apply style object to the element", () => {
+    const element = jsx("div", { style: { color: "red", fontSize: "16px" } });
+    expect(element.style.color).toBe("red");
+    expect(element.style.fontSize).toBe("16px");
+  });
+
+  it("should handle boolean attributes correctly", () => {
+    const element = jsx("input", { type: "checkbox", checked: true });
+    // @ts-expect-error
+    expect(element.checked).toBe(true);
+    element.removeAttribute("checked");
+    // @ts-expect-error
+    expect(element.checked).toBe(false);
+  });
+
+  it("should create SVG elements correctly", () => {
+    const svgElement = jsx("svg");
+    expect(svgElement.namespaceURI).toBe("http://www.w3.org/2000/svg");
+    const circleElement = jsx("circle", { cx: 50, cy: 50, r: 40 });
+    expect(circleElement.namespaceURI).toBe("http://www.w3.org/2000/svg");
+    expect(circleElement.getAttribute("cx")).toBe("50");
+    expect(circleElement.getAttribute("cy")).toBe("50");
+    expect(circleElement.getAttribute("r")).toBe("40");
+  });
+
+  it("should set and remove boolean attributes correctly", () => {
+    const element = jsx("input", { type: "checkbox", checked: true });
+    expect(element.hasAttribute("checked")).toBe(true);
+    // @ts-expect-error
+    expect(element.checked).toBe(true);
+
+    const elementWithoutChecked = jsx("input", {
+      type: "checkbox",
+      checked: false,
+    });
+    expect(elementWithoutChecked.hasAttribute("checked")).toBe(false);
+    // @ts-expect-error
+    expect(elementWithoutChecked.checked).toBe(false);
   });
 });

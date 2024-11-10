@@ -7,7 +7,6 @@ export function jsx(
     return type({ ...props, children });
   }
 
-  // Detect if the element is an SVG element and create it with the SVG namespace
   const isSvg =
     type === "svg" ||
     type === "path" ||
@@ -32,7 +31,6 @@ export function jsx(
     } else if (typeof value === "boolean") {
       value ? element.setAttribute(key, "") : element.removeAttribute(key);
     } else if (isSvg || !(key in element)) {
-      // For SVG attributes and other attributes that may not be properties on the DOM node
       element.setAttribute(key, String(value));
     } else {
       (element as any)[key] = value;

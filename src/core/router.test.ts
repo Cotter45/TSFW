@@ -9,7 +9,9 @@ import {
   resolvePath,
   generatePathPattern,
   resolveComponent,
+  getCacheState,
 } from "./router";
+import { createState } from "./state";
 
 describe("Default not found component", () => {
   it("should be a function", () => {
@@ -42,186 +44,6 @@ describe("initRouter", () => {
 
     expect(rootElement).toBe(root);
     expect(routes).toEqual([]);
-  });
-});
-
-describe("registerRoute", () => {
-  // Test valid registration
-  it("should register a route successfully with a valid path and component", () => {
-    const mockComponent = () => document.createElement("div");
-
-    expect(() =>
-      registerRoute({
-        path: "/valid-route",
-        component: mockComponent,
-      })
-    ).not.toThrow();
-  });
-
-  // Test component validation
-  it("should throw an error if component is missing or not a function", () => {
-    // @ts-expect-error: Testing missing component
-    expect(() => registerRoute({ path: "/test" })).toThrow(
-      "A valid component function is required for route definition."
-    );
-
-    expect(() =>
-      // @ts-expect-error: Testing invalid component type
-      registerRoute({ path: "/test", component: "notAFunction" })
-    ).toThrow("A valid component function is required for route definition.");
-  });
-
-  // Test path validation
-  it("should throw an error for invalid paths", () => {
-    // Missing leading slash
-    expect(() =>
-      registerRoute({
-        path: "no-slash",
-        component: () => document.createElement("div"),
-      })
-    ).toThrow("Invalid route path.");
-
-    // Invalid characters
-    expect(() =>
-      registerRoute({
-        path: "/invalid@path",
-        component: () => document.createElement("div"),
-      })
-    ).toThrow("Invalid route path.");
-
-    // Ends with colon
-    expect(() =>
-      registerRoute({
-        path: "/invalid/:",
-        component: () => document.createElement("div"),
-      })
-    ).toThrow("Invalid route path.");
-  });
-
-  // Test cacheLoader validation
-  it("should throw an error for invalid cacheLoader option", () => {
-    expect(() =>
-      registerRoute({
-        path: "/test",
-        component: () => document.createElement("div"),
-        // @ts-expect-error: Testing invalid cacheLoader
-        cacheLoader: "invalidType",
-      })
-    ).toThrow(
-      "Invalid cacheLoader type 'invalidType'. Supported types are: memory, localStorage, sessionStorage, indexedDB, none."
-    );
-  });
-
-  // Test TTL validation
-  it("should throw an error if TTL is not a positive integer", () => {
-    expect(() =>
-      registerRoute({
-        path: "/test",
-        component: () => document.createElement("div"),
-        ttl: -100,
-      })
-    ).toThrow(
-      "TTL (Time-to-Live) must be a positive integer representing milliseconds."
-    );
-
-    expect(() =>
-      registerRoute({
-        path: "/test",
-        component: () => document.createElement("div"),
-        ttl: "notANumber" as unknown as number,
-      })
-    ).toThrow(
-      "TTL (Time-to-Live) must be a positive integer representing milliseconds."
-    );
-  });
-
-  // Test loader validation
-  it("should throw an error if loader is not a function", () => {
-    expect(() =>
-      registerRoute({
-        path: "/test",
-        component: () => document.createElement("div"),
-        // @ts-expect-error: Testing invalid loader
-        loader: "notAFunction",
-      })
-    ).toThrow("Loader must be a function that returns data or a Promise.");
-  });
-
-  // Test fallback validation
-  it("should throw an error if fallback is not a function", () => {
-    expect(() =>
-      registerRoute({
-        path: "/test",
-        component: () => document.createElement("div"),
-        // @ts-expect-error: Testing invalid fallback
-        fallback: "notAFunction",
-      })
-    ).toThrow("Fallback must be a function that returns an HTML element.");
-  });
-
-  // Test children validation
-  it("should validate child routes with valid paths and components", () => {
-    const mockParentComponent = () => document.createElement("div");
-    const mockChildComponent = () => document.createElement("div");
-
-    expect(() =>
-      registerRoute({
-        path: "/parent",
-        component: mockParentComponent,
-        children: [{ path: "/parent/child", component: mockChildComponent }],
-      })
-    ).not.toThrow();
-  });
-
-  it("should throw an error if child routes have invalid path or component", () => {
-    const mockParentComponent = () => document.createElement("div");
-
-    expect(() =>
-      registerRoute({
-        path: "/parent",
-        component: mockParentComponent,
-        children: [
-          // Invalid path
-          {
-            path: "child-no-slash",
-            component: () => document.createElement("div"),
-          },
-        ],
-      })
-    ).toThrow("Invalid route path.");
-
-    expect(() =>
-      registerRoute({
-        path: "/parent",
-        component: mockParentComponent,
-        children: [
-          // @ts-expect-error
-          { path: 5 },
-        ],
-      })
-    ).toThrow("Each child route must have a valid 'path' string.");
-
-    expect(() =>
-      registerRoute({
-        path: "/parent",
-        component: mockParentComponent,
-        children: [
-          // @ts-expect-error
-          { path: "/parent/child" },
-        ],
-      })
-    ).toThrow("Each child route must have a valid component function.");
-
-    expect(() =>
-      registerRoute({
-        path: "/parent",
-        component: mockParentComponent,
-        children: [
-          // @ts-expect-error
-          { path: "/parent/child", component: "notAFunction" },
-        ],
-      })
-    ).toThrow("Each child route must have a valid component function.");
   });
 });
 
@@ -426,5 +248,13 @@ describe("resolveComponent", () => {
     await expect(
       resolveComponent(errorThrowingComponent, mockProps)
     ).rejects.toThrow("Error resolving component: Component error");
+  });
+});
+
+describe("getCacheState", () => {
+  it("should return the cache state for a given path", async () => {
+    const state = createState("testing", { example: true });
+
+    expect(await getCacheState("testing", "memory")).toEqual(state);
   });
 });

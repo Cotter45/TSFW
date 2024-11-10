@@ -9,6 +9,7 @@ export default function Reacty() {
       <h1>Hello, World!</h1>
       <p>This is JSX!</p>
 
+      {/* @ts-expect-error */}
       <Button href="/reacty/data" variant="outline">
         FetchReacty Data
       </Button>

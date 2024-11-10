@@ -54,32 +54,29 @@ interface DialogState {
 const dialogStates = new Map<string, TSFWState<DialogState>>();
 
 // Helper function to get or create the dialog state for a unique ID
-function getDialogState(uniqueId: string): TSFWState<DialogState> {
-  if (!dialogStates.has(uniqueId)) {
-    dialogStates.set(
-      uniqueId,
-      createState<DialogState>(uniqueId, { isOpen: false })
-    );
+function getDialogState(id: string): TSFWState<DialogState> {
+  if (!dialogStates.has(id)) {
+    dialogStates.set(id, createState<DialogState>(id, { isOpen: false }));
   }
-  return dialogStates.get(uniqueId)!;
+  return dialogStates.get(id)!;
 }
 
-export function openDialog(uniqueId: string) {
-  const state = getDialogState(uniqueId);
+export function openDialog(id: string) {
+  const state = getDialogState(id);
   state.setState({ isOpen: true });
 }
 
-export function closeDialog(uniqueId: string) {
-  if (!dialogStates.has(uniqueId)) return;
-  if (!dialogStates.get(uniqueId)!.getState().isOpen) return;
+export function closeDialog(id: string) {
+  if (!dialogStates.has(id)) return;
+  if (!dialogStates.get(id)!.getState().isOpen) return;
 
-  const root = document.getElementById(`dialog-root-${uniqueId}`);
+  const root = document.getElementById(`dialog-root-${id}`);
   if (root) {
     const dialogElement = root.firstChild as HTMLElement;
     if (dialogElement) {
       dialogElement.classList.add("dialog-exit-active");
       setTimeout(() => {
-        getDialogState(uniqueId).setState({ isOpen: false });
+        getDialogState(id).setState({ isOpen: false });
         root.innerHTML = "";
       }, 300);
     }
@@ -89,23 +86,23 @@ export function closeDialog(uniqueId: string) {
 export function Dialog({
   size = "lg",
   variant = "center",
-  uniqueId = "dialog",
+  id = "dialog",
   className,
   children,
 }: {
   size?: keyof typeof sizes;
   variant?: keyof typeof variants;
-  uniqueId: string;
+  id: string;
   className?: string;
   children: any;
 }) {
-  const dialogState = getDialogState(uniqueId);
+  const dialogState = getDialogState(id);
 
   dialogState.subscribe((state) => {
-    let root = document.getElementById(`dialog-root-${uniqueId}`);
+    let root = document.getElementById(`dialog-root-${id}`);
     if (!root) {
       root = document.createElement("div");
-      root.id = `dialog-root-${uniqueId}`;
+      root.id = `dialog-root-${id}`;
       document.body.appendChild(root);
     }
 
@@ -116,7 +113,7 @@ export function Dialog({
             "dialog-backdrop fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 dialog-enter z-[1000]",
             className
           )}
-          onClick={() => closeDialog(uniqueId)}
+          onClick={() => closeDialog(id)}
           role="dialog"
           aria-modal="true"
           aria-labelledby="dialog-title"
@@ -124,7 +121,6 @@ export function Dialog({
           tabIndex={-1}
         >
           <div
-            className="dialog-content bg-white p-6 md:p-10 shadow-sm border border-zinc-950/5 dark:bg-zinc-900 dark:border-white/10 overflow-y-auto rounded-lg max-h-screen"
             style={{
               width: `calc(min(${sizes[size]} , 95vw))`,
               maxWidth: `calc(min(${sizes[size]} , 95vw))`,
@@ -133,7 +129,28 @@ export function Dialog({
             onClick={(e: MouseEvent) => e.stopPropagation()}
             tabIndex={-1}
           >
-            {children}
+            <div className="relative dialog-content p-6 md:p-10 bg-white shadow-sm border border-zinc-950/5 dark:bg-zinc-900 dark:border-white/10 overflow-x-hidden overflow-y-auto rounded-lg max-h-screen">
+              <Button
+                variant="plain"
+                class="absolute -top-8 left-[98%]"
+                onClick={() => closeDialog(id)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke="currentColor"
+                  class="size-6"
+                >
+                  <path d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </Button>
+
+              {children}
+            </div>
           </div>
         </div>
       );
@@ -146,7 +163,7 @@ export function Dialog({
 
       // Close on Escape key
       const handleEscape = (event: KeyboardEvent) => {
-        if (event.key === "Escape") closeDialog(uniqueId);
+        if (event.key === "Escape") closeDialog(id);
       };
       document.addEventListener("keydown", handleEscape);
 
@@ -235,17 +252,17 @@ export function DialogActions({
 export function DialogTrigger({
   children,
   className,
-  uniqueId,
+  id,
 }: {
+  id: string;
   children: any;
   className?: string;
-  uniqueId: string;
 }) {
   return (
     <Button
       variant="plain"
       class={clsx("dialog-trigger-btn", className)}
-      onClick={() => openDialog(uniqueId)}
+      onClick={() => openDialog(id)}
     >
       {children}
     </Button>

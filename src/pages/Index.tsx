@@ -121,7 +121,7 @@ function MobileMenu() {
         <Heading>TSFW</Heading>
       </Link>
 
-      <DialogTrigger uniqueId="mobile-menu">
+      <DialogTrigger id="mobile-menu">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -137,7 +137,7 @@ function MobileMenu() {
           />
         </svg>
       </DialogTrigger>
-      <Dialog size="xs" variant="left" uniqueId="mobile-menu">
+      <Dialog size="xs" variant="left" id="mobile-menu">
         <DialogTitle>TSFW</DialogTitle>
         <DialogBody>
           <div class="flex flex-col gap-4">
