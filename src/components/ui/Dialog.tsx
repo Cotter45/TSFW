@@ -21,7 +21,7 @@ const variants = {
     position: "absolute",
     left: "0",
     top: "0",
-    minHeight: "100vh",
+    minHeight: "100dvh",
     borderRadius: "0px 8px 8px 0px",
   },
   right: {
@@ -126,31 +126,11 @@ export function Dialog({
               maxWidth: `calc(min(${sizes[size]} , 95vw))`,
               ...variants[variant],
             }}
+            className="dialog-content p-6 md:p-10 bg-white shadow-sm border border-zinc-950/5 dark:bg-zinc-900 dark:border-white/10 overflow-x-hidden overflow-y-auto rounded-lg max-h-screen"
             onClick={(e: MouseEvent) => e.stopPropagation()}
             tabIndex={-1}
           >
-            <div className="relative dialog-content p-6 md:p-10 bg-white shadow-sm border border-zinc-950/5 dark:bg-zinc-900 dark:border-white/10 overflow-x-hidden overflow-y-auto rounded-lg max-h-screen">
-              <Button
-                variant="plain"
-                class="absolute -top-8 left-[98%]"
-                onClick={() => closeDialog(id)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke="currentColor"
-                  class="size-6"
-                >
-                  <path d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </Button>
-
-              {children}
-            </div>
+            {children}
           </div>
         </div>
       );
