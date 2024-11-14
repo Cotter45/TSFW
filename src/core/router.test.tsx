@@ -10,8 +10,10 @@ import {
   generatePathPattern,
   resolveComponent,
   getCacheState,
+  navigateTo,
 } from "./router";
 import { createState } from "./state";
+import { jsx } from "./jsx";
 
 describe("Default not found component", () => {
   it("should be a function", () => {
@@ -256,5 +258,82 @@ describe("getCacheState", () => {
     const state = createState("testing", { example: true });
 
     expect(await getCacheState("testing", "memory")).toEqual(state);
+  });
+});
+
+const ParamsComponent = (props: any) => {
+  return (
+    <div data-outlet>
+      <div>ID: {JSON.stringify(props.params || {}, null, 2)}</div>
+      <div>
+        SEARCH:{" "}
+        {JSON.stringify(Object.fromEntries(props.searchParams || {}), null, 2)}
+      </div>
+    </div>
+  );
+};
+
+describe("navigateTo", () => {
+  beforeEach(() => {
+    document.body.innerHTML = `<div id="app"></div>`;
+
+    registerRoute({
+      path: "/test",
+      component: ParamsComponent,
+      children: [
+        {
+          path: "/:id",
+          component: ParamsComponent,
+        },
+      ],
+    });
+
+    initRouter(document.getElementById("app")!);
+  });
+
+  afterEach(() => {
+    document.body.innerHTML = "";
+  });
+
+  it("should navigate to a path", async () => {
+    initRouter(document.getElementById("app")!);
+
+    // @ts-expect-error Route types created dynamically at dev server initialization
+    navigateTo("/test/123");
+    expect(window.location.pathname).toBe("/test/123");
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    expect(rootElement?.textContent).toContain('"id": "123"');
+  });
+
+  it("should navigate to a path with query parameters", async () => {
+    initRouter(document.getElementById("app")!);
+
+    // @ts-expect-error Route types created dynamically at dev server initialization
+    navigateTo("/test/123?q=test");
+    expect(window.location.pathname).toBe("/test/123");
+    expect(window.location.search).toBe("?q=test");
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    expect(rootElement?.textContent).toContain('"q": "test"');
+  });
+
+  it("should navigate to a path with query parameters and a hash", async () => {
+    initRouter(document.getElementById("app")!);
+
+    // @ts-expect-error Route types created dynamically at dev server initialization
+    navigateTo("/test/123/?q=test#section");
+    expect(window.location.pathname).toBe("/test/123/");
+    expect(window.location.search).toBe("?q=test");
+    expect(window.location.hash).toBe("#section");
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    expect(rootElement?.textContent).toContain('"q": "test"');
+  });
+
+  it("should navigate to root path", async () => {
+    initRouter(document.getElementById("app")!);
+
+    navigateTo("/");
+    expect(window.location.pathname).toBe("/");
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    expect(document.getElementById("app")?.textContent).toBeDefined();
   });
 });

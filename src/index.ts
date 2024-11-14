@@ -40,6 +40,10 @@ registerRoute({
       path: "/faq",
       component: async () => await import("@pages/Faq"),
     },
+    {
+      path: "/testing/:id",
+      component: async () => await import("@pages/Testing"),
+    },
   ],
 });
 

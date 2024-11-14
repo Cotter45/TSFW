@@ -16,20 +16,22 @@ type LoaderFunction<T> = (
   signal?: AbortSignal
 ) => Promise<T>;
 
-type SyncComponent = (props: {
-  params: Record<string, string>;
-  searchParams: URLSearchParams;
-  data: any;
+export interface TSFWProps<
+  Params extends Record<string, any> | null = Record<string, string>,
+  SearchParams extends URLSearchParams | null = URLSearchParams,
+  Data = any | null
+> {
+  params: Params;
+  searchParams: SearchParams;
+  data: Data;
   error: Error | null;
-}) => HTMLElement;
+}
 
-type AsyncComponent = (props: {
-  params: Record<string, string>;
-  searchParams: URLSearchParams;
-  data: any;
-  error: Error | null;
-  signal?: AbortSignal;
-}) => Promise<HTMLElement | { default: HTMLElement | SyncComponent } | any>;
+type SyncComponent = (props: TSFWProps) => HTMLElement;
+
+type AsyncComponent = (
+  props: TSFWProps & { signal?: AbortSignal }
+) => Promise<HTMLElement | { default: HTMLElement | SyncComponent } | any>;
 
 interface Route<T = any> {
   component: SyncComponent | AsyncComponent;
