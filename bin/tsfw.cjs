@@ -40,6 +40,7 @@ const downloadFile = (fileUrl, outputPath) => {
 
 // List of files to download
 const files = [
+  // Config files
   {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/vitest.config.ts",
     path: "vitest.config.ts",
@@ -76,6 +77,7 @@ const files = [
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/.gitignore",
     path: ".gitignore",
   },
+  // Source files
   {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/template/src/index.ts",
     path: "src/index.ts",
@@ -88,6 +90,7 @@ const files = [
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/template/src/index.css",
     path: "src/index.css",
   },
+  // Pages and components
   {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/template/src/pages/App.tsx",
     path: "src/pages/App.tsx",
@@ -99,6 +102,23 @@ const files = [
   {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Text.tsx",
     path: "src/components/ui/Text.tsx",
+  },
+  // Core lib files
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/core/clsx.ts",
+    path: "src/core/clsx.ts",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/core/jsx.ts",
+    path: "src/core/jsx.ts",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/core/router.ts",
+    path: "src/core/router.ts",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/core/state.ts",
+    path: "src/core/state.ts",
   },
 ];
 
