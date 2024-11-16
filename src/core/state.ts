@@ -35,6 +35,11 @@ export class TSFWState<T extends object> {
     this.proxy = new Proxy(initialState, {
       set: (target, property, value) => {
         (target as T)[property as keyof T] = value;
+
+        if (!this.storageType) {
+          this.notifyListeners();
+        }
+
         return true;
       },
     }) as T;
