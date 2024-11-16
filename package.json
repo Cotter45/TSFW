@@ -8,7 +8,7 @@
   "main": "index.js",
   "type": "module",
   "bin": {
-    "tsfw": "./bin/tsfw.cjs"
+    "create-tsfw": "./bin/tsfw.cjs"
   },
   "scripts": {
     "dev": "vite",
