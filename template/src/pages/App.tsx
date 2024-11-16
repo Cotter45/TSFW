@@ -2,7 +2,7 @@ import { Heading, Text } from "@components/ui/Text";
 
 export default function App() {
   return (
-    <div class="w-full h-[100dvh] flex flex-col items-center justify-center gap-2">
+    <div class="w-full h-[100dvh] flex flex-col items-center justify-center gap-2 bg-zinc-100 dark:bg-zinc-950">
       <img
         src="/icon.png"
         alt="TSFW"

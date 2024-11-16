@@ -1,7 +1,7 @@
 import { jsx } from "@core/jsx";
 import { initRouter, registerRoute, setNotFoundComponent } from "@core/router";
 
-import App from "@pages/Index";
+import App from "@pages/App";
 import FourOhFour from "@pages/404";
 
 (globalThis as any).jsx = jsx;

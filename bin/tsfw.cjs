@@ -120,6 +120,144 @@ const files = [
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/core/state.ts",
     path: "src/core/state.ts",
   },
+  // Type definitions
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/types/env.d.ts",
+    path: "src/types/env.d.ts",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/types/globals.d.ts",
+    path: "src/types/globals.d.ts",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/types/jsx.d.ts",
+    path: "src/types/jsx.d.ts",
+  },
+  // Public files
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/android-icon-36x36.png",
+    path: "src/public/android-icon-36x36.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/android-icon-48x48.png",
+    path: "src/public/android-icon-48x48.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/android-icon-72x72.png",
+    path: "src/public/android-icon-72x72.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/android-icon-96x96.png",
+    path: "src/public/android-icon-96x96.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/android-icon-144x144.png",
+    path: "src/public/android-icon-144x144.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/android-icon-192x192.png",
+    path: "src/public/android-icon-192x192.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/apple-icon-57x57.png",
+    path: "src/public/apple-icon-57x57.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/apple-icon-60x60.png",
+    path: "src/public/apple-icon-60x60.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/apple-icon-72x72.png",
+    path: "src/public/apple-icon-72x72.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/apple-icon-76x76.png",
+    path: "src/public/apple-icon-76x76.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/apple-icon-114x114.png",
+    path: "src/public/apple-icon-114x114.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/apple-icon-120x120.png",
+    path: "src/public/apple-icon-120x120.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/apple-icon-144x144.png",
+    path: "src/public/apple-icon-144x144.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/apple-icon-152x152.png",
+    path: "src/public/apple-icon-152x152.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/apple-icon-180x180.png",
+    path: "src/public/apple-icon-180x180.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/apple-icon-precomposed.png",
+    path: "src/public/apple-icon-precomposed.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/apple-icon.png",
+    path: "src/public/apple-icon.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/browserconfig.xml",
+    path: "src/public/browserconfig.xml",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/favicon-16x16.png",
+    path: "src/public/favicon-16x16.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/favicon-32x32.png",
+    path: "src/public/favicon-32x32.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/favicon-96x96.png",
+    path: "src/public/favicon-96x96.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/favicon.ico",
+    path: "src/public/favicon.ico",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/icon.png",
+    path: "src/public/icon.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/manifest.json",
+    path: "src/public/manifest.json",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/ms-icon-70x70.png",
+    path: "src/public/ms-icon-70x70.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/ms-icon-144x144.png",
+    path: "src/public/ms-icon-144x144.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/ms-icon-150x150.png",
+    path: "src/public/ms-icon-150x150.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/ms-icon-310x310.png",
+    path: "src/public/ms-icon-310x310.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/robots.txt",
+    path: "src/public/robots.txt",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/screenshot1.png",
+    path: "src/public/screenshot1.png",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/public/screenshot2.png",
+    path: "src/public/screenshot2.png",
+  },
 ];
 
 // Prompt the user for a directory name
@@ -134,6 +272,8 @@ rl.question("Enter the name of the directory to create: ", (dirName) => {
   // Create necessary directories
   try {
     fs.mkdirSync(path.join(targetDir, "src/core"), { recursive: true });
+    fs.mkdirSync(path.join(targetDir, "src/types"), { recursive: true });
+    fs.mkdirSync(path.join(targetDir, "src/public"), { recursive: true });
     fs.mkdirSync(path.join(targetDir, "src/pages"), { recursive: true });
     fs.mkdirSync(path.join(targetDir, "src/components/ui"), {
       recursive: true,
