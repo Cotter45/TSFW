@@ -133,6 +133,7 @@ rl.question("Enter the name of the directory to create: ", (dirName) => {
 
   // Create necessary directories
   try {
+    fs.mkdirSync(path.join(targetDir, "src/core"), { recursive: true });
     fs.mkdirSync(path.join(targetDir, "src/pages"), { recursive: true });
     fs.mkdirSync(path.join(targetDir, "src/components/ui"), {
       recursive: true,
