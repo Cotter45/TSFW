@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { createState, createPersistentState } from "./state";
 import { TSFWState } from "./state";
+import "fake-indexeddb/auto";
 
 global.BroadcastChannel = vi.fn(() => ({
   postMessage: vi.fn(),
@@ -46,6 +47,32 @@ describe("TSFWState", () => {
       invalidInstance.setState({ foo: "invalid" });
       expect(invalidInstance.getState()).toEqual(initialState);
     });
+
+    it("should allow valid updates if validator passes", () => {
+      const validInstance = createState(
+        key,
+        initialState,
+        (state) => state.foo === "bar"
+      );
+      validInstance.setState({ foo: "bar" });
+      expect(validInstance.getState()).toEqual({ foo: "bar" });
+    });
+
+    it("should update state for indexed updates", () => {
+      const indexedInstance = createState<any>("indexedTest", [{ foo: "bar" }]);
+      indexedInstance.setState({ index: 0, data: { foo: "baz" } });
+      expect(indexedInstance.getState()).toEqual([{ foo: "baz" }]);
+    });
+
+    it("should throw error for updates that fail validation", () => {
+      const invalidInstance = createState(
+        "errorTest",
+        initialState,
+        (state) => state.foo !== "invalid"
+      );
+
+      expect(() => invalidInstance.setState({ foo: "invalid" })).toThrowError();
+    });
   });
 
   describe("saveToStorage", () => {
@@ -68,6 +95,46 @@ describe("TSFWState", () => {
       expect(JSON.parse(sessionStorage.getItem("sessionTest")!)).toEqual({
         foo: "baz",
       });
+    });
+
+    it("should save state to indexedDB", async () => {
+      const idbState = createPersistentState("idbTest", "idb", { foo: "bar" });
+      expect(idbState.getState()).toEqual({ foo: "bar" });
+      idbState.setState({ foo: "baz" });
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      expect(idbState.getState()).toEqual({ foo: "baz" });
+    });
+  });
+
+  describe("loadFromStorage", () => {
+    it("should load state from localStorage", () => {
+      localStorage.setItem("loadLocal", JSON.stringify({ foo: "baz" }));
+      const localState = createPersistentState("loadLocal", "local", {
+        foo: "bar",
+      });
+      expect(localState.getState()).toEqual({ foo: "baz" });
+    });
+
+    it("should load state from sessionStorage", () => {
+      sessionStorage.setItem("loadSession", JSON.stringify({ foo: "baz" }));
+      const sessionState = createPersistentState("loadSession", "session", {
+        foo: "bar",
+      });
+      expect(sessionState.getState()).toEqual({ foo: "baz" });
+    });
+
+    it("should load state from indexedDB", async () => {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      const idbState = createPersistentState("loadIdb", "idb", { foo: "bar" });
+      expect(idbState.getState()).toEqual({ foo: "bar" });
+    });
+  });
+
+  describe("not recreating state", () => {
+    it("should return the same state instance for the same key", () => {
+      const instance2 = createPersistentState(key, "local", { foo: "baz" });
+      const instance3 = createPersistentState(key, "local", { foo: "baz" });
+      expect(instance2).toBe(instance3);
     });
   });
 });

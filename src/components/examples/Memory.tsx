@@ -54,8 +54,6 @@ export function MemoryState() {
         <IncrementButton />
         <DecrementButton />
       </div>
-
-      <div data-outlet />
     </div>
   );
 }

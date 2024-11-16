@@ -263,12 +263,14 @@ describe("getCacheState", () => {
 
 const ParamsComponent = (props: any) => {
   return (
-    <div data-outlet>
+    <div>
       <div>ID: {JSON.stringify(props.params || {}, null, 2)}</div>
       <div>
         SEARCH:{" "}
         {JSON.stringify(Object.fromEntries(props.searchParams || {}), null, 2)}
       </div>
+
+      <div data-outlet />
     </div>
   );
 };
@@ -335,5 +337,76 @@ describe("navigateTo", () => {
     expect(window.location.pathname).toBe("/");
     await new Promise((resolve) => setTimeout(resolve, 100));
     expect(document.getElementById("app")?.textContent).toBeDefined();
+  });
+});
+
+function FallbackRoot() {
+  return <div data-outlet>Initial</div>;
+}
+
+const FallbackComponent = () => {
+  return (
+    <div>
+      <div>Loading...</div>
+    </div>
+  );
+};
+
+const ComponentForFallback = () => {
+  return (
+    <div>
+      <div>Component for fallback</div>
+    </div>
+  );
+};
+
+describe("fallback component", () => {
+  let fallbackRootElement: HTMLElement | null;
+
+  beforeEach(() => {
+    const root = document.createElement("div");
+    root.id = "app";
+    document.body.appendChild(root);
+    fallbackRootElement = root;
+
+    registerRoute({
+      path: "/",
+      component: FallbackRoot,
+      children: [
+        {
+          path: "/",
+          component: FallbackRoot,
+        },
+        {
+          path: "/new",
+          component: ComponentForFallback,
+          loader: async () =>
+            await new Promise((resolve) => setTimeout(resolve, 200)),
+          fallback: FallbackComponent,
+        },
+      ],
+    });
+
+    initRouter(fallbackRootElement!);
+  });
+
+  afterEach(() => {
+    document.body.innerHTML = "";
+    fallbackRootElement = null;
+    vi.restoreAllMocks();
+  });
+
+  it("should render the fallback component while loading", async () => {
+    expect(window.location.pathname).toBe("/");
+    expect(fallbackRootElement?.innerHTML).toContain("Initial");
+
+    // @ts-expect-error Route types created dynamically at dev server initialization
+    navigateTo("/new");
+
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    expect(fallbackRootElement?.innerHTML).toContain("Loading...");
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    expect(fallbackRootElement?.innerHTML).toContain("Component for fallback");
   });
 });

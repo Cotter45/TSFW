@@ -67,7 +67,7 @@ interface RegisterRouteOptions<T = any> {
   children?: RegisterRouteOptions[];
 }
 
-const invalidPathCharacters = /[^a-zA-Z0-9_:/.-]/g;
+const invalidPathCharacters = /[^a-zA-Z0-9_/:-]/g;
 
 export function registerRoute<T>(
   {
@@ -210,17 +210,6 @@ export async function handleRoute() {
   }
   const searchParams = new URLSearchParams(window.location.search);
 
-  const rootRoute = routes.find(
-    (route) =>
-      route.pathPattern.source === "^/$" ||
-      route.pathPattern.source === "^(/)?$"
-  );
-
-  if (path === "/" && rootRoute) {
-    await renderRouteHierarchy(rootRoute, searchParams, {}, signal);
-    return;
-  }
-
   for (const route of routes) {
     const match = path.match(route.pathPattern);
     if (match) {
@@ -251,6 +240,10 @@ export async function renderRouteHierarchy(
   const routeHierarchy: Route[] = [];
   let currentRoute: Route | undefined = route;
 
+  if (signal.aborted) {
+    return;
+  }
+
   while (currentRoute) {
     routeHierarchy.unshift(currentRoute);
     currentRoute = routes.find(
@@ -270,8 +263,8 @@ export async function renderRouteHierarchy(
     );
     let data = cacheState.getState().data;
 
-    if (fallback) {
-      await fallbackRender(fallback, outletElement !== rootElement, {
+    if (fallback && !data) {
+      await render(fallback, outletElement !== rootElement, {
         params,
         searchParams,
         data: null,
@@ -280,7 +273,7 @@ export async function renderRouteHierarchy(
       });
     }
 
-    if (loader) {
+    if (loader && !data) {
       const isExpired = data && cacheState.getState().expires < Date.now();
       if (!data || isExpired) {
         try {
@@ -292,7 +285,6 @@ export async function renderRouteHierarchy(
           });
         } catch (err) {
           if (signal.aborted) {
-            console.log("Route loading canceled:", err);
             return;
           }
           console.error("Error loading data:", err);
@@ -398,6 +390,19 @@ export async function render(
         lastOutlet.appendChild(element);
       }
     } else {
+      if (!rootElement) {
+        const tryForRoot = document.getElementById("app");
+
+        if (tryForRoot) {
+          rootElement = tryForRoot;
+        } else {
+          rootElement = document.body;
+        }
+
+        if (!rootElement) {
+          throw new Error("Root element not found.");
+        }
+      }
       rootElement.innerHTML = "";
       rootElement.appendChild(element);
     }
@@ -443,7 +448,7 @@ export function fallbackRender(
     })
     .catch((error) => {
       if (props.signal?.aborted) {
-        console.log("Fallback render aborted due to route change.");
+        // Do nothing
       } else {
         console.error("Fallback render error:", error);
       }

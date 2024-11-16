@@ -34,27 +34,7 @@ export class TSFWState<T extends object> {
 
     this.proxy = new Proxy(initialState, {
       set: (target, property, value) => {
-        if (
-          this.validator &&
-          !this.validator({ [property as keyof T]: value } as Partial<T>)
-        ) {
-          console.warn(
-            `Storage: ${key} validation failed for property "${String(
-              property
-            )}" with value: ${value}.`
-          );
-          return false;
-        }
-
         (target as T)[property as keyof T] = value;
-
-        if (this.broadcastingEnabled && this.storageType) {
-          this.broadcastState();
-          this.saveToStorage();
-        } else {
-          this.notifyListeners();
-        }
-
         return true;
       },
     }) as T;
@@ -73,8 +53,7 @@ export class TSFWState<T extends object> {
     updates: Partial<T> | { index: number; data: Partial<T[keyof T]> }
   ): void {
     if (this.validator && !this.validator(updates as Partial<T>)) {
-      console.warn(`Validation failed for updates:`, updates);
-      return;
+      throw new Error(`Validation failed for updates: ${updates}`);
     }
 
     if (this.isIndexedUpdate(updates)) {
@@ -159,9 +138,8 @@ export class TSFWState<T extends object> {
     updates: Partial<T> | { index: number; data: Partial<T[keyof T]> }
   ): updates is { index: number; data: Partial<T[keyof T]> } {
     return (
-      (updates as { index: number; data: Partial<T[keyof T]> }).index !==
-      undefined
-    );
+      updates as { index: number; data: Partial<T[keyof T]> }
+    ).hasOwnProperty("index");
   }
 
   private saveToStorage() {
