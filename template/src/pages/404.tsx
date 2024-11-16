@@ -2,7 +2,7 @@
 
 import { navigateTo } from "@core/router";
 
-export default function Custom404() {
+export default function FourOhFour() {
   return (
     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center;">
       <h1 style="font-size: 3rem; color: #FF6B6B;">404 - Page Not Found</h1>

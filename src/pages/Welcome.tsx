@@ -19,7 +19,14 @@ import { IDBState } from "@components/examples/IDB";
 export default function WelcomePage() {
   return (
     <div className="flex flex-col gap-8 mx-auto px-4 py-8">
-      <section>
+      <div class="mx-auto">
+        <img
+          src="/icon.png"
+          alt="TSFW"
+          class="h-32 aspect-square bg-transparent filter drop-shadow-[0_0_5px_rgba(37,122,87,1)]"
+        />
+      </div>
+      <section class="text-center mb-12">
         <Heading>
           Welcome to <Badge color="emerald">TSFW</Badge>
         </Heading>

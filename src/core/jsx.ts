@@ -7,15 +7,16 @@ export function jsx(
     return type({ ...props, children });
   }
 
-  const isSvg =
-    type === "svg" ||
-    type === "path" ||
-    type === "circle" ||
-    type === "rect" ||
-    type === "line" ||
-    type === "polyline" ||
-    type === "polygon" ||
-    type === "ellipse";
+  const isSvg = [
+    "svg",
+    "path",
+    "circle",
+    "rect",
+    "line",
+    "polyline",
+    "polygon",
+    "ellipse",
+  ].includes(type);
   const element = isSvg
     ? document.createElementNS("http://www.w3.org/2000/svg", type)
     : document.createElement(type);
@@ -28,6 +29,14 @@ export function jsx(
       Object.assign(element.style, value);
     } else if (key.startsWith("data-")) {
       element.dataset[key.slice(5)] = String(value);
+    } else if (["src", "alt"].includes(key)) {
+      element.setAttribute(key, String(value));
+    } else if (key === "className") {
+      if (isSvg) {
+        element.setAttribute("class", String(value));
+      } else {
+        (element as any).className = value;
+      }
     } else if (typeof value === "boolean") {
       value ? element.setAttribute(key, "") : element.removeAttribute(key);
     } else if (isSvg || !(key in element)) {
@@ -37,10 +46,12 @@ export function jsx(
     }
   }
 
-  for (const child of children.flat(Infinity)) {
-    element.append(
-      child instanceof Node ? child : document.createTextNode(String(child))
-    );
+  if (!["img", "input", "br", "hr"].includes(type)) {
+    for (const child of children.flat(Infinity)) {
+      element.append(
+        child instanceof Node ? child : document.createTextNode(String(child))
+      );
+    }
   }
 
   return element as HTMLElement;

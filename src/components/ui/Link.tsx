@@ -125,6 +125,10 @@ interface LinkProps extends Omit<JSX.IntrinsicElements["a"], "className"> {
 }
 
 export function Link({ class: className, children, href, ...rest }: LinkProps) {
+  if (href.startsWith("http")) {
+    throw new Error("Use anchor tag for external links");
+  }
+
   return (
     <custom-link
       class={clsx("w-full text-zinc-600 dark:text-zinc-400 p-1", className)}

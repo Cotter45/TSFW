@@ -223,6 +223,16 @@ export async function handleRoute() {
     }
   }
 
+  const rootRoute = routes.find(
+    (route) =>
+      route.pathPattern.source === "^$" || route.pathPattern.source === "^(/)?$"
+  );
+
+  if (path === "/" && rootRoute) {
+    await renderRouteHierarchy(rootRoute, searchParams, {}, signal);
+    return;
+  }
+
   await render(notFoundComponent, false, {
     params: {},
     searchParams,
