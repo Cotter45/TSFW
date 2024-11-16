@@ -65,7 +65,7 @@ const files = [
     path: "postcss.config.cjs",
   },
   {
-    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/package.json",
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/template/package.json",
     path: "package.json",
   },
   {
