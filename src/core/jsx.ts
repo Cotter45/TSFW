@@ -1,3 +1,7 @@
+export type PropsWithChildren<P = {}> = P & {
+  children?: JSX.Element[] | JSX.Element | string | number;
+};
+
 export function jsx(
   type: string | ((props: any) => HTMLElement),
   props: any = {},
