@@ -112,7 +112,9 @@ export default defineConfig({
       injectRegister: "script-defer",
       manifestFilename: "manifest.json",
       workbox: {
-        globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,json}"],
+        skipWaiting: true,
+        clientsClaim: true,
       },
       manifest: {
         name: "TSFW",
