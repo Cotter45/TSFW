@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
+import legacy from "@vitejs/plugin-legacy";
 
 const registeredPaths = new Set<string>();
 
@@ -101,10 +102,16 @@ export default defineConfig({
     strictPort: true,
   },
   esbuild: {
-    target: "esnext",
+    target: "es2022",
+    supported: {
+      "top-level-await": true,
+    },
   },
   plugins: [
     autoUpdateRoutesPlugin(),
+    legacy({
+      targets: ["defaults", "not IE 11"],
+    }),
     VitePWA({
       scope: "/",
       base: "/",

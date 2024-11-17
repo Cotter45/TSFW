@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es2022",
     "module": "esnext",
     "strict": true,
     "strictBindCallApply": true,
@@ -9,7 +9,7 @@
     "allowJs": true,
     "outDir": "./dist",
     "moduleResolution": "node",
-    "lib": ["es2021", "dom"],
+    "lib": ["es2022", "dom"],
     "jsx": "react",
     "jsxFactory": "jsx",
     "jsxFragmentFactory": "Fragment",
