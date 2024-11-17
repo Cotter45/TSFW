@@ -3,7 +3,7 @@ import { Heading, SubHeading, Text } from "@components/ui/Text";
 
 export default function ExamplesPage() {
   return (
-    <div>
+    <div class="px-4 py-8">
       <Heading>Examples</Heading>
 
       <div class="mt-12 space-y-4">

@@ -43,6 +43,19 @@ body,
   }
 }
 
+.fade_out {
+  animation: fadeOut 0.5s ease-in-out;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 .dialog-backdrop {
   opacity: 0;
   transition: opacity 0.3s ease;

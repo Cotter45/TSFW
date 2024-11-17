@@ -1,6 +1,7 @@
 import { createPersistentState, createState } from "@core/state";
 import { Button } from "@components/ui/Button";
 import { Text } from "@components/ui/Text";
+import { clsx } from "@core/clsx";
 
 interface Todo {
   id: number;
@@ -84,7 +85,6 @@ function TodoToggle({ todoId }: { todoId: number }) {
     });
     todoState.setState(newTodos);
 
-    // Trigger confetti when marking as completed
     if (updatedTodo?.completed) {
       createConfetti();
     }
@@ -111,7 +111,20 @@ function DeleteTodoButton({ todoId }: { todoId: number }) {
 
   return (
     <Button color="red" onClick={deleteTodo}>
-      Delete
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="size-4"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+        />
+      </svg>
     </Button>
   );
 }
@@ -141,12 +154,15 @@ export function AddTodo() {
   }
 
   return (
-    <form onSubmit={handleSubmit} class="flex gap-4 items-center mb-4">
+    <form
+      onSubmit={handleSubmit}
+      class="flex gap-4 items-center justify-end mb-4"
+    >
       <input
         type="text"
         name="task"
         placeholder="Enter a new task"
-        class="rounded px-2 py-1 dark:bg-zinc-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+        class="rounded-lg px-4 py-2.5 sm:!py-1.5 dark:bg-zinc-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
         required
       />
       <Button color="emerald" type="submit">
@@ -180,6 +196,9 @@ export function LocalTodos() {
           `#${TODO_ID}-status-${newTodo.id}`
         );
         if (statusElement) {
+          newTodo.completed
+            ? statusElement.classList.add("text-emerald-500")
+            : statusElement.classList.remove("text-emerald-500");
           statusElement.textContent = newTodo.completed
             ? "Completed"
             : "Pending";
@@ -198,50 +217,51 @@ export function LocalTodos() {
   });
 
   return (
-    <div>
+    <div class="container mx-auto mt-6">
       <AddTodo />
-      <table class="w-full text-center border-collapse">
-        <thead>
-          <tr>
-            <th class="py-4 px-6 border-b-2 border-zinc-300 dark:border-zinc-600"></th>
-            <th class="py-4 px-6 border-b-2 border-zinc-300 dark:border-zinc-600">
-              <Text>Task</Text>
-            </th>
-            <th class="py-4 px-6 border-b-2 border-zinc-300 dark:border-zinc-600">
-              <Text>Status</Text>
-            </th>
-            <th class="py-4 px-6 border-b-2 border-zinc-300 dark:border-zinc-600"></th>
-          </tr>
-        </thead>
-        <tbody id="todo-container">
-          {todoState.getState().map((todo) => (
-            <TodoItem todo={todo} />
-          ))}
-        </tbody>
-      </table>
+      <ul
+        id="todo-container"
+        class="flex flex-col gap-4"
+        role="list"
+        aria-label="Todo List"
+      >
+        {todoState.getState().map((todo) => (
+          <TodoItem todo={todo} />
+        ))}
+      </ul>
     </div>
   );
 }
 
 function TodoItem({ todo }: { todo: Todo }) {
   return (
-    <tr id={`${TODO_ID}-${todo.id}`}>
-      <td class="py-4 px-6 border-b border-zinc-300 dark:border-zinc-600">
+    <li
+      id={`${TODO_ID}-${todo.id}`}
+      class="flex items-center justify-between p-4 bg-white dark:bg-zinc-800 shadow-md rounded-md gap-2"
+      role="listitem"
+      aria-label={`Todo item: ${todo.task}`}
+    >
+      <div class="flex items-center gap-4">
         <TodoToggle todoId={todo.id} />
-      </td>
-      <td class="py-4 px-6 border-b border-zinc-300 dark:border-zinc-600 max-w-[150px]">
-        <Text id={`${TODO_ID}-text-${todo.id}`} class="truncate">
+        <Text
+          id={`${TODO_ID}-text-${todo.id}`}
+          class="line-clamp-1 hover:line-clamp-none"
+        >
           {todo.task}
         </Text>
-      </td>
-      <td class="py-4 px-6 border-b border-zinc-300 dark:border-zinc-600">
-        <Text id={`${TODO_ID}-status-${todo.id}`}>
+      </div>
+      <div class="flex items-center gap-6">
+        <span
+          id={`${TODO_ID}-status-${todo.id}`}
+          class={clsx(
+            "text-sm font-medium",
+            todo.completed ? "text-emerald-500" : "text-yellow-500"
+          )}
+        >
           {todo.completed ? "Completed" : "Pending"}
-        </Text>
-      </td>
-      <td class="py-4 px-6 border-b border-zinc-300 dark:border-zinc-600 flex justify-center gap-4">
+        </span>
         <DeleteTodoButton todoId={todo.id} />
-      </td>
-    </tr>
+      </div>
+    </li>
   );
 }
