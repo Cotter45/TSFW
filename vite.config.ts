@@ -33,7 +33,7 @@ function crawlForRoutes() {
   if (fs.existsSync(indexPath)) {
     const content = fs.readFileSync(indexPath, "utf-8");
 
-    const routeBlocks = content.match(/registerRoute\((\{[\s\S]*?\})\)/g);
+    const routeBlocks = content.match(/registerRoutes\((\{[\s\S]*?\})\)/g);
 
     if (routeBlocks) {
       console.log("Found routes in src/index.ts");

@@ -19,7 +19,7 @@ describe("renderRouteHierarchy", () => {
     document.body.innerHTML = `<div id="app"></div>`;
     const root = document.getElementById("app")!;
 
-    router.registerRoute({
+    router.registerRoutes({
       path: "/",
       component: BaseComponent,
     });

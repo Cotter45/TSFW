@@ -14,7 +14,6 @@ import "@components/web-components/WebComp";
 import { MemoryState } from "@components/examples/Memory";
 import { LocalState } from "@components/examples/Local";
 import { SessionState } from "@components/examples/Session";
-import { IDBState } from "@components/examples/IDB";
 
 export default function WelcomePage() {
   return (
@@ -26,6 +25,7 @@ export default function WelcomePage() {
           class="h-32 aspect-square bg-transparent filter drop-shadow-[0_0_5px_rgba(37,122,87,1)]"
         />
       </div>
+
       <section class="text-center mb-12">
         <Heading>
           Welcome to <Badge color="emerald">TSFW</Badge>
@@ -207,17 +207,6 @@ export default function WelcomePage() {
           </Text>
 
           <SessionState />
-        </div>
-
-        <div class="mt-12 space-y-4">
-          <SubHeading>IDB Storage State Example</SubHeading>
-          <Text class="mt-4">
-            This example demonstrates a simple user list with age that is stored
-            in indexed DB storage. This state is synced across tabs and
-            refreshes.
-          </Text>
-
-          <IDBState />
         </div>
       </section>
     </div>

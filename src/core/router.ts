@@ -69,7 +69,7 @@ interface RegisterRouteOptions<T = any> {
 
 const invalidPathCharacters = /[^a-zA-Z0-9_/:-]/g;
 
-export function registerRoute<T>(
+export function registerRoutes<T>(
   {
     path,
     component,
@@ -149,7 +149,7 @@ export function registerRoute<T>(
   routes.push(route);
 
   children.forEach((child) => {
-    registerRoute(
+    registerRoutes(
       {
         ...child,
         cacheKey:
@@ -489,16 +489,6 @@ export async function getCacheState<T>(key: string, cacheType: CacheType) {
         expires: number;
         error: Error | null;
       }>(key, "session", {
-        data: null as T | null,
-        expires: 0,
-        error: null,
-      });
-    case "idb":
-      return createPersistentState<{
-        data: T | null;
-        expires: number;
-        error: Error | null;
-      }>(key, "idb", {
         data: null as T | null,
         expires: 0,
         error: null,

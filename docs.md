@@ -15,7 +15,7 @@ Project Structure: Outline the folder and file organization, especially for comp
    Caching and Preloading: Explain data caching within the router, TTL configuration, and preloading capabilities.
    Navigation and URL Params: Show examples of how to navigate, handle URL parameters, and manage query parameters. -->
 3. State Management
-   Overview: Describe the different storage types (in-memory, local, session, IndexedDB).
+   Overview: Describe the different storage types (in-memory, local, session).
    Setting Up State: Step-by-step on creating and subscribing to state instances.
    Persistent Storage & Syncing: Explain how persistent state syncs across tabs and how this impacts app behavior.
    TTL and Cache Management: Describe TTL configuration for cached data and automatic expiration.
@@ -29,7 +29,7 @@ Project Structure: Outline the folder and file organization, especially for comp
    Running Tests: How to run, debug, and interpret tests within Vitest.
 6. Examples and Use Cases
    Example Applications: Showcase a few practical examples, like a to-do list or a simple CRUD interface.
-   Advanced Patterns: Show more complex interactions, such as using IndexedDB for offline data storage or state syncing across tabs.
+   Advanced Patterns: Show more complex interactions, such as using local storage for offline data storage or state syncing across tabs.
 7. FAQ
    Common Issues: List any common setup or usage issues, with solutions.
    Troubleshooting: Tips for debugging specific features (e.g., caching, routing, or state sync issues).

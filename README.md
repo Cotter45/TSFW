@@ -16,7 +16,7 @@ In an environment where every framework introduces new abstractions and footguns
 
 - Seamless Component Handling: TSFW is compatible with a broad range of JavaScript libraries, unshackling you from ecosystem restrictions.
 
-- Persistent State Management Across Tabs: The built-in state management syncs across tabs with IndexedDB, local storage, or in-memory storage.
+- Persistent State Management Across Tabs: The built-in state management syncs across tabs with local storage, or in-memory storage.
 
 - Minimalist Yet Functional: It covers the essential features needed for a robust app: routing, state management, component library, and more, all at a fraction of the size of conventional frameworks.
 
@@ -26,7 +26,7 @@ In an environment where every framework introduces new abstractions and footguns
 
 - Router with Type-Safe Routes: Type-safe routes are compiled on server start with support for data preloading, caching, and custom TTL.
 
-- Built-In State Management: Choose between in-memory, local, session, or IndexedDB storage, all syncing state across tabs.
+- Built-In State Management: Choose between in-memory, local or session storage, local storage supports syncing state across tabs.
 
 - Lightweight Component Library: Essential components like Accordions, Dialogs, Cards, and more – styled with simplicity and accessibility in mind.
 
@@ -94,9 +94,9 @@ export function WelcomeMessage() {
 
 ```typescript
 // src/routes.ts
-import { registerRoute } from "@core/router";
+import { registerRoutes } from "@core/router";
 
-registerRoute({
+registerRoutes({
   path: "/",
   component: App,
   children: [],
@@ -105,7 +105,7 @@ registerRoute({
 
 3. State Management with Persistence
 
-- TSFW’s state management includes options for memory, local storage, session storage, and IndexedDB. Persistant states sync across any open tabs.
+- TSFW’s state management includes options for memory, local storage and session storage. Persistant states sync across any open tabs.
 
 ```typescript
 import { createState } from "@core/state";

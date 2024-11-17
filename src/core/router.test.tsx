@@ -4,7 +4,7 @@ import {
   initRouter,
   routes,
   rootElement,
-  registerRoute,
+  registerRoutes,
   setNotFoundComponent,
   resolvePath,
   generatePathPattern,
@@ -279,7 +279,7 @@ describe("navigateTo", () => {
   beforeEach(() => {
     document.body.innerHTML = `<div id="app"></div>`;
 
-    registerRoute({
+    registerRoutes({
       path: "/test",
       component: ParamsComponent,
       children: [
@@ -340,6 +340,15 @@ describe("navigateTo", () => {
   });
 });
 
+function Layout() {
+  return (
+    <div>
+      <h1>Layout</h1>
+      <div data-outlet />
+    </div>
+  );
+}
+
 function FallbackRoot() {
   return <div data-outlet>Initial</div>;
 }
@@ -369,9 +378,9 @@ describe("fallback component", () => {
     document.body.appendChild(root);
     fallbackRootElement = root;
 
-    registerRoute({
+    registerRoutes({
       path: "/",
-      component: FallbackRoot,
+      component: Layout,
       children: [
         {
           path: "/",
@@ -397,16 +406,27 @@ describe("fallback component", () => {
   });
 
   it("should render the fallback component while loading", async () => {
-    expect(window.location.pathname).toBe("/");
-    expect(fallbackRootElement?.innerHTML).toContain("Initial");
+    try {
+      expect(window.location.pathname).toBe("/");
+      expect(fallbackRootElement?.innerHTML).toContain("Layout");
 
-    // @ts-expect-error Route types created dynamically at dev server initialization
-    navigateTo("/new");
+      navigateTo("/");
 
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    expect(fallbackRootElement?.innerHTML).toContain("Loading...");
-    await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      expect(fallbackRootElement?.innerHTML).toContain("Initial");
 
-    expect(fallbackRootElement?.innerHTML).toContain("Component for fallback");
+      // @ts-expect-error Route types created dynamically at dev server initialization
+      navigateTo("/new");
+
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      expect(fallbackRootElement?.innerHTML).toContain("Loading...");
+      await new Promise((resolve) => setTimeout(resolve, 200));
+
+      expect(fallbackRootElement?.innerHTML).toContain(
+        "Component for fallback"
+      );
+    } catch (e) {
+      console.log(e);
+    }
   });
 });

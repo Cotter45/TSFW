@@ -32,7 +32,7 @@ export default function StateManagementPage() {
           <li>
             <Text>
               <strong>Multiple storage options</strong>, including memory,
-              local, session and IndexedDB storage.
+              local, and session storage.
             </Text>
           </li>
           <li>
@@ -73,9 +73,9 @@ function incrementCounter() {
       <section className="space-y-4">
         <SubHeading>Persistent State with Cross-Tab Sync</SubHeading>
         <Text>
-          Use <Badge>createPersistentState</Badge> to store state in local,
-          session, or IndexedDB storage. This allows state persistence across
-          sessions and tabs.
+          Use <Badge>createPersistentState</Badge> to store state in local, or
+          session storage. This allows state persistence across sessions and
+          tabs.
         </Text>
 
         <pre className="language-javascript !rounded-md">
@@ -194,19 +194,15 @@ sharedState.subscribe((state) => {
               single session.
             </Text>
           </li>
-          <li>
-            <Text>
-              <strong>IndexedDB</strong> – Provides large, structured data
-              storage across tabs and sessions.
-            </Text>
-          </li>
         </ul>
 
         <Text>
           Specify a storage type when creating state to control where data is
           stored and how it persists. For example,{" "}
-          <Badge>createPersistentState("example", "idb", {`{...data}`})</Badge>
-          will store data in IndexedDB.
+          <Badge>
+            createPersistentState("example", "local", {`{...data}`})
+          </Badge>
+          will persist data in Local Storage.
         </Text>
       </section>
 

@@ -2,13 +2,13 @@ import { jsx } from "@core/jsx";
 import App from "@pages/Index";
 import Custom404 from "@pages/Custom404";
 
-import { initRouter, registerRoute, setNotFoundComponent } from "@core/router";
+import { initRouter, registerRoutes, setNotFoundComponent } from "@core/router";
 import WelcomePage from "@pages/Welcome";
 
 (globalThis as any).jsx = jsx;
 const appElement = document.getElementById("app")!;
 
-registerRoute({
+registerRoutes({
   path: "/",
   component: App,
   children: [

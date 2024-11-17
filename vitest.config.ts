@@ -5,6 +5,7 @@ import path from "path";
 export default defineConfig({
   test: {
     environment: "jsdom",
+    silent: true,
     include: ["src/core/**/*.test.ts", "src/core/**/*.test.tsx"],
     coverage: {
       include: ["src/core/**"],

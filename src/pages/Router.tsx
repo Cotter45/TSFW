@@ -37,7 +37,7 @@ export default function RouterPage() {
           <li>
             <Text>
               <strong>Data caching</strong> with configurable TTL, supporting
-              in-memory, session, local and indexedDB storage.
+              in-memory, session, and local storage.
             </Text>
           </li>
         </ul>
@@ -46,7 +46,7 @@ export default function RouterPage() {
       <section class="space-y-4">
         <SubHeading>Defining Routes</SubHeading>
         <Text>
-          Routes are defined using <Badge>registerRoute</Badge>, specifying the
+          Routes are defined using <Badge>registerRoutes</Badge>, specifying the
           path, component, optional loader, and caching options. Routes can
           include nested children for complex UIs.
         </Text>
@@ -57,7 +57,7 @@ export default function RouterPage() {
         </Text>
 
         <pre class="language-javascript !rounded-md">
-          <code>{`registerRoute({
+          <code>{`registerRoutes({
   path: "/",
   component: HomeComponent,
   children: [
@@ -129,7 +129,7 @@ export default function RouterPage() {
         </Text>
 
         <pre class="language-javascript !rounded-md">
-          <code>{`registerRoute({
+          <code>{`registerRoutes({
   path: "/products",
   component: ProductsComponent,
   children: [
@@ -159,11 +159,6 @@ export default function RouterPage() {
               <strong>Local</strong> and <strong>Session</strong> storage
             </Text>
           </li>
-          <li>
-            <Text>
-              <strong>IndexedDB</strong> storage
-            </Text>
-          </li>
         </ul>
 
         <Text>
@@ -173,7 +168,7 @@ export default function RouterPage() {
         </Text>
 
         <pre class="language-javascript !rounded-md">
-          <code>{`registerRoute({
+          <code>{`registerRoutes({
   path: "/products",
   component: ProductsComponent,
   loader: fetchProducts,
@@ -186,7 +181,7 @@ export default function RouterPage() {
       <section class="space-y-4">
         <SubHeading>Full Example</SubHeading>
         <pre class="language-javascript !rounded-md">
-          <code>{`registerRoute({
+          <code>{`registerRoutes({
   path: "/",
   component: HomePage,
   children: [
@@ -270,10 +265,6 @@ export default function RouterPage() {
 // {
 //   path: "/session",
 //   component: async () => await import("@pages/Session"),
-// },
-// {
-//   path: "/indexeddb",
-//   component: async () => await import("@pages/IndexDB"),
 // },
 // {
 //   path: "/components",

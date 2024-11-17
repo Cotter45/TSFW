@@ -3,11 +3,41 @@ import { createState, createPersistentState } from "./state";
 import { TSFWState } from "./state";
 import "fake-indexeddb/auto";
 
-global.BroadcastChannel = vi.fn(() => ({
-  postMessage: vi.fn(),
-  close: vi.fn(),
-  onmessage: null,
-})) as any;
+const MockBroadcastChannel = vi.fn(function (name) {
+  // @ts-ignore
+  this.name = name;
+  // @ts-ignore
+  this.postMessage = vi.fn();
+  // @ts-ignore
+  this.close = vi.fn();
+  // @ts-ignore
+  this.onmessage = null;
+
+  // @ts-ignore
+  this.dispatchEvent = (event: Event) => {
+    try {
+      // @ts-ignore
+      if (this.onmessage) {
+        // @ts-ignore
+        this.onmessage(event);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+}) as unknown as typeof BroadcastChannel;
+
+// @ts-ignore
+MockBroadcastChannel.prototype.triggerMessage = function (data: any) {
+  if (this.onmessage) {
+    const event = new Event("message");
+    Object.defineProperty(event, "data", { value: data });
+    // @ts-ignore
+    this.onmessage(event);
+  }
+};
+
+global.BroadcastChannel = MockBroadcastChannel;
 
 describe("TSFWState", () => {
   let instance: TSFWState<any>;
@@ -17,12 +47,44 @@ describe("TSFWState", () => {
   beforeEach(() => {
     localStorage.clear();
     sessionStorage.clear();
+    vi.clearAllMocks();
     instance = createState(key, initialState);
   });
 
   describe("getState", () => {
     it("should return the current state", () => {
       expect(instance.getState()).toEqual(initialState);
+    });
+
+    it("should wait for IndexedDB to load before accessing state", async () => {
+      const state = createPersistentState("idbtestKey", "idb", {
+        foo: "default",
+      });
+
+      let isReady = false;
+      state.whenReady().then(() => (isReady = true));
+
+      expect(isReady).toBe(false);
+
+      await state.whenReady();
+      state.setState({ foo: "loadedFromIDB" });
+      expect(isReady).toBe(true);
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      expect(state.getState()).toEqual({ foo: "loadedFromIDB" });
+    });
+
+    it("should log a warning if state is not fully loaded from IndexedDB", () => {
+      const consoleMock = vi
+        .spyOn(console, "warn")
+        .mockImplementation(() => undefined);
+
+      const state = createPersistentState("idbtestKey2", "idb", {
+        foo: "default",
+      });
+      state.getState();
+      expect(consoleMock).toHaveBeenCalledWith(
+        "State is not fully loaded from IndexedDB yet."
+      );
     });
   });
 
@@ -32,101 +94,231 @@ describe("TSFWState", () => {
       expect(instance.getState()).toEqual({ foo: "baz" });
     });
 
-    it("should merge state for partial updates", () => {
-      const instance = createState<any>("mergeTest", { foo: "bar" });
-      instance.setState({ newKey: "newValue" });
-      expect(instance.getState()).toEqual({ foo: "bar", newKey: "newValue" });
+    it("should merge state with new values", () => {
+      const newInstance = createState<any>("mergeTest", { foo: "bar" });
+      newInstance.setState({ bar: "baz" });
+      expect(newInstance.getState()).toEqual({ foo: "bar", bar: "baz" });
     });
 
-    it("should ignore invalid updates if validator fails", () => {
-      const invalidInstance = createState(
-        key,
-        initialState,
-        (state) => state.foo !== "invalid"
-      );
-      invalidInstance.setState({ foo: "invalid" });
-      expect(invalidInstance.getState()).toEqual(initialState);
+    it("should update state with indexed update", () => {
+      const newInstance = createState("indexedTest", [{ foo: "bar" }]);
+      newInstance.setState({ index: 0, data: { foo: "baz" } });
+      expect(newInstance.getState()).toEqual([{ foo: "baz" }]);
     });
 
-    it("should allow valid updates if validator passes", () => {
-      const validInstance = createState(
-        key,
-        initialState,
-        (state) => state.foo === "bar"
-      );
-      validInstance.setState({ foo: "bar" });
-      expect(validInstance.getState()).toEqual({ foo: "bar" });
+    it("should update state with indexed update on array", () => {
+      const instance2 = createState("arrayTest", [{ foo: "bar" }]);
+      instance2.setState({ index: 0, data: { foo: "baz" } });
+      expect(instance2.getState()).toEqual([{ foo: "baz" }]);
     });
 
-    it("should update state for indexed updates", () => {
-      const indexedInstance = createState<any>("indexedTest", [{ foo: "bar" }]);
-      indexedInstance.setState({ index: 0, data: { foo: "baz" } });
-      expect(indexedInstance.getState()).toEqual([{ foo: "baz" }]);
-    });
-
-    it("should throw error for updates that fail validation", () => {
-      const invalidInstance = createState(
-        "errorTest",
-        initialState,
-        (state) => state.foo !== "invalid"
-      );
-
-      expect(() => invalidInstance.setState({ foo: "invalid" })).toThrowError();
-    });
-  });
-
-  describe("saveToStorage", () => {
-    it("should save state to localStorage", () => {
-      const localState = createPersistentState("localTest", "local", {
-        foo: "bar",
-      });
-      localState.setState({ foo: "baz" });
-      expect(JSON.parse(localStorage.getItem("localTest")!)).toEqual({
-        foo: "baz",
-      });
-    });
-
-    it("should save state to sessionStorage", async () => {
-      const sessionState = createPersistentState("sessionTest", "session", {
-        foo: "bar",
-      });
-      sessionState.setState({ foo: "baz" });
-      await new Promise((resolve) => setTimeout(resolve, 50));
-      expect(JSON.parse(sessionStorage.getItem("sessionTest")!)).toEqual({
-        foo: "baz",
-      });
-    });
-
-    it("should save state to indexedDB", async () => {
-      const idbState = createPersistentState("idbTest", "idb", { foo: "bar" });
-      expect(idbState.getState()).toEqual({ foo: "bar" });
-      idbState.setState({ foo: "baz" });
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      expect(idbState.getState()).toEqual({ foo: "baz" });
+    it("should update arrays without indexed update", () => {
+      const instance2 = createState("arrayTest2", [{ foo: "bar" }]);
+      instance2.setState([{ foo: "baz" }]);
+      expect(instance2.getState()).toEqual([{ foo: "baz" }]);
     });
   });
 
   describe("loadFromStorage", () => {
     it("should load state from localStorage", () => {
-      localStorage.setItem("loadLocal", JSON.stringify({ foo: "baz" }));
-      const localState = createPersistentState("loadLocal", "local", {
+      localStorage.setItem("localTest", JSON.stringify({ foo: "baz" }));
+      const instance = createPersistentState("localTest", "local", {
         foo: "bar",
       });
-      expect(localState.getState()).toEqual({ foo: "baz" });
+
+      expect(instance.getState()).toEqual({ foo: "baz" });
     });
 
     it("should load state from sessionStorage", () => {
-      sessionStorage.setItem("loadSession", JSON.stringify({ foo: "baz" }));
-      const sessionState = createPersistentState("loadSession", "session", {
+      sessionStorage.setItem("sessionTest", JSON.stringify({ foo: "baz" }));
+      const instance = createPersistentState("sessionTest", "session", {
         foo: "bar",
       });
-      expect(sessionState.getState()).toEqual({ foo: "baz" });
+
+      expect(instance.getState()).toEqual({ foo: "baz" });
     });
 
-    it("should load state from indexedDB", async () => {
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      const idbState = createPersistentState("loadIdb", "idb", { foo: "bar" });
-      expect(idbState.getState()).toEqual({ foo: "bar" });
+    it("should load state from IndexedDB", async () => {
+      const instance = createPersistentState("idbTest", "idb", { foo: "bar" });
+      instance.setState({ foo: "baz" });
+
+      const newInstance = createPersistentState("idbTest", "idb", {
+        foo: "bar",
+      });
+      await newInstance.whenReady();
+      expect(newInstance.getState()).toEqual({ foo: "baz" });
+    });
+  });
+
+  describe("saveToStorage", () => {
+    it("should save and load state from localStorage", () => {
+      const instance = createPersistentState("localTest", "local", {
+        foo: "bar",
+      });
+      instance.setState({ foo: "baz" });
+      const savedState = JSON.parse(localStorage.getItem("localTest")!);
+      expect(savedState).toEqual({ foo: "baz" });
+    });
+
+    it("should save and load state from sessionStorage", () => {
+      const instance = createPersistentState("sessionTest", "session", {
+        foo: "bar",
+      });
+      instance.setState({ foo: "baz" });
+      const savedState = JSON.parse(sessionStorage.getItem("sessionTest")!);
+      expect(savedState).toEqual({ foo: "baz" });
+    });
+  });
+
+  describe("validator", () => {
+    it("should not update state and throw error if validator returns false", () => {
+      const instance = createState(
+        "validatorTest",
+        { foo: "bar" },
+        () => false
+      );
+      expect(() => instance.setState({ foo: "baz" })).toThrow();
+      expect(instance.getState()).toEqual({ foo: "bar" });
+    });
+
+    it("should update state if validator returns true", () => {
+      const instance = createState(
+        "validatorTest2",
+        { foo: "bar" },
+        () => true
+      );
+      instance.setState({ foo: "baz" });
+      expect(instance.getState()).toEqual({ foo: "baz" });
+    });
+  });
+
+  describe("subscribe", () => {
+    it("should not add duplicate listeners", () => {
+      const listener = vi.fn();
+      instance.subscribe(listener);
+      instance.subscribe(listener);
+      instance.setState({ foo: "baz" });
+      expect(listener).toHaveBeenCalledTimes(1);
+    });
+
+    it("should trigger ListenerOnChangeEvent immediately and on state change", () => {
+      const newInstance = createState("testKey2", { foo: "bar" });
+      const listener = vi.fn();
+      newInstance.subscribe((state) => listener(state.foo));
+      expect(listener).toHaveBeenCalledWith("bar");
+      newInstance.setState({ foo: "baz" });
+      expect(listener).toHaveBeenCalledWith("baz");
+    });
+
+    it("should notify all listeners on state change", () => {
+      const newInstance = createState("testKey3", { foo: "bar" });
+      const listenerOnChange = vi.fn();
+      newInstance.subscribe((state) => listenerOnChange(state.foo));
+      newInstance.setState({ foo: "baz" });
+      expect(listenerOnChange).toHaveBeenCalledWith("baz");
+    });
+  });
+
+  describe("broadcasting state changes", () => {
+    it("should broadcast state changes", () => {
+      const broadcastInstance = createPersistentState(
+        "broadcastTest",
+        "local",
+        {
+          foo: "bar",
+        }
+      );
+
+      // @ts-ignore
+      const mockChannel = MockBroadcastChannel.mock.instances[0];
+
+      broadcastInstance.setState({ foo: "baz" });
+
+      expect(mockChannel.postMessage).toHaveBeenCalledWith({
+        state: JSON.stringify({ foo: "baz" }),
+        tabId: expect.any(String),
+      });
+    });
+
+    it("should update state when receiving broadcast message", () => {
+      const broadcastInstance = createPersistentState(
+        "broadcastTestTwo",
+        "local",
+        {
+          foo: "bar",
+        }
+      );
+
+      // @ts-ignore
+      const mockChannel = MockBroadcastChannel.mock.instances[0];
+
+      expect(mockChannel).toBeDefined();
+
+      const event = new Event("message");
+      Object.defineProperty(event, "data", {
+        value: {
+          state: JSON.stringify({ foo: "baz" }),
+          tabId: "differentTabId",
+        },
+      });
+
+      try {
+        mockChannel.dispatchEvent(event);
+      } catch (e) {
+        console.error(e);
+      }
+
+      expect(broadcastInstance.getState()).toEqual({ foo: "baz" });
+    });
+
+    it("should update array state when receiving broadcast message", () => {
+      const broadcastInstance = createPersistentState(
+        "broadcastTestThree",
+        "local",
+        [{ foo: "bar" }]
+      );
+
+      // @ts-ignore
+      const mockChannel = MockBroadcastChannel.mock.instances[0];
+
+      expect(mockChannel).toBeDefined();
+
+      const event = new Event("message");
+      Object.defineProperty(event, "data", {
+        value: {
+          state: JSON.stringify([{ foo: "baz" }]),
+          tabId: "differentTabId",
+        },
+      });
+
+      try {
+        mockChannel.dispatchEvent(event);
+      } catch (e) {
+        console.error(e);
+      }
+
+      expect(broadcastInstance.getState()).toEqual([{ foo: "baz" }]);
+    });
+
+    it("should initialize BroadcastChannel and load from storage", () => {
+      const spyLoadFromStorage = vi.spyOn(
+        TSFWState.prototype as any,
+        "loadFromStorage"
+      );
+      const instance = createPersistentState("constructorTest", "local", {
+        foo: "bar",
+      });
+      expect(spyLoadFromStorage).toHaveBeenCalled();
+      expect(MockBroadcastChannel).toHaveBeenCalledWith("constructorTest");
+    });
+
+    it("should reuse existing broadcast channel for state updates", () => {
+      const instance = createPersistentState("broadcastReuseTest", "local", {
+        foo: "bar",
+      });
+      const broadcastSpy = vi.spyOn(instance as any, "broadcastChannel", "get");
+      instance.setState({ foo: "baz" });
+      expect(broadcastSpy).toBeCalled();
     });
   });
 

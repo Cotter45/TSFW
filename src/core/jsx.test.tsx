@@ -18,11 +18,27 @@ describe("jsx function", () => {
     expect(element.dataset.test).toBe("value");
   });
 
+  it("should apply src and alt attributes to the element", () => {
+    const element = jsx("img", { src: "image.png", alt: "Image" });
+    expect(element.getAttribute("src")).toBe("image.png");
+    expect(element.getAttribute("alt")).toBe("Image");
+  });
+
   it("should attach event listeners to the element", () => {
     const handleClick = vi.fn();
     const element = jsx("button", { onClick: handleClick });
     element.click();
     expect(handleClick).toHaveBeenCalledOnce();
+  });
+
+  it("should apply class attribute to the element", () => {
+    const element = jsx("div", { className: "test-class" });
+    expect(element.className).toBe("test-class");
+  });
+
+  it("should apply class attribute to SVG elements", () => {
+    const element = jsx("svg", { className: "test-class" });
+    expect(element.getAttribute("class")).toBe("test-class");
   });
 
   it("should render children elements as text nodes", () => {

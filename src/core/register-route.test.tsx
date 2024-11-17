@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { registerRoute, routes } from "./router";
+import { registerRoutes, routes } from "./router";
 
-describe("registerRoute", () => {
+describe("registerRoutes", () => {
   beforeEach(() => {
     routes.length = 0;
   });
@@ -10,7 +10,7 @@ describe("registerRoute", () => {
     const mockComponent = () => document.createElement("div");
 
     expect(() =>
-      registerRoute({
+      registerRoutes({
         path: "/valid-route",
         component: mockComponent,
       })
@@ -24,21 +24,21 @@ describe("registerRoute", () => {
     const mockComponent = () => document.createElement("div");
 
     expect(() =>
-      registerRoute({
+      registerRoutes({
         path: "no-slash",
         component: mockComponent,
       })
     ).toThrow("Invalid path: no-slash");
 
     expect(() =>
-      registerRoute({
+      registerRoutes({
         path: "/invalid@path",
         component: mockComponent,
       })
     ).toThrow("Invalid path: /invalid@path");
 
     expect(() =>
-      registerRoute({
+      registerRoutes({
         path: "/invalid/:",
         component: mockComponent,
       })
@@ -47,7 +47,7 @@ describe("registerRoute", () => {
 
   it("should throw an error if component is invalid", () => {
     expect(() =>
-      registerRoute({
+      registerRoutes({
         path: "/test",
         // @ts-expect-error: Testing invalid component type
         component: "notAFunction",
@@ -59,7 +59,7 @@ describe("registerRoute", () => {
     const mockComponent = () => document.createElement("div");
 
     expect(() =>
-      registerRoute({
+      registerRoutes({
         path: "/test",
         component: mockComponent,
         // @ts-expect-error: Testing invalid fallback type
@@ -72,7 +72,7 @@ describe("registerRoute", () => {
     const mockComponent = () => document.createElement("div");
 
     expect(() =>
-      registerRoute({
+      registerRoutes({
         path: "/test",
         component: mockComponent,
         // @ts-expect-error: Testing invalid loader type
@@ -85,7 +85,7 @@ describe("registerRoute", () => {
     const mockComponent = () => document.createElement("div");
 
     expect(() =>
-      registerRoute({
+      registerRoutes({
         path: "/test",
         component: mockComponent,
         // @ts-expect-error: Testing invalid cacheLoader type
@@ -94,7 +94,7 @@ describe("registerRoute", () => {
     ).toThrow("Invalid cache loader type: 123");
 
     expect(() =>
-      registerRoute({
+      registerRoutes({
         path: "/test",
         component: mockComponent,
         // @ts-expect-error: Testing invalid cacheLoader type
@@ -107,7 +107,7 @@ describe("registerRoute", () => {
     const mockComponent = () => document.createElement("div");
 
     expect(() =>
-      registerRoute({
+      registerRoutes({
         path: "/test",
         component: mockComponent,
         // @ts-expect-error: Testing invalid cacheKey type
@@ -120,7 +120,7 @@ describe("registerRoute", () => {
     const mockComponent = () => document.createElement("div");
 
     expect(() =>
-      registerRoute({
+      registerRoutes({
         path: "/test",
         component: mockComponent,
         // @ts-expect-error: Testing invalid TTL type
@@ -129,7 +129,7 @@ describe("registerRoute", () => {
     ).toThrow("Invalid TTL: notANumber");
 
     expect(() =>
-      registerRoute({
+      registerRoutes({
         path: "/test",
         component: mockComponent,
         ttl: -100,
@@ -142,7 +142,7 @@ describe("registerRoute", () => {
     const mockChildComponent = () => document.createElement("div");
 
     expect(() =>
-      registerRoute({
+      registerRoutes({
         path: "/parent",
         component: mockParentComponent,
         children: [{ path: "/child", component: mockChildComponent }],
@@ -158,7 +158,7 @@ describe("registerRoute", () => {
     const mockParentComponent = () => document.createElement("div");
 
     expect(() =>
-      registerRoute({
+      registerRoutes({
         path: "/parent",
         component: mockParentComponent,
         children: [
@@ -169,7 +169,7 @@ describe("registerRoute", () => {
     ).toThrow("Invalid path: null");
 
     expect(() =>
-      registerRoute({
+      registerRoutes({
         path: "/parent",
         component: mockParentComponent,
         children: [

@@ -142,6 +142,7 @@ interface ButtonProps {
   href?: RoutePaths;
   onClick?: (e: MouseEvent) => void;
   ariaLabel?: string;
+  type?: "button" | "submit" | "reset";
 }
 
 export function Button({
