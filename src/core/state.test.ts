@@ -204,7 +204,7 @@ describe("TSFWState", () => {
     it("should trigger ListenerOnChangeEvent immediately and on state change", () => {
       const newInstance = createState("testKey2", { foo: "bar" });
       const listener = vi.fn();
-      newInstance.subscribe((state) => listener(state.foo));
+      newInstance.subscribe((newState) => listener(newState.foo));
       expect(listener).toHaveBeenCalledWith("bar");
       newInstance.setState({ foo: "baz" });
       expect(listener).toHaveBeenCalledWith("baz");
@@ -213,7 +213,7 @@ describe("TSFWState", () => {
     it("should notify all listeners on state change", () => {
       const newInstance = createState("testKey3", { foo: "bar" });
       const listenerOnChange = vi.fn();
-      newInstance.subscribe((state) => listenerOnChange(state.foo));
+      newInstance.subscribe((newState) => listenerOnChange(newState.foo));
       newInstance.setState({ foo: "baz" });
       expect(listenerOnChange).toHaveBeenCalledWith("baz");
     });

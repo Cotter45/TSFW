@@ -12,7 +12,7 @@ type TodoState = Todo[];
 
 const TODO_ID = "todos-local";
 
-const todoState = createPersistentState<TodoState>(TODO_ID, "idb", [
+const todoState = createPersistentState<TodoState>(TODO_ID, "local", [
   { id: 1, task: "Buy groceries", completed: false },
   { id: 2, task: "Finish project", completed: false },
   { id: 3, task: "Call mom", completed: true },
@@ -84,15 +84,6 @@ function TodoToggle({ todoId }: { todoId: number }) {
     });
     todoState.setState(newTodos);
 
-    const statusElement = document.getElementById(
-      `${TODO_ID}-status-${todoId}`
-    );
-    if (statusElement) {
-      statusElement.textContent = updatedTodo?.completed
-        ? "Completed"
-        : "Pending";
-    }
-
     // Trigger confetti when marking as completed
     if (updatedTodo?.completed) {
       createConfetti();
@@ -116,12 +107,6 @@ function DeleteTodoButton({ todoId }: { todoId: number }) {
   function deleteTodo() {
     const todos = todoState.getState();
     todoState.setState(todos.filter((todo) => todo.id !== todoId));
-
-    const todoElement = document.getElementById(`${TODO_ID}-${todoId}`);
-    if (todoElement) {
-      console.log("Removing todo element", todoElement);
-      todoElement.remove();
-    }
   }
 
   return (
@@ -153,12 +138,6 @@ export function AddTodo() {
     const newTodos = [...todos, newTodo];
     todoState.setState(newTodos);
     input.value = "";
-
-    const todoContainer = document.getElementById("todo-container");
-    if (todoContainer) {
-      const newRow = TodoItem({ todo: newTodo });
-      todoContainer.appendChild(newRow);
-    }
   }
 
   return (
@@ -179,39 +158,43 @@ export function AddTodo() {
 
 export function LocalTodos() {
   // Subscribe to todo state changes for side effects
-  todoState.subscribe((state) => {
-    console.log("Local storage todo state changed", state);
+  todoState.subscribe((newTodos, oldTodos) => {
+    console.log("Local todo state changed", newTodos, oldTodos);
+    const todoContainer = document.getElementById("todo-container");
 
-    // Update status text directly by ID if needed
-    state.forEach((todo) => {
-      const todoElement = document.getElementById(`${TODO_ID}-${todo.id}`);
-      if (!todoElement) {
-        const todoContainer = document.getElementById("todo-container");
+    newTodos.forEach((newTodo) => {
+      const oldTodo = oldTodos?.find((t) => t.id === newTodo.id);
+      const todoRow = document.getElementById(`${TODO_ID}-${newTodo.id}`);
 
-        if (todoContainer) {
-          const newRow = TodoItem({ todo });
-          todoContainer.appendChild(newRow);
+      if (!oldTodo) {
+        const newRow = TodoItem({ todo: newTodo });
+        todoContainer?.appendChild(newRow);
+      } else if (oldTodo.completed !== newTodo.completed) {
+        const checkbox = document.getElementById(
+          `${TODO_ID}-complete-${newTodo.id}`
+        ) as HTMLInputElement;
+        if (checkbox) {
+          checkbox.checked = newTodo.completed;
         }
-        return;
-      }
-
-      const checkboxElement = document.getElementById(
-        `${TODO_ID}-complete-${todo.id}`
-      ) as HTMLInputElement;
-      if (checkboxElement) {
-        checkboxElement.checked = todo.completed;
-      }
-      const textElement = document.getElementById(`${TODO_ID}-text-${todo.id}`);
-      if (textElement) {
-        textElement.textContent = todo.task;
-      }
-      const statusElement = document.getElementById(
-        `${TODO_ID}-status-${todo.id}`
-      );
-      if (statusElement) {
-        statusElement.textContent = todo.completed ? "Completed" : "Pending";
+        const statusElement = todoRow?.querySelector(
+          `#${TODO_ID}-status-${newTodo.id}`
+        );
+        if (statusElement) {
+          statusElement.textContent = newTodo.completed
+            ? "Completed"
+            : "Pending";
+        }
       }
     });
+
+    if (oldTodos) {
+      oldTodos.forEach((oldTodo) => {
+        if (!newTodos.find((t) => t.id === oldTodo.id)) {
+          const todoRow = document.getElementById(`${TODO_ID}-${oldTodo.id}`);
+          todoRow?.remove();
+        }
+      });
+    }
   });
 
   return (

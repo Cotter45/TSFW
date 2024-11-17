@@ -1,5 +1,5 @@
 type Listener = () => void;
-type ListenerOnChangeEvent<T> = (state: T) => void;
+type ListenerOnChangeEvent<T> = (newState: T, oldState: T) => void;
 
 const stateCache: Record<string, TSFWState<any>> = {};
 const uniqueTabId = Math.random().toString(36).substring(2, 11);
@@ -34,7 +34,6 @@ export class TSFWState<T extends object> {
     this.validator = validator;
     this.storageType = storageType;
 
-    // Initialize Proxy
     this.proxy = new Proxy(initialState, {
       set: (target, property, value) => {
         (target as T)[property as keyof T] = value;
@@ -42,12 +41,11 @@ export class TSFWState<T extends object> {
       },
     }) as T;
 
-    // Handle loading logic based on storage type
     if (storageType === "idb") {
       this.readyPromise = this.loadFromIndexedDB();
     } else {
       this.loadFromStorage();
-      this.readyPromise = Promise.resolve(); // Synchronous storage is ready immediately
+      this.readyPromise = Promise.resolve();
     }
 
     this.broadcastingEnabled = true;
@@ -75,6 +73,8 @@ export class TSFWState<T extends object> {
       );
     }
 
+    const oldState = JSON.parse(JSON.stringify(this.proxy)); // Deep clone to capture the old state
+
     if (this.isIndexedUpdate(updates)) {
       const { index, data } = updates;
       if (Array.isArray(this.proxy) && this.proxy[index] !== undefined) {
@@ -89,7 +89,7 @@ export class TSFWState<T extends object> {
       }
     }
 
-    this.notifyListeners();
+    this.notifyListeners(oldState);
 
     if (this.broadcastingEnabled) {
       this.broadcastState();
@@ -117,12 +117,12 @@ export class TSFWState<T extends object> {
       return () => {};
     }
 
-    if (listener.length === 1) {
+    if (listener.length >= 1) {
       this.listenersOnChangeEvent.set(
         uniqueId,
         listener as ListenerOnChangeEvent<T>
       );
-      (listener as ListenerOnChangeEvent<T>)(this.proxy);
+      (listener as ListenerOnChangeEvent<T>)(this.proxy, this.proxy);
       return () => this.listenersOnChangeEvent.delete(uniqueId);
     }
 
@@ -130,10 +130,10 @@ export class TSFWState<T extends object> {
     return () => this.listeners.delete(uniqueId);
   }
 
-  private notifyListeners() {
+  private notifyListeners(oldState: T) {
     this.listeners.forEach((listener) => listener());
     this.listenersOnChangeEvent.forEach((listener) =>
-      listener(this.proxy as T)
+      listener(this.proxy as T, oldState)
     );
   }
 
@@ -159,6 +159,8 @@ export class TSFWState<T extends object> {
   }
 
   private applyBroadcast(newState: T) {
+    const oldState = JSON.parse(JSON.stringify(this.proxy));
+
     this.broadcastingEnabled = false;
     if (Array.isArray(this.proxy)) {
       this.proxy.length = 0;
@@ -166,7 +168,7 @@ export class TSFWState<T extends object> {
     } else {
       Object.assign(this.proxy, newState);
     }
-    this.notifyListeners();
+    this.notifyListeners(oldState);
     this.broadcastingEnabled = true;
   }
 
@@ -195,9 +197,10 @@ export class TSFWState<T extends object> {
 
   private async loadFromIndexedDB() {
     const storedState = await loadFromIndexedDB(this.key, this.proxy);
+    const copy = JSON.parse(JSON.stringify(storedState));
     Object.assign(this.proxy, storedState);
-    this.isReady = true; // Mark as ready
-    this.notifyListeners(); // Notify listeners after loading is complete
+    this.isReady = true;
+    this.notifyListeners(copy);
   }
 
   private async saveToIndexedDB() {
