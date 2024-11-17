@@ -154,7 +154,7 @@ export function Dialog({
     }
   });
 
-  return "";
+  return null;
 }
 
 function focusFirstElement(dialogElement: HTMLElement) {

@@ -6,7 +6,7 @@ export function jsx(
   type: string | ((props: any) => HTMLElement),
   props: any = {},
   ...children: any[]
-): HTMLElement {
+): HTMLElement | null {
   if (typeof type === "function") {
     return type({ ...props, children });
   }
@@ -52,6 +52,8 @@ export function jsx(
 
   if (!["img", "input", "br", "hr"].includes(type)) {
     for (const child of children.flat(Infinity)) {
+      if (!child) continue;
+
       element.append(
         child instanceof Node ? child : document.createTextNode(String(child))
       );

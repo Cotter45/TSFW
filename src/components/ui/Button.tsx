@@ -143,6 +143,7 @@ interface ButtonProps {
   onClick?: (e: MouseEvent) => void;
   ariaLabel?: string;
   type?: "button" | "submit" | "reset";
+  id?: string;
 }
 
 export function Button({

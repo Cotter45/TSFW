@@ -56,6 +56,10 @@ export function initRouter(root: HTMLElement) {
   handleRoute();
 }
 
+export const routerState = createState<{ path: RoutePaths }>("route", {
+  path: "/",
+});
+
 interface RegisterRouteOptions<T = any> {
   path: string;
   component: SyncComponent | AsyncComponent;
@@ -324,6 +328,8 @@ export async function renderRouteHierarchy(
       break;
     }
   }
+
+  routerState.setState({ path: window.location.pathname as RoutePaths });
 }
 
 export async function resolveComponent(

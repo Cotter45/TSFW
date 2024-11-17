@@ -15,6 +15,7 @@ import {
   DialogTitle,
   closeDialog,
 } from "@components/ui/Dialog";
+import { documentationLinks, PreviousNextLinks } from "@components/DocsLinks";
 
 export default function App() {
   const regex =
@@ -52,34 +53,21 @@ export default function App() {
         data-outlet
         class="w-full max-w-[100dvw] overflow-hidden min-h-[calc(100dvh-3rem)] transition-all duration-300 ease-in-out rounded-xl md:rounded-md bg-white p-2 md:p-4 shadow-sm ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10"
       />
+
+      {/* Footer Content */}
+      <PreviousNextLinks previous={null} next={null} />
     </div>
   );
 }
 
 function Routes() {
   return (
-    <div className="pl-2 flex flex-col">
-      <Link href="/" onclick={() => closeDialog("mobile-menu")}>
-        Welcome
-      </Link>
-      <Link href="/getting-started" onclick={() => closeDialog("mobile-menu")}>
-        Getting Started
-      </Link>
-      <Link href="/router" onclick={() => closeDialog("mobile-menu")}>
-        Router
-      </Link>
-      <Link href="/state" onclick={() => closeDialog("mobile-menu")}>
-        State
-      </Link>
-      <Link href="/testing" onclick={() => closeDialog("mobile-menu")}>
-        Testing
-      </Link>
-      <Link href="/faq" onclick={() => closeDialog("mobile-menu")}>
-        Faq
-      </Link>
-      <Link href="/examples" onclick={() => closeDialog("mobile-menu")}>
-        Examples
-      </Link>
+    <div class="pl-2 flex flex-col">
+      {documentationLinks.map((link) => (
+        <Link href={link.link} onclick={() => closeDialog("mobile-menu")}>
+          {link.title}
+        </Link>
+      ))}
     </div>
   );
 }
