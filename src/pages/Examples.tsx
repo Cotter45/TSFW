@@ -9,9 +9,8 @@ export default function ExamplesPage() {
       <div class="mt-12 space-y-4">
         <SubHeading>Todos Example</SubHeading>
         <Text class="mt-4">
-          This example demonstrates a simple user list with age that is
-          persisted in local storage. This state is synced across tabs and
-          refreshes.
+          This example demonstrates a simple todo list with storage that is
+          persisted in local storage and synced across tabs or windows.
         </Text>
 
         <LocalTodos />
