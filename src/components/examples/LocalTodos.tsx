@@ -161,8 +161,8 @@ export function AddTodo() {
       <input
         type="text"
         name="task"
-        placeholder="Enter a new task"
-        class="rounded-lg px-4 py-2.5 sm:!py-1.5 dark:bg-zinc-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+        placeholder="New task"
+        class="rounded-md px-2 py-2 sm:!py-1 dark:bg-zinc-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-md border border-zinc-300 dark:border-zinc-700"
         required
       />
       <Button color="emerald" type="submit">
@@ -237,7 +237,7 @@ function TodoItem({ todo }: { todo: Todo }) {
   return (
     <li
       id={`${TODO_ID}-${todo.id}`}
-      class="flex items-center justify-between p-4 bg-white dark:bg-zinc-800 shadow-md rounded-md gap-2"
+      class="flex items-center justify-between p-4 bg-white dark:bg-zinc-800 shadow-md rounded-md gap-2 border border-zinc-300 dark:border-zinc-700"
       role="listitem"
       aria-label={`Todo item: ${todo.task}`}
     >
