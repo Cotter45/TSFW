@@ -100,6 +100,22 @@ const files = [
     path: "src/pages/404.tsx",
   },
   {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Badge.tsx",
+    path: "src/components/ui/Badge.tsx",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Button.tsx",
+    path: "src/components/ui/Button.tsx",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Dialog.tsx",
+    path: "src/components/ui/Dialog.tsx",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Link.tsx",
+    path: "src/components/ui/Link.tsx",
+  },
+  {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Text.tsx",
     path: "src/components/ui/Text.tsx",
   },
