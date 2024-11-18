@@ -1,5 +1,4 @@
 import { routerState } from "@core/router";
-import { Button } from "./ui/Button";
 import { Link } from "./ui/Link";
 import { RoutePaths } from "@core/routes";
 
@@ -54,9 +53,8 @@ function renderLinks(
   previous: DocumentationLink | null,
   next: DocumentationLink | null
 ) {
-  container.innerHTML = ""; // Clear existing links
+  container.innerHTML = "";
 
-  // Render Previous Link
   if (previous) {
     const previousLinkElement = document.createElement("div");
     previousLinkElement.id = "docs-previous-link";
@@ -66,7 +64,6 @@ function renderLinks(
     container.appendChild(previousLinkElement);
   }
 
-  // Render Next Link
   if (next) {
     const nextLinkElement = document.createElement("div");
     nextLinkElement.id = "docs-next-link";
@@ -79,17 +76,17 @@ function renderLinks(
 }
 
 function PreviousLink({ href, title }: { href: RoutePaths; title: string }) {
-  const link = document.createElement("a");
-  link.href = href;
-  link.className = "text-emerald-500 hover:underline flex items-center";
-  link.innerHTML = `<button class="bg-transparent text-emerald-500 border-0">← ${title}</button>`;
-  return link;
+  return (
+    <Link href={href} class="!text-emerald-500">
+      ← {title}
+    </Link>
+  );
 }
 
 function NextLink({ href, title }: { href: RoutePaths; title: string }) {
-  const link = document.createElement("a");
-  link.href = href;
-  link.className = "text-emerald-500 hover:underline flex items-center";
-  link.innerHTML = `<button class="bg-transparent text-emerald-500 border-0">${title} →</button>`;
-  return link;
+  return (
+    <Link href={href} class="!text-emerald-500">
+      {title} →
+    </Link>
+  );
 }
