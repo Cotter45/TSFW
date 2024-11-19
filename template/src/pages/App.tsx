@@ -16,9 +16,9 @@ export default function App() {
         href="https://tsfw.cotter.tech"
         rel="noopener noreferrer"
         target="_blank"
-        class="mt-10 text-lg text-[#257A57] underline"
+        class="mt-10 text-lg text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-500 hover:underline"
       >
-        Learn More
+        Learn More about TSFW
       </a>
     </div>
   );
