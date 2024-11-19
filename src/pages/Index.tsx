@@ -15,7 +15,7 @@ import {
   DialogTitle,
   closeDialog,
 } from "@components/ui/Dialog";
-import { documentationLinks, PreviousNextLinks } from "@components/DocsLinks";
+import { documentationLinks, DocsLinks } from "@components/DocsLinks";
 
 export default function App() {
   const regex =
@@ -51,11 +51,11 @@ export default function App() {
       {/* Main Content */}
       <main
         data-outlet
-        class="w-full max-w-[100dvw] overflow-hidden min-h-[calc(100dvh-3rem)] transition-all duration-300 ease-in-out rounded-xl md:rounded-md bg-white p-2 md:p-4 shadow-sm ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10"
+        class="relative top-20 md:top-0 w-full max-w-[100dvw] overflow-hidden min-h-[calc(100dvh-3rem)] transition-all duration-300 ease-in-out rounded-xl md:rounded-md bg-white p-2 md:p-4 shadow-sm ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10"
       />
 
       {/* Footer Content */}
-      <PreviousNextLinks previous={null} next={null} />
+      <DocsLinks previous={null} next={null} />
     </div>
   );
 }
@@ -104,7 +104,7 @@ export function ToggleThemeButton() {
 
 function MobileMenu() {
   return (
-    <div class="md:hidden w-full flex items-center justify-between py-4">
+    <div class="fixed top-0 z-0 md:hidden w-full flex items-center justify-between py-4">
       <Link href="/" class="!w-fit">
         <Heading>TSFW</Heading>
       </Link>

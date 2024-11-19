@@ -117,6 +117,14 @@ function addUser(name, age) {
           whenever state changes, making it useful for managing components that
           depend on the current state.
         </Text>
+
+        <Badge color="amber">Note:</Badge>
+        <Text>
+          In order to subscribe to state changes across multiple components, you
+          must pass a unique ID to the <Badge>subscribe</Badge> function. This
+          ID is used to identify the subscription and prevent duplicate
+          listeners.
+        </Text>
       </section>
 
       <section className="space-y-4">

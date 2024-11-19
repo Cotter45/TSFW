@@ -334,7 +334,9 @@ export async function renderRouteHierarchy(
     }
   }
 
-  routerState.setState({ path: window.location.pathname as RoutePaths });
+  setTimeout(() => {
+    routerState.setState({ path: window.location.pathname as RoutePaths });
+  }, 0);
 }
 
 export async function resolveComponent(

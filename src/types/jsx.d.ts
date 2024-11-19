@@ -5,7 +5,15 @@ declare namespace JSX {
 
   interface IntrinsicElements {
     [elemName: string]: Partial<Record<string, any>> & {
-      children?: Element | Element[] | string | number | boolean | null;
+      children?:
+        | Element
+        | Element[]
+        | string
+        | string[]
+        | number
+        | number[]
+        | boolean
+        | null;
     };
   }
 

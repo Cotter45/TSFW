@@ -49,7 +49,7 @@ export function Link({
         }
       });
     }
-  });
+  }, "tsfw-link");
 
   const isActive = window.location.pathname === href;
   const activeClass = isActive

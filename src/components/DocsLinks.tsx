@@ -14,7 +14,7 @@ export const documentationLinks = [
 
 export type DocumentationLink = (typeof documentationLinks)[number];
 
-export function PreviousNextLinks() {
+export function DocsLinks() {
   let previous: DocumentationLink | null = null;
   let next: DocumentationLink | null = null;
 
@@ -38,12 +38,12 @@ export function PreviousNextLinks() {
     }
   };
 
-  routerState.subscribe(updateLinks);
+  routerState.subscribe(updateLinks, "docs-links");
 
   return (
     <div
       id="docs-smol-navigation-container"
-      class="flex justify-between mt-8 md:hidden px-2 pt-10"
+      class="flex justify-between mt-24 md:hidden px-2 pt-10"
     ></div>
   );
 }
