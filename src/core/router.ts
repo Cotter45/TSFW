@@ -190,7 +190,8 @@ export function resolvePath(
 export function navigateTo(
   path: RoutePaths,
   params: Record<string, string> = {},
-  searchParams: Record<string, string> = {}
+  searchParams: Record<string, string> = {},
+  scrollTop = true
 ) {
   const resolvedPath = resolvePath(path, params);
   const query = new URLSearchParams(searchParams).toString();
@@ -200,6 +201,10 @@ export function navigateTo(
   handleRoute();
 
   window.dispatchEvent(new CustomEvent("routechange", { detail: fullPath }));
+
+  if (scrollTop) {
+    window.scrollTo(0, 0);
+  }
 }
 
 export async function handleRoute() {

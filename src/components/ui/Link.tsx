@@ -20,11 +20,6 @@ export function Link({
       event.preventDefault();
       navigateTo(href);
 
-      setTimeout(() => {
-        routerState.setState({ path: href });
-        window.scrollTo(0, 0);
-      }, 100);
-
       if (onclick) {
         onclick();
       }
