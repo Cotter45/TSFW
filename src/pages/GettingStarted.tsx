@@ -22,8 +22,7 @@ export default function GettingStartedPage() {
       <section className="space-y-4">
         <Heading>Getting Started with TSFW</Heading>
         <Text>
-          Welcome to{" "}
-          <strong>TSFW (Another language-javascript Framework)</strong> – a
+          Welcome to <strong>TSFW (Another Typescript Framework)</strong> – a
           minimalist, lightweight framework built for developers who want
           simplicity without sacrificing modern conveniences.
         </Text>
@@ -71,7 +70,7 @@ npm run dev`}</CodeBlock>
 ├── pages/                # Page components used in routing
 ├── core/                 # Core utilities (state management, routing, etc.)
 ├── public/               # Static assets (e.g., favicon, manifest)
-├── types/                # language-javascript type definitions
+├── types/                # Typescript type definitions
 ├── index.css             # Global styles
 ├── index.html            # Main HTML file
 └── index.ts              # Application entry point`}</CodeBlock>
