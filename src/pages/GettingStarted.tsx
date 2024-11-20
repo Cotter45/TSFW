@@ -1,20 +1,6 @@
 import { Heading, SubHeading, Text } from "@components/ui/Text";
 import { Accordion } from "@components/ui/Accordion";
-import { clsx } from "@core/clsx";
-
-function CodeBlock({
-  language,
-  children,
-}: {
-  language: string;
-  children: string;
-}) {
-  return (
-    <pre class={clsx(language, "!rounded-md")}>
-      <code>{children}</code>
-    </pre>
-  );
-}
+import { CodeBlock } from "@components/CodeBlock";
 
 export default function GettingStartedPage() {
   return (
