@@ -6,6 +6,21 @@ const path = require("path");
 const { exec } = require("child_process");
 const readline = require("readline");
 
+// Color functions
+const colors = {
+  green: (text) => `\x1b[32m${text}\x1b[0m`,
+  yellow: (text) => `\x1b[33m${text}\x1b[0m`,
+  blue: (text) => `\x1b[34m${text}\x1b[0m`,
+  red: (text) => `\x1b[31m${text}\x1b[0m`,
+  cyan: (text) => `\x1b[36m${text}\x1b[0m`,
+};
+
+// Log helpers
+const logSuccess = (message) => console.log(colors.green(message));
+const logInfo = (message) => console.log(colors.cyan(message));
+const logWarning = (message) => console.log(colors.yellow(message));
+const logError = (message) => console.error(colors.red(message));
+
 /**
  * Downloads a file from a given URL and saves it to a specified path.
  * @param {string} fileUrl - The URL of the file to download.
@@ -282,57 +297,73 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-rl.question("Enter the name of the directory to create: ", (dirName) => {
-  const targetDir = path.resolve(process.cwd(), dirName);
+rl.question(
+  colors.blue("\nEnter the name of the directory to create: "),
+  (dirName) => {
+    const targetDir = path.resolve(process.cwd(), dirName);
 
-  // Create necessary directories
-  try {
-    fs.mkdirSync(path.join(targetDir, "src/core"), { recursive: true });
-    fs.mkdirSync(path.join(targetDir, "src/types"), { recursive: true });
-    fs.mkdirSync(path.join(targetDir, "src/public"), { recursive: true });
-    fs.mkdirSync(path.join(targetDir, "src/pages"), { recursive: true });
-    fs.mkdirSync(path.join(targetDir, "src/components/ui"), {
-      recursive: true,
-    });
-  } catch (err) {
-    console.error(`Failed to create directories: ${err.message}`);
-    rl.close();
-    process.exit(1);
-  }
-
-  // Download files
-  (async () => {
+    // Create necessary directories
     try {
-      await Promise.all(
-        files.map((file) =>
-          downloadFile(file.url, path.join(targetDir, file.path))
-        )
-      );
-      console.log(`All downloads completed successfully in ${dirName}!`);
-
-      // Prompt to install dependencies
-      rl.question("Do you want to install dependencies? (y/n): ", (answer) => {
-        if (answer.toLowerCase() === "y") {
-          console.log("Installing dependencies...");
-          exec(`cd ${targetDir} && npm install`, (err, stdout, stderr) => {
-            if (err) {
-              console.error(`Error installing dependencies: ${err.message}`);
-            } else {
-              console.log(stdout);
-              console.error(stderr);
-              console.log("Dependencies installed successfully!");
-            }
-            rl.close();
-          });
-        } else {
-          console.log("Skipping dependency installation.");
-          rl.close();
-        }
+      fs.mkdirSync(path.join(targetDir, "src/core"), { recursive: true });
+      fs.mkdirSync(path.join(targetDir, "src/types"), { recursive: true });
+      fs.mkdirSync(path.join(targetDir, "src/public"), { recursive: true });
+      fs.mkdirSync(path.join(targetDir, "src/pages"), { recursive: true });
+      fs.mkdirSync(path.join(targetDir, "src/components/ui"), {
+        recursive: true,
       });
+      logSuccess("Directories created successfully!");
     } catch (err) {
-      console.error(`Error during download: ${err.message}`);
+      logError(`Failed to create directories: ${err.message}`);
       rl.close();
       process.exit(1);
     }
-  })();
-});
+
+    // Download files
+    (async () => {
+      try {
+        await Promise.all(
+          files.map((file) =>
+            downloadFile(file.url, path.join(targetDir, file.path))
+          )
+        );
+        logSuccess("All downloads completed successfully!");
+
+        console.log("\n");
+
+        // Prompt to install dependencies
+        rl.question(
+          colors.blue("Do you want to install dependencies? (y/n): "),
+          (answer) => {
+            if (answer.toLowerCase() === "y") {
+              logInfo("Installing dependencies...");
+              exec(`cd ${targetDir} && npm install`, (err, stdout, stderr) => {
+                if (err) {
+                  logError(`Error installing dependencies: ${err.message}`);
+                } else {
+                  console.log(stdout);
+                  console.error(stderr);
+                  logSuccess("Dependencies installed successfully!");
+                  logInfo("\nNext steps:");
+                  logInfo(`- ${colors.yellow(`cd ${dirName}`)}`);
+                  logInfo(`- ${colors.yellow("npm run dev\n")}`);
+                }
+                rl.close();
+              });
+            } else {
+              logWarning("Skipping dependency installation.");
+              logInfo("\nNext steps:");
+              logInfo(`- ${colors.yellow(`cd ${dirName}`)}`);
+              logInfo(`- ${colors.yellow("npm install")}`);
+              logInfo(`- ${colors.yellow("npm run dev\n")}`);
+              rl.close();
+            }
+          }
+        );
+      } catch (err) {
+        logError(`Error during download: ${err.message}`);
+        rl.close();
+        process.exit(1);
+      }
+    })();
+  }
+);
