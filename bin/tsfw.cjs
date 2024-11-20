@@ -291,12 +291,32 @@ const files = [
   },
 ];
 
+// Display ANSI art
+const displayBanner = () => {
+  console.log(
+    colors.cyan(`
+
+      ████████╗███████╗███████╗██╗    ██╗
+      ╚══██╔══╝██╔════╝██╔════╝██║    ██║
+         ██║   ███████╗█████╗  ██║ █╗ ██║
+         ██║   ╚════██║██╔══╝  ██║███╗██║
+         ██║   ███████║██║     ╚███╔███╔╝
+         ╚═╝   ╚══════╝╚═╝      ╚══╝╚══╝ 
+  `)
+  );
+  logInfo("              Welcome to TSFW setup!");
+};
+
+// Main script
+displayBanner();
+
 // Prompt the user for a directory name
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
+// Rest of the script...
 rl.question(
   colors.blue("\nEnter the name of the directory to create: "),
   (dirName) => {
