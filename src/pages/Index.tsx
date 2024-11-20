@@ -71,7 +71,7 @@ export default function App() {
 
 function Routes() {
   return (
-    <div class="pl-2 flex flex-col gap-3 md:gap-0">
+    <div class="pl-2 flex flex-col gap-3 md:gap-0 md:mt-4">
       {documentationLinks.map((link) => (
         <Link href={link.link} onclick={() => closeDialog("mobile-menu")}>
           {link.title}
