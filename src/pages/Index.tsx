@@ -37,11 +37,20 @@ export default function App() {
     <div class="relative w-full min-h-screen flex flex-col md:flex-row px-2 pb-24 md:px-0 md:pt-2 md:pr-2 md:pb-2 bg-zinc-100 dark:bg-zinc-950">
       <div class="w-full max-w-full md:max-w-[300px] min-w-[300px]">
         {/* Sidebar for larger screens */}
-        <div class="sticky top-1 left-0 max-w-0 max-h-0 md:max-h-screen overflow-y-auto overflow-x-hidden md:w-full md:max-w-full md:flex flex-col gap-4 -my-1 rounded-r-md md:pb-4 md:p-4">
+        <div class="sticky top-1 left-0 max-w-0 max-h-0 md:max-h-screen overflow-y-auto overflow-x-hidden md:w-full md:max-w-full md:flex flex-col gap-2 -my-1 rounded-r-md md:pb-4 md:p-4">
           <Heading>TSFW</Heading>
           <Routes />
 
           <ToggleThemeButton />
+
+          <a
+            href="https://www.buymeacoffee.com/cotter45"
+            target="_blank"
+            rel="noreferrer"
+            class="mx-auto mt-4"
+          >
+            <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=cotter45&button_colour=059669&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00" />
+          </a>
         </div>
 
         {/* Mobile Menu */}
@@ -96,7 +105,7 @@ export function ToggleThemeButton() {
   }
 
   return (
-    <Button onClick={toggleTheme} variant="plain" class="mt-12 mx-2">
+    <Button onClick={toggleTheme} variant="outline" class="mt-12 mx-4">
       <span id="theme-text">{themeState.getState().theme}</span>
     </Button>
   );
@@ -130,8 +139,15 @@ function MobileMenu() {
         <DialogBody>
           <div class="flex flex-col gap-4">
             <Routes />
-
             <ToggleThemeButton />
+            <a
+              href="https://www.buymeacoffee.com/cotter45"
+              target="_blank"
+              rel="noreferrer"
+              class="mx-auto"
+            >
+              <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=cotter45&button_colour=059669&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00" />
+            </a>
           </div>
         </DialogBody>
       </Dialog>

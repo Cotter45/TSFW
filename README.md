@@ -197,3 +197,14 @@ This project is licensed under the MIT License.
 ## Feedback
 
 If you’re frustrated with modern frameworks and want a simple, accessible, and feature-rich alternative, give TSFW a spin, add to the repo, burn the repo and the computer it was made on... Whatever!! Then let me know what you think. Cheers.
+
+## Support
+
+If you find this project helpful and want to support its development, consider buying me a coffee:
+
+<div style="width: 100%; margin: 0 auto;">
+<a href="https://www.buymeacoffee.com/cotter45" target="\_blank" rel="noreferrer" style="margin: 0 auto;"
+
+<img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=cotter45&button_colour=059669&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00" /> </a>
+
+</div>
