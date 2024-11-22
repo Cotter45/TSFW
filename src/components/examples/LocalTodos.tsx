@@ -2,6 +2,13 @@ import { createPersistentState, createState } from "@core/state";
 import { Button } from "@components/ui/Button";
 import { Text } from "@components/ui/Text";
 import { clsx } from "@core/clsx";
+import {
+  addElement,
+  diffStates,
+  getElement,
+  removeElement,
+  replaceElement,
+} from "@core/utils";
 
 interface Todo {
   id: number;
@@ -176,44 +183,22 @@ export function LocalTodos() {
   // Subscribe to todo state changes for side effects
   todoState.subscribe((newTodos, oldTodos) => {
     console.log("Local todo state changed", newTodos, oldTodos);
-    const todoContainer = document.getElementById("todo-container");
 
-    newTodos.forEach((newTodo) => {
-      const oldTodo = oldTodos?.find((t) => t.id === newTodo.id);
-      const todoRow = document.getElementById(`${TODO_ID}-${newTodo.id}`);
+    const { added, removed, updated } = diffStates(newTodos, oldTodos, "id");
 
-      if (!oldTodo) {
-        const newRow = TodoItem({ todo: newTodo });
-        todoContainer?.appendChild(newRow);
-      } else if (oldTodo.completed !== newTodo.completed) {
-        const checkbox = document.getElementById(
-          `${TODO_ID}-complete-${newTodo.id}`
-        ) as HTMLInputElement;
-        if (checkbox) {
-          checkbox.checked = newTodo.completed;
-        }
-        const statusElement = todoRow?.querySelector(
-          `#${TODO_ID}-status-${newTodo.id}`
-        );
-        if (statusElement) {
-          newTodo.completed
-            ? statusElement.classList.add("text-emerald-500")
-            : statusElement.classList.remove("text-emerald-500");
-          statusElement.textContent = newTodo.completed
-            ? "Completed"
-            : "Pending";
-        }
-      }
+    added.forEach((newTodo) => {
+      const newRow = TodoItem({ todo: newTodo });
+      addElement("#todo-container", newRow);
     });
 
-    if (oldTodos) {
-      oldTodos.forEach((oldTodo) => {
-        if (!newTodos.find((t) => t.id === oldTodo.id)) {
-          const todoRow = document.getElementById(`${TODO_ID}-${oldTodo.id}`);
-          todoRow?.remove();
-        }
-      });
-    }
+    updated.forEach(({ newItem }) => {
+      const newTodoItem = TodoItem({ todo: newItem });
+      replaceElement(`#${TODO_ID}-${newItem.id}`, newTodoItem);
+    });
+
+    removed.forEach((oldTodo) => {
+      removeElement(`#${TODO_ID}-${oldTodo.id}`);
+    });
   });
 
   return (

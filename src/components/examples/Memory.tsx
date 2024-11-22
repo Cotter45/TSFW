@@ -1,6 +1,7 @@
 import { createState } from "@core/state";
 import { Button } from "@components/ui/Button";
 import { Text } from "@components/ui/Text";
+import { updateTextContent } from "@core/utils";
 
 interface CounterState {
   count: number;
@@ -38,10 +39,7 @@ export function MemoryState() {
     console.log("Counter state changed", state);
 
     // Update the count text directly by ID
-    const countTextElement = document.getElementById("count-text");
-    if (countTextElement) {
-      countTextElement.textContent = `${state.count}`;
-    }
+    updateTextContent("#count-text", `${state.count}`);
   });
 
   return (

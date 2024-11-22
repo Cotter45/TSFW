@@ -1,6 +1,7 @@
 import { createPersistentState } from "@core/state";
 import { Button } from "@components/ui/Button";
 import { Text } from "@components/ui/Text";
+import { diffStates } from "@core/utils";
 
 interface User {
   id: number;
@@ -57,14 +58,15 @@ function DecreaseAgeButton({ userId }: { userId: number }) {
 
 export function SessionState() {
   // Subscribe to user state changes to update the UI
-  userState.subscribe((state) => {
-    console.log("Session user state changed", state);
+  userState.subscribe((newState, oldState) => {
+    console.log("Local user state changed", newState);
 
-    // Update age text directly by ID if needed
-    state.forEach((user, index) => {
-      const ageElement = document.getElementById(`session-age-text-${index}`);
-      if (ageElement) {
-        ageElement.textContent = `${user.age}`;
+    const { updated } = diffStates(newState, oldState, "id");
+
+    updated.forEach(({ oldItem, newItem }) => {
+      const ageText = document.getElementById(`local-age-text-${oldItem.id}`);
+      if (ageText) {
+        ageText.textContent = `${newItem.age}`;
       }
     });
   });

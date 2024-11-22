@@ -1,6 +1,7 @@
 import { createPersistentState } from "@core/state";
 import { Button } from "@components/ui/Button";
 import { Text } from "@components/ui/Text";
+import { diffStates, updateTextContent } from "@core/utils";
 
 interface User {
   id: number;
@@ -58,15 +59,13 @@ function DecreaseAgeButton({ userId }: { userId: number }) {
 
 export function LocalState() {
   // Subscribe to user state changes to update the UI
-  userState.subscribe((state) => {
-    console.log("Local user state changed", state);
+  userState.subscribe((newState, oldState) => {
+    console.log("Local user state changed", newState);
 
-    // Update age text directly by ID if needed
-    state.forEach((user, index) => {
-      const ageElement = document.getElementById(`local-age-text-${index}`);
-      if (ageElement) {
-        ageElement.textContent = `${user.age}`;
-      }
+    const { updated } = diffStates(newState, oldState, "id");
+
+    updated.forEach(({ newItem }) => {
+      updateTextContent(`#local-age-text-${newItem.id}`, `${newItem.age}`);
     });
   });
 
@@ -86,13 +85,13 @@ export function LocalState() {
         </tr>
       </thead>
       <tbody>
-        {userState.getState().map((user, index) => (
-          <tr key={user.id}>
+        {userState.getState().map((user) => (
+          <tr>
             <td class="py-4 px-6 border-b border-zinc-300 dark:border-zinc-600">
               <Text>{user.name}</Text>
             </td>
             <td class="py-4 px-6 border-b border-zinc-300 dark:border-zinc-600">
-              <Text id={`local-age-text-${index}`}>{user.age}</Text>
+              <Text id={`local-age-text-${user.id}`}>{user.age}</Text>
             </td>
             <td class="py-4 px-6 border-b border-zinc-300 dark:border-zinc-600 flex justify-center gap-4">
               <IncreaseAgeButton userId={user.id} />
