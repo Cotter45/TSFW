@@ -63,7 +63,8 @@ export function AccordionPanel({
       >
         <SubHeading
           id={`accordion-title-${id}`}
-          class="!font-medium !text-base line-clamp-3 max-w-[95%]"
+          level={5}
+          class="!font-normal !text-base line-clamp-3 max-w-[95%]"
         >
           {title}
         </SubHeading>

@@ -54,10 +54,17 @@ export function SubHeading({
   class: className,
   children,
   ariaLabel,
+  level = 2,
   ...rest
 }: ITextProps) {
+  let Tag = `h${level}` as "h2" | "h3" | "h4" | "h5" | "h6";
+
+  if (level < 2 || level > 6) {
+    Tag = "h2";
+  }
+
   return (
-    <h2
+    <Tag
       data-slot="sub-heading"
       role="heading"
       aria-level="2"
@@ -69,6 +76,6 @@ export function SubHeading({
       )}
     >
       {children}
-    </h2>
+    </Tag>
   );
 }

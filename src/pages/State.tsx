@@ -107,8 +107,8 @@ function addUser(name, age) {
         </Text>
 
         <pre className="language-javascript !rounded-md">
-          <code>{`userListState.subscribe((state) => {
-  console.log("User list updated:", state);
+          <code>{`userListState.subscribe((oldState, newState) => {
+  console.log("User list updated:", oldState, newState);
 });`}</code>
         </pre>
 
@@ -172,8 +172,8 @@ validatedState.setState({ count: -1 });
       { count: 0 }
       );
 
-sharedState.subscribe((state) => {
-  console.log("Shared count updated:", state.count);
+sharedState.subscribe((oldState, newState) => {
+  console.log("Shared count updated:", oldState.count, newState.count);
 });`}</code>
         </pre>
 
@@ -288,15 +288,13 @@ const userState =
         <pre className="language-javascript !rounded-md">
           <code>{`export function LocalState() {
   // Subscribe to user state changes to update the UI
-  userState.subscribe((state) => {
-    console.log("Local user state changed", state);
+  userState.subscribe((newState, oldState) => {
+    console.log("Local user state changed", newState);
 
-    // Update age text directly by ID if needed
-    state.forEach((user, index) => {
-      const ageElement = document.getElementById(\`local-age-text-\${index}\`);
-      if (ageElement) {
-        ageElement.textContent = \`\${user.age}\`;
-      }
+    const { updated } = diffStates(newState, oldState, "id");
+
+    updated.forEach(({ newItem }) => {
+      updateTextContent(\`#local-age-text-\${newItem.id}\`, \`\${newItem.age}\`);
     });
   });
 
