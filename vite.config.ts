@@ -24,7 +24,6 @@ function updateRouteTypes() {
     fs.readFileSync(typeFilePath, "utf-8") !== content
   ) {
     fs.writeFileSync(typeFilePath, content);
-    console.log("Route types updated in routes.ts");
   }
 }
 
@@ -37,8 +36,6 @@ function crawlForRoutes() {
     const routeBlocks = content.match(/registerRoutes\((\{[\s\S]*?\})\)/g);
 
     if (routeBlocks) {
-      console.log("Found routes in src/index.ts");
-
       routeBlocks.forEach((block) => {
         const parentPathMatch = block.match(/path:\s*["'`](.*?)["'`]/);
         const parentPath = parentPathMatch ? parentPathMatch[1] : "";
@@ -77,6 +74,14 @@ function autoUpdateRoutesPlugin() {
         crawlForRoutes();
         updateRouteTypes();
       }
+    },
+    configureServer(server) {
+      server.watcher.on("change", (file) => {
+        if (file.endsWith(".ts") || file.endsWith(".tsx")) {
+          crawlForRoutes();
+          updateRouteTypes();
+        }
+      });
     },
   };
 }
