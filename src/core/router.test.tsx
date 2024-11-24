@@ -426,7 +426,7 @@ describe("fallback component", () => {
         "Component for fallback"
       );
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   });
 });

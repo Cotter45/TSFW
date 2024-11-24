@@ -113,14 +113,11 @@ const deepEqual = (obj1: any, obj2: any): boolean => {
 
 // Utility function to update the pages meta tags
 export const updateMeta = (metaTags: Record<string, string>) => {
-  console.log("META ONE", metaTags);
   const validMetaTags = Object.entries(metaTags).filter(
     ([name, content]) => name && content
   );
 
   metaTags = Object.fromEntries(validMetaTags);
-  console.log(metaTags);
-
   const title = metaTags.title;
 
   if (title) {
