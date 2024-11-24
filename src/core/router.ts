@@ -1,5 +1,6 @@
 import type { RoutePaths } from "./routes";
 import { createState, createPersistentState, storageTypes } from "./state";
+import { updateMeta } from "./utils";
 
 export let notFoundComponent: () => HTMLElement = () => {
   const notFoundElement = document.createElement("div");
@@ -43,6 +44,12 @@ interface Route<T = any> {
   pathPattern: RegExp;
   paramNames: string[];
   parentComponent?: SyncComponent | AsyncComponent;
+  meta?:
+    | Record<string, string>
+    | ((ctx: {
+        params: Record<string, string>;
+        data: T;
+      }) => Record<string, string>);
 }
 
 export const routes: Route[] = [];
@@ -69,6 +76,12 @@ interface RegisterRouteOptions<T = any> {
   cacheKey?: string;
   ttl?: number;
   children?: RegisterRouteOptions[];
+  meta?:
+    | Record<string, string>
+    | ((ctx: {
+        params: Record<string, string>;
+        data: T;
+      }) => Record<string, string>);
 }
 
 const invalidPathCharacters = /[^a-zA-Z0-9_/:-]/g;
@@ -83,6 +96,7 @@ export function registerRoutes<T>(
     cacheKey = path,
     ttl = 60000, // Default TTL of 1 minute
     children = [],
+    meta = {},
   }: RegisterRouteOptions<T>,
   parentPath = "",
   parentComponent?: SyncComponent | AsyncComponent
@@ -148,6 +162,7 @@ export function registerRoutes<T>(
     pathPattern: parentComponent ? pathPattern : new RegExp("^$"),
     paramNames,
     parentComponent,
+    meta,
   };
 
   routes.push(route);
@@ -226,6 +241,10 @@ export async function handleRoute() {
         acc[name] = match[index + 1];
         return acc;
       }, {} as Record<string, string>);
+
+      if (route.meta && typeof route.meta === "object") {
+        updateMeta(route.meta);
+      }
 
       await renderRouteHierarchy(route, searchParams, params, signal);
       return;
@@ -331,6 +350,10 @@ export async function renderRouteHierarchy(
     } else {
       outletElement = null;
       break;
+    }
+
+    if (typeof route.meta === "function") {
+      updateMeta(route.meta({ params, data }));
     }
   }
 

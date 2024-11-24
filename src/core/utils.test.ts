@@ -8,6 +8,7 @@ import {
   addElement,
   removeElement,
   replaceElement,
+  updateMeta,
 } from "./utils";
 
 // Mock DOM setup
@@ -250,5 +251,85 @@ describe("diffStates", () => {
         newItem: { id: 1, name: "John" },
       },
     ]);
+  });
+});
+
+describe("updateMeta", () => {
+  beforeEach(() => {
+    document.head.innerHTML = "";
+  });
+
+  it("should update the document title", () => {
+    updateMeta({ title: "New Title" });
+    expect(document.title).toBe("New Title");
+  });
+
+  it("should not throw an error if the title is not provided", () => {
+    expect(() => updateMeta({})).not.toThrow();
+  });
+
+  it("should not throw an error if the title is an empty string", () => {
+    expect(() => updateMeta({ title: "" })).not.toThrow();
+  });
+
+  it("should update or create the meta tags", () => {
+    const metaTags = {
+      description: "A description",
+      keywords: "key1, keywords",
+    };
+
+    updateMeta(metaTags);
+
+    const metaDescription = document.querySelector(
+      'meta[name="description"]'
+    ) as HTMLMetaElement;
+    const metaKeywords = document.querySelector(
+      'meta[name="keywords"]'
+    ) as HTMLMetaElement;
+
+    expect(metaDescription).not.toBeNull();
+    expect(metaDescription.content).toBe("A description");
+
+    expect(metaKeywords).not.toBeNull();
+    expect(metaKeywords.content).toBe("key1, keywords");
+  });
+
+  it("should update existing meta tags", () => {
+    const metaTags = {
+      description: "A new description",
+    };
+
+    const existingMeta = document.createElement("meta");
+    existingMeta.name = "description";
+    existingMeta.content = "An old description";
+    document.head.appendChild(existingMeta);
+
+    updateMeta(metaTags);
+
+    const metaDescription = document.querySelector(
+      'meta[name="description"]'
+    ) as HTMLMetaElement;
+
+    expect(metaDescription).not.toBeNull();
+    expect(metaDescription.content).toBe("A new description");
+  });
+
+  it("should remove meta tags with empty content", () => {
+    const metaTags = {
+      description: "A description",
+      keywords: "",
+    };
+
+    updateMeta(metaTags);
+
+    const metaDescription = document.querySelector(
+      'meta[name="description"]'
+    ) as HTMLMetaElement;
+    const metaKeywords = document.querySelector('meta[name="keywords"]');
+
+    expect(metaDescription).not.toBeNull();
+    expect(metaDescription.content).toBe("A description");
+
+    expect(metaKeywords).toBeNull();
   });
 });

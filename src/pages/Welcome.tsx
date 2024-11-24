@@ -59,7 +59,7 @@ export default function WelcomePage() {
 
       <section>
         <SubHeading>Key Features</SubHeading>
-        <div class="mt-4 grid gap-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+        <div class="mt-4 grid gap-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
           <Card class="p-4">
             <CardTitle>🏗 Custom JSX</CardTitle>
             <CardBody>
@@ -84,8 +84,8 @@ export default function WelcomePage() {
             <CardTitle>📜 Type-safe Routing</CardTitle>
             <CardBody>
               <Text>
-                Type-safe routes compile on dev server starts with support for
-                data preloading, caching, and custom TTL.
+                Type-safe routes with support for data preloading, caching, and
+                custom TTL.
               </Text>
             </CardBody>
           </Card>
@@ -97,6 +97,16 @@ export default function WelcomePage() {
                 Built in localized state and persistant storage that syncs
                 across tabs without the if (typeof window !== 'undefined')
                 dance.
+              </Text>
+            </CardBody>
+          </Card>
+
+          <Card class="p-4">
+            <CardTitle>🔍 Testing</CardTitle>
+            <CardBody>
+              <Text>
+                A simple testing setup with Vitest and React Testing Library
+                that just works.
               </Text>
             </CardBody>
           </Card>

@@ -40,6 +40,12 @@ export default function RouterPage() {
               in-memory, session, and local storage.
             </Text>
           </li>
+          <li>
+            <Text>
+              <strong>Metadata</strong> injection for page titles, descriptions,
+              and other SEO attributes.
+            </Text>
+          </li>
         </ul>
       </section>
 
@@ -60,16 +66,28 @@ export default function RouterPage() {
           <code>{`registerRoutes({
   path: "/",
   component: HomeComponent,
+  meta: {
+    title: "Home Page",
+    description: "Welcome to the home page.",
+  },
   children: [
     {
       path: "/about",
       // sync component
       component: AboutComponent,
+      meta: {
+        title: "About Us",
+        description: "Learn more about our company.",
+      },
     },
     {
       path: "/products",
       // sync component
       component: ProductsComponent,
+      meta: {
+        title: "Products",
+        description: "View our products.",
+      },
       children: [
         {
           path: "/:id",
@@ -83,6 +101,10 @@ export default function RouterPage() {
           cacheLoader: "memory",
           // cache time-to-live
           ttl: 5000, // 1 second
+          meta: ({ data }) => ({
+            title: data.title,
+            description: data.description,
+          }),
         },
       ],
     },
@@ -95,8 +117,7 @@ export default function RouterPage() {
         <SubHeading>Type-Safe Routes</SubHeading>
         <Text>
           All routes are defined in a type-safe manner, ensuring accuracy in
-          navigation and URL handling. The router compiles these routes at
-          server start, ensuring no invalid paths are registered.
+          navigation and URL handling.
         </Text>
       </section>
 
@@ -117,6 +138,42 @@ export default function RouterPage() {
           accessed via <Badge>params</Badge> or <Badge>searchParams</Badge>{" "}
           which are injected into the page and loader components.
         </Text>
+      </section>
+
+      <section class="space-y-4">
+        <SubHeading>Setting Metadata</SubHeading>
+        <Text>
+          Metadata can be set for each route using the <Badge>meta</Badge> prop
+          to update the page title and description:
+        </Text>
+
+        <pre class="language-javascript !rounded-md">
+          <code>{`registerRoutes({
+  path: "/products",
+  component: ProductsComponent,
+  meta: {
+    title: "Products",
+    description: "View our products.",
+  },
+});`}</code>
+        </pre>
+
+        <Text>
+          Metadata can be static or dynamic, with dynamic metadata generated
+          based on the route data.
+        </Text>
+
+        <pre class="language-javascript !rounded-md">
+          <code>{`registerRoutes({
+  path: "/products/:id",
+  component: ProductDetailComponent,
+  loader: fetchProductById,
+  meta: ({ params, data }) => ({
+    title: data.title,
+    description: data.description,
+  }),
+});`}</code>
+        </pre>
       </section>
 
       <section class="space-y-4">

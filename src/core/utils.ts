@@ -110,3 +110,32 @@ const deepEqual = (obj1: any, obj2: any): boolean => {
 
   return false;
 };
+
+// Utility function to update the pages meta tags
+export const updateMeta = (metaTags: Record<string, string>) => {
+  console.log("META ONE", metaTags);
+  const validMetaTags = Object.entries(metaTags).filter(
+    ([name, content]) => name && content
+  );
+
+  metaTags = Object.fromEntries(validMetaTags);
+  console.log(metaTags);
+
+  const title = metaTags.title;
+
+  if (title) {
+    document.title = title;
+  }
+
+  for (const [name, content] of Object.entries(metaTags)) {
+    const metaTag = document.querySelector(`meta[name="${name}"]`);
+    if (metaTag) {
+      metaTag.setAttribute("content", content);
+    } else {
+      const newMetaTag = document.createElement("meta");
+      newMetaTag.setAttribute("name", name);
+      newMetaTag.setAttribute("content", content);
+      document.head.appendChild(newMetaTag);
+    }
+  }
+};
