@@ -349,7 +349,6 @@ export async function renderRouteHierarchy(
       outletElement = outlets[outlets.length - 1] as HTMLElement;
     } else {
       outletElement = null;
-      break;
     }
 
     if (typeof route.meta === "function") {

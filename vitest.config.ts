@@ -14,6 +14,8 @@ export default defineConfig({
         "src/core/**/*.test.ts",
         "src/core/**/*.test.tsx",
       ],
+      reporter: ["text", "json-summary", "json"],
+      reportOnFailure: true,
       all: true,
     },
   },
