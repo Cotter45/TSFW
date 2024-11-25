@@ -151,6 +151,10 @@ const files = [
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/core/state.ts",
     path: "src/core/state.ts",
   },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/core/utils.ts",
+    path: "src/core/utils.ts",
+  },
   // Type definitions
   {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/types/env.d.ts",
