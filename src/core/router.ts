@@ -291,6 +291,8 @@ export async function renderRouteHierarchy(
 
   let outletElement: HTMLElement | null = rootElement;
 
+  rootElement.style.opacity = "0";
+
   for (const currentRoute of routeHierarchy) {
     const { component, loader, fallback, cacheLoader, cacheKey, ttl } =
       currentRoute;
@@ -355,6 +357,8 @@ export async function renderRouteHierarchy(
       updateMeta(route.meta({ params, data }));
     }
   }
+
+  rootElement.style.opacity = "1";
 
   setTimeout(() => {
     routerState.setState({ path: window.location.pathname as RoutePaths });
@@ -433,6 +437,15 @@ export async function render(
       if (lastOutlet) {
         lastOutlet.innerHTML = "";
         lastOutlet.appendChild(element);
+      } else {
+        if (!rootElement) {
+          throw new Error("Root element not found.");
+        }
+
+        if (rootElement) {
+          rootElement.innerHTML = "";
+          rootElement.appendChild(element);
+        }
       }
     } else {
       if (!rootElement) {
