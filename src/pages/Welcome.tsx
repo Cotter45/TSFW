@@ -14,31 +14,11 @@ import "@components/web-components/WebComp";
 import { MemoryState } from "@components/examples/Memory";
 import { LocalState } from "@components/examples/Local";
 import { SessionState } from "@components/examples/Session";
-import { Field, Label } from "@components/ui/Fieldset";
-import {
-  Checkbox,
-  CheckboxField,
-  CheckboxGroup,
-} from "@components/ui/Checkbox";
 
 export default function WelcomePage() {
   return (
     <div className="flex flex-col gap-8 mx-auto px-4 py-8">
       <div class="mx-auto">
-        <Field>
-          <Label>Testing 123</Label>
-        </Field>
-
-        <CheckboxField class="mt-3">
-          <Checkbox
-            color="emerald"
-            name="poop"
-            disabled={false}
-            checked={true}
-            onChange={(checked) => console.log("CHECKED", checked)}
-          />
-          <Label>Stool</Label>
-        </CheckboxField>
         <img
           src="/icon.png"
           alt="TSFW"
