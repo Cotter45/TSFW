@@ -8,6 +8,10 @@ export function jsx(
   ...children: any[]
 ): HTMLElement | null {
   if (typeof type === "function") {
+    if (!children.length) {
+      return type(props);
+    }
+
     return type({ ...props, children });
   }
 
@@ -26,6 +30,9 @@ export function jsx(
     : document.createElement(type);
 
   for (const [key, value] of Object.entries(props || {})) {
+    if (type === "input") {
+      console.log(key, value);
+    }
     if (key.startsWith("on") && typeof value === "function") {
       const eventName = key.slice(2).toLowerCase() as keyof HTMLElementEventMap;
       element.addEventListener(eventName, value as EventListener);
