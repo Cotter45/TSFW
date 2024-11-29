@@ -1,7 +1,6 @@
 import { navigateTo, routerState } from "@core/router";
 import { clsx } from "@core/clsx";
 import { RoutePaths } from "@core/routes";
-import { TouchTarget } from "./Button";
 
 interface LinkProps extends Omit<JSX.IntrinsicElements["a"], "className"> {
   class?: string;
@@ -61,14 +60,14 @@ export function Link({
       href={href}
       onClick={handleClick}
       class={clsx(
-        "text-base text-zinc-500 py-1 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors duration-200 ease-in-out",
+        "text-base text-zinc-600 py-1 hover:text-zinc-700 dark:text-zinc-300 dark:hover:text-zinc-200 transition-colors duration-200 ease-in-out",
         activeClass,
         className
       )}
       aria-current={isActive ? "page" : undefined}
       {...rest}
     >
-      <TouchTarget>{children}</TouchTarget>
+      {children}
     </a>
   );
 }

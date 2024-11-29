@@ -105,7 +105,7 @@ const files = [
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/template/src/index.css",
     path: "src/index.css",
   },
-  // Pages and components
+  // Pages
   {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/template/src/pages/App.tsx",
     path: "src/pages/App.tsx",
@@ -113,6 +113,15 @@ const files = [
   {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/template/src/pages/404.tsx",
     path: "src/pages/404.tsx",
+  },
+  // Components
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Accordion.tsx",
+    path: "src/components/ui/Accordion.tsx",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Avatar.tsx",
+    path: "src/components/ui/Avatar.tsx",
   },
   {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Badge.tsx",
@@ -123,16 +132,32 @@ const files = [
     path: "src/components/ui/Button.tsx",
   },
   {
-    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Dialog.tsx",
-    path: "src/components/ui/Dialog.tsx",
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Card.tsx",
+    path: "src/components/ui/Card.tsx",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Dropdown.tsx",
+    path: "src/components/ui/Dropdown.tsx",
   },
   {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Link.tsx",
     path: "src/components/ui/Link.tsx",
   },
   {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Menu.tsx",
+    path: "src/components/ui/Menu.tsx",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Modal.tsx",
+    path: "src/components/ui/Modal.tsx",
+  },
+  {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Text.tsx",
     path: "src/components/ui/Text.tsx",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/ThemeController.tsx",
+    path: "src/components/ui/ThemeController.tsx",
   },
   // Core lib files
   {

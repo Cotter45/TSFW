@@ -3,27 +3,25 @@ import { Button } from "@components/ui/Button";
 import { Accordion } from "@components/ui/Accordion";
 import { Heading, SubHeading, Text } from "@components/ui/Text";
 import { Card, CardTitle, CardBody } from "@components/ui/Card";
-import {
-  DialogTrigger,
-  Dialog,
-  DialogBody,
-  DialogTitle,
-} from "@components/ui/Dialog";
 
 import "@components/web-components/WebComp";
 import { MemoryState } from "@components/examples/Memory";
 import { LocalState } from "@components/examples/Local";
 import { SessionState } from "@components/examples/Session";
+import { Avatar } from "@components/ui/Avatar";
+import { Modal, ModalBox, ModalTrigger } from "@components/ui/Modal";
 
 export default function WelcomePage() {
   return (
     <div className="flex flex-col gap-8 mx-auto px-4 py-8">
       <div class="mx-auto">
-        <img
-          src="/icon.png"
-          alt="TSFW"
-          class="h-32 aspect-square bg-transparent filter drop-shadow-[0_0_5px_rgba(37,122,87,1)]"
-        />
+        <Avatar size="w-32" shape="rounded-full">
+          <img
+            src="/icon.png"
+            alt="Avatar"
+            class="bg-transparent filter drop-shadow-[0_0_5px_rgba(37,122,87,1)]"
+          />
+        </Avatar>
       </div>
 
       <section class="text-center mb-12">
@@ -59,7 +57,7 @@ export default function WelcomePage() {
 
       <section>
         <SubHeading>Key Features</SubHeading>
-        <div class="mt-4 grid gap-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
+        <div class="mt-4 grid gap-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           <Card class="p-4">
             <CardTitle>🏗 Custom JSX</CardTitle>
             <CardBody>
@@ -81,22 +79,22 @@ export default function WelcomePage() {
           </Card>
 
           <Card class="p-4">
-            <CardTitle>📜 Type-safe Routing</CardTitle>
-            <CardBody>
-              <Text>
-                Type-safe routes with support for data preloading, caching, and
-                custom TTL.
-              </Text>
-            </CardBody>
-          </Card>
-
-          <Card class="p-4">
             <CardTitle>🗂 State Management</CardTitle>
             <CardBody>
               <Text>
                 Built in localized state and persistant storage that syncs
                 across tabs without the if (typeof window !== 'undefined')
                 dance.
+              </Text>
+            </CardBody>
+          </Card>
+
+          <Card class="p-4">
+            <CardTitle>📜 Type-safe Routing</CardTitle>
+            <CardBody>
+              <Text>
+                Type-safe routes with support for data preloading, caching, and
+                custom TTL.
               </Text>
             </CardBody>
           </Card>
@@ -114,9 +112,7 @@ export default function WelcomePage() {
       </section>
 
       <section class="mt-8 text-center">
-        <Button color="emerald" href="/getting-started">
-          Get Started
-        </Button>
+        <Button href="/getting-started">Get Started</Button>
         <Text class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
           Jump straight in or continue exploring below.
         </Text>
@@ -171,19 +167,22 @@ export default function WelcomePage() {
         />
 
         {/* Interactive Example: Dialog */}
-        <div class="mt-12 text-center">
-          <DialogTrigger id="example-dialog">
-            <Button>Open an Example Dialog</Button>
-          </DialogTrigger>
-          <Dialog id="example-dialog">
-            <DialogTitle>Just a Demo Dialog</DialogTitle>
-            <DialogBody>
-              <Text>
-                Here’s an example of a simple modal that demonstrates TSFW’s
-                custom dialog component.
-              </Text>
-            </DialogBody>
-          </Dialog>
+        <div class="w-full mt-12 flex justify-center">
+          <ModalTrigger id="example-modal" color="outline">
+            Open an Example Modal
+          </ModalTrigger>
+
+          <Modal id="example-modal">
+            <ModalBox>
+              <div>
+                <Heading>Just a Demo Modal</Heading>
+                <Text class="mt-3 ml-3">
+                  Here’s an example of a simple modal that demonstrates TSFW’s
+                  custom modal component.
+                </Text>
+              </div>
+            </ModalBox>
+          </Modal>
         </div>
 
         <div class="mt-12 space-y-4">

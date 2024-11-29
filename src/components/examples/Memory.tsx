@@ -15,7 +15,7 @@ function IncrementButton() {
   }
 
   return (
-    <Button color="teal" onClick={incrementCounter}>
+    <Button color="success" onClick={incrementCounter}>
       Increment
     </Button>
   );
@@ -27,7 +27,7 @@ function DecrementButton() {
   }
 
   return (
-    <Button color="red" onClick={decrementCounter}>
+    <Button color="error" onClick={decrementCounter}>
       Decrement
     </Button>
   );

@@ -117,7 +117,7 @@ function DeleteTodoButton({ todoId }: { todoId: number }) {
   }
 
   return (
-    <Button color="red" onClick={deleteTodo}>
+    <Button color="error" onClick={deleteTodo} variant="square">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -169,12 +169,10 @@ export function AddTodo() {
         type="text"
         name="task"
         placeholder="New task"
-        class="rounded-md px-2 py-2 sm:!py-1 dark:bg-zinc-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-md border border-zinc-300 dark:border-zinc-700"
+        class="rounded-md px-2 py-2.5 dark:bg-zinc-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-md border border-zinc-300 dark:border-zinc-700"
         required
       />
-      <Button color="emerald" type="submit">
-        Add Todo
-      </Button>
+      <Button type="submit">Add Todo</Button>
     </form>
   );
 }

@@ -8,12 +8,21 @@ body,
   min-height: 100dvh;
   overscroll-behavior: none;
   touch-action: manipulation;
+  font-family: "Helvetica", "Arial", sans-serif;
 }
 
 * {
   scrollbar-width: thin;
   scrollbar-color: #646464 #e4e4e7;
-  scroll-behavior: smooth;
+}
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #646464;
+}
+::-webkit-scrollbar-track {
+  background: #e4e4e7;
 }
 
 @view-transition {

@@ -7,10 +7,22 @@ export const documentationLinks = [
   { title: "Getting Started", link: "/getting-started" },
   { title: "Router", link: "/router" },
   { title: "State", link: "/state" },
+  {
+    title: "Components",
+    link: "/components",
+    children: [
+      { title: "Overview", link: "/components" },
+      { title: "Button", link: "/components/button" },
+    ],
+  },
   { title: "Testing", link: "/testing" },
   { title: "FAQ", link: "/faq" },
   { title: "Examples", link: "/examples" },
-] as const;
+] as {
+  title: string;
+  link: RoutePaths;
+  children?: { title: string; link: RoutePaths }[];
+}[];
 
 export type DocumentationLink = (typeof documentationLinks)[number];
 

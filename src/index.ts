@@ -51,6 +51,24 @@ registerRoutes({
       },
     },
     {
+      path: "/components",
+      component: async () => await import("@pages/components/Index"),
+      children: [
+        {
+          path: "/button",
+          component: async () => await import("@pages/components/Button"),
+          meta: {
+            title: "Button Component",
+            description: "Learn how to use the Button component in TSFW.",
+          },
+        },
+      ],
+      meta: {
+        title: "Components",
+        description: "Explore the components available in TSFW.",
+      },
+    },
+    {
       path: "/testing",
       component: async () => await import("@pages/Testing"),
       meta: {

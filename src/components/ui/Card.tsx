@@ -1,43 +1,109 @@
-// src/components/Card.tsx
-import { jsx } from "@core/jsx";
-import { SubHeading } from "./Text";
+import { clsx } from "@core/clsx";
+
+type CardProps = JSX.IntrinsicElements["div"] & {
+  bordered?: boolean;
+  compact?: boolean;
+  side?: boolean;
+  imageFull?: boolean;
+  glass?: boolean;
+  class?: string;
+};
 
 export function Card({
+  bordered = false,
+  compact = false,
+  side = false,
+  imageFull = false,
+  glass = false,
+  class: className,
   children,
-  class: className = "",
-}: {
-  children: any;
-  class?: string;
-}) {
+  ...props
+}: CardProps) {
+  const cardClasses = clsx(
+    "card bg-zinc-100 dark:bg-zinc-800 p-4 shadow-md dark:shadow-black rounded-lg",
+    bordered && "card-bordered",
+    compact && "card-compact",
+    side && "card-side",
+    imageFull && "image-full",
+    glass && "glass",
+    className
+  );
+
   return (
-    <div
-      class={`bg-white dark:bg-zinc-950 shadow-md rounded-lg p-6 mb-4 ${className}`}
-    >
+    <div class={cardClasses} {...props}>
       {children}
     </div>
   );
 }
 
-export function CardTitle({
-  children,
-  class: className = "",
-}: {
-  children: any;
+type CardBodyProps = JSX.IntrinsicElements["div"] & {
   class?: string;
-}) {
-  return (
-    <SubHeading class={`text-xl font-bold mb-2 ${className}`}>
-      {children}
-    </SubHeading>
-  );
-}
+};
 
 export function CardBody({
   children,
-  class: className = "",
-}: {
-  children: any;
+  class: className,
+  ...props
+}: CardBodyProps) {
+  const cardBodyClasses = clsx("card-body p-3", className);
+
+  return (
+    <div class={cardBodyClasses} {...props}>
+      {children}
+    </div>
+  );
+}
+
+type CardTitleProps = JSX.IntrinsicElements["h2"] & {
   class?: string;
-}) {
-  return <div class={`text-gray-700 ${className}`}>{children}</div>;
+};
+
+export function CardTitle({
+  children,
+  class: className,
+  ...props
+}: CardTitleProps) {
+  const cardTitleClasses = clsx("card-title", className);
+
+  return (
+    <h2 class={cardTitleClasses} {...props}>
+      {children}
+    </h2>
+  );
+}
+
+type CardActionsProps = JSX.IntrinsicElements["div"] & {
+  class?: string;
+};
+
+export function CardActions({
+  children,
+  class: className,
+  ...props
+}: CardActionsProps) {
+  const cardActionsClasses = clsx("card-actions", className);
+
+  return (
+    <div class={cardActionsClasses} {...props}>
+      {children}
+    </div>
+  );
+}
+
+type CardFigureProps = JSX.IntrinsicElements["figure"] & {
+  class?: string;
+};
+
+export function CardFigure({
+  children,
+  class: className,
+  ...props
+}: CardFigureProps) {
+  const cardFigureClasses = clsx("card-figure", className);
+
+  return (
+    <figure class={cardFigureClasses} {...props}>
+      {children}
+    </figure>
+  );
 }

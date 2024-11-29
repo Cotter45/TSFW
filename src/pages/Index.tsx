@@ -3,19 +3,13 @@ import Prism from "prismjs";
 import "prismjs/plugins/line-numbers/prism-line-numbers.css";
 import "prismjs/plugins/line-numbers/prism-line-numbers.min.js";
 
-import { createState } from "@core/state";
-
 import { Link } from "@components/ui/Link";
 import { Heading, Text } from "@components/ui/Text";
-import { Button } from "@components/ui/Button";
-import {
-  DialogTrigger,
-  Dialog,
-  DialogBody,
-  DialogTitle,
-  closeDialog,
-} from "@components/ui/Dialog";
 import { documentationLinks, DocsLinks } from "@components/DocsLinks";
+import { ThemeController } from "@components/ui/ThemeController";
+import { Modal, ModalBox, ModalTrigger } from "@components/ui/Modal";
+import { Menu, MenuItem, SubMenu } from "@components/ui/Menu";
+import { clsx } from "@core/clsx";
 
 export default function App() {
   const regex =
@@ -82,54 +76,46 @@ export default function App() {
 
 function Routes() {
   return (
-    <div class="pl-2 flex flex-col gap-3 md:gap-0 md:mt-4">
-      {documentationLinks.map((link) => (
-        <Link href={link.link} onclick={() => closeDialog("mobile-menu")}>
-          {link.title}
-        </Link>
-      ))}
-    </div>
+    <Menu vertical>
+      {documentationLinks.map((link, index) => {
+        if (link.children) {
+          return (
+            <SubMenu title={link.title} basePath="/components">
+              {link.children.map((child) => (
+                <MenuItem>
+                  <Link href={child.link}>{child.title}</Link>
+                </MenuItem>
+              ))}
+            </SubMenu>
+          );
+        }
+
+        return (
+          <MenuItem class={clsx(index === 0 && "mt-4")}>
+            <Link href={link.link}>{link.title}</Link>
+          </MenuItem>
+        );
+      })}
+    </Menu>
   );
 }
 
-const themeState = createState("theme", {
-  theme: document.documentElement.classList.contains("dark")
-    ? "🌚 Dark Mode"
-    : "🌞 Light Mode",
-});
-
 export function ToggleThemeButton() {
-  function toggleTheme() {
-    document.documentElement.classList.toggle("dark");
-    const theme = document.documentElement.classList.contains("dark")
-      ? "🌚 Dark Mode"
-      : "🌞 Light Mode";
-
-    themeState.setState({ theme });
-
-    const themeTexts = document.querySelectorAll("#theme-text");
-    if (themeTexts && themeTexts.length > 0) {
-      themeTexts.forEach((themeText) => {
-        themeText.textContent = theme;
-      });
-    }
-  }
-
   return (
-    <Button onClick={toggleTheme} variant="outline" class="mt-12 mx-4">
-      <span id="theme-text">{themeState.getState().theme}</span>
-    </Button>
+    <div class="mt-12 mx-auto">
+      <ThemeController />
+    </div>
   );
 }
 
 function MobileMenu() {
   return (
-    <div class="fixed top-0 z-0 md:hidden w-full flex items-center justify-between py-4">
+    <div class="fixed top-0 z-0 md:hidden w-full flex items-center justify-between py-4 px-4">
       <Link href="/" class="!w-fit">
         <Heading>TSFW</Heading>
       </Link>
 
-      <DialogTrigger id="mobile-menu">
+      <ModalTrigger id="mobile-menu" color="ghost">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -144,21 +130,13 @@ function MobileMenu() {
             d="M3.75 9h16.5m-16.5 6.75h16.5"
           />
         </svg>
-      </DialogTrigger>
-      <Dialog size="xs" variant="left" id="mobile-menu">
-        <DialogTitle>TSFW</DialogTitle>
-        <DialogBody>
+      </ModalTrigger>
+
+      <Modal size="xs" variant="left" id="mobile-menu">
+        <ModalBox>
           <div class="flex flex-col gap-4">
             <Routes />
             <ToggleThemeButton />
-            {/* <a
-              href="https://www.buymeacoffee.com/cotter45"
-              target="_blank"
-              rel="noreferrer"
-              class="mx-auto"
-            >
-              <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=cotter45&button_colour=059669&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00" />
-            </a> */}
             <a
               href="https://www.buymeacoffee.com/cotter45"
               target="_blank"
@@ -179,8 +157,8 @@ function MobileMenu() {
               <Text class="!text-white">Buy me a coffee</Text>
             </a>
           </div>
-        </DialogBody>
-      </Dialog>
+        </ModalBox>
+      </Modal>
     </div>
   );
 }
