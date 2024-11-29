@@ -1,7 +1,7 @@
 {
   "name": "@cotter45/tsfw",
   "description": "Unopinionated React like framework with data binding, type safe routing, nested layouts, plus built in local, global, and persistant state management.",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": "Sean Cotter <sd.cotter45@gmail.com>",
   "license": "ISC",
   "keywords": [],
@@ -14,7 +14,6 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "publish": "npm publish --access public",
     "serve": "npx serve@latest dist",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
