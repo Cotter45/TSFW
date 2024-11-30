@@ -63,11 +63,5 @@ export default {
     {
       pattern: /card-(bordered|compact|side|image-full|glass)/,
     },
-
-    // Drawer Variants
-    {
-      pattern: /drawer-(top|bottom|left|right)/,
-    },
-    "drawer-open",
   ],
 };

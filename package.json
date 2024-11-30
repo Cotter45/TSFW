@@ -13,6 +13,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "check": "npm run lint && npm run format && npm run test:coverage",
+    "lint": "biome lint --write ./src",
+    "format": "biome format --write ./src",
     "preview": "vite preview",
     "serve": "npx serve@latest dist",
     "test": "vitest",
@@ -20,6 +23,7 @@
     "update": "ncu -u && npm install"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@tailwindcss/typography": "^0.5.15",
     "@types/node": "^22.10.1",
     "@types/prismjs": "^1.26.5",

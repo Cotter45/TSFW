@@ -23,40 +23,46 @@
  */
 
 function toVal(mix: unknown): string {
-  let str = "";
+	let str = "";
 
-  if (typeof mix === "string" || (typeof mix === "number" && mix !== 0)) {
-    str += mix;
-  } else if (Array.isArray(mix)) {
-    for (const item of mix) {
-      const result = toVal(item);
-      if (result) {
-        str && (str += " ");
-        str += result;
-      }
-    }
-  } else if (typeof mix === "object" && mix !== null) {
-    for (const key in mix as Record<string, unknown>) {
-      if ((mix as Record<string, unknown>)[key]) {
-        str && (str += " ");
-        str += key;
-      }
-    }
-  }
+	if (typeof mix === "string" || (typeof mix === "number" && mix !== 0)) {
+		str += mix;
+	} else if (Array.isArray(mix)) {
+		for (const item of mix) {
+			const result = toVal(item);
+			if (result) {
+				if (str) {
+					str += " ";
+				}
+				str += result;
+			}
+		}
+	} else if (typeof mix === "object" && mix !== null) {
+		for (const key in mix as Record<string, unknown>) {
+			if ((mix as Record<string, unknown>)[key]) {
+				if (str) {
+					str += " ";
+				}
+				str += key;
+			}
+		}
+	}
 
-  return str;
+	return str;
 }
 
 export function clsx(...args: unknown[]): string {
-  let str = "";
+	let str = "";
 
-  for (const arg of args) {
-    const result = toVal(arg);
-    if (result) {
-      str && (str += " ");
-      str += result;
-    }
-  }
+	for (const arg of args) {
+		const result = toVal(arg);
+		if (result) {
+			if (str) {
+				str += " ";
+			}
+			str += result;
+		}
+	}
 
-  return str;
+	return str;
 }
