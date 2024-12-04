@@ -1,4 +1,4 @@
-const isDev = import.meta.env.MODE === "development";
+const isNotProd = import.meta.env.MODE !== "production";
 
 export const levels = {
 	DEBUG: 0,
@@ -51,7 +51,7 @@ export class Logger {
 	}
 
 	public log(level: keyof typeof levels, ...args: unknown[]) {
-		if (levels[level] >= this.level) {
+		if (levels[level] >= this.level && isNotProd) {
 			const now = new Date();
 			const timeStamp = new Intl.DateTimeFormat("en-US", {
 				hour: "2-digit",
