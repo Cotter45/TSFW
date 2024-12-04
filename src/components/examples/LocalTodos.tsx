@@ -8,6 +8,7 @@ import {
 	removeElement,
 	replaceElement,
 } from "@core/utils";
+import { logger } from "@core/logger";
 
 interface Todo {
 	id: number;
@@ -182,7 +183,7 @@ export function AddTodo() {
 export function LocalTodos() {
 	// Subscribe to todo state changes for side effects
 	todoState.subscribe((newTodos, oldTodos) => {
-		console.log("Local todo state changed", newTodos, oldTodos);
+		logger.info("Local todo state changed", newTodos, oldTodos);
 
 		const { added, removed, updated } = diffStates(newTodos, oldTodos, "id");
 

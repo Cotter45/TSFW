@@ -2,6 +2,7 @@ import { createState } from "@core/state";
 import { Button } from "@components/ui/Button";
 import { Text } from "@components/ui/Text";
 import { updateTextContent } from "@core/utils";
+import { logger } from "@core/logger";
 
 interface CounterState {
 	count: number;
@@ -36,7 +37,7 @@ function DecrementButton() {
 export function MemoryState() {
 	// Subscribe to counter state changes
 	counterState.subscribe((state) => {
-		console.log("Counter state changed", state);
+		logger.info("Counter state changed", state);
 
 		// Update the count text directly by ID
 		updateTextContent("#count-text", `${state.count}`);

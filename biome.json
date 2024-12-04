@@ -25,6 +25,7 @@
         "noUnknownProperty": "off"
       },
       "suspicious": {
+        "noConsole": "error",
         "noExplicitAny": "off",
         "noPrototypeBuiltins": "off",
         "noConfusingVoidType": "off"

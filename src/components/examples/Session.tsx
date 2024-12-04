@@ -2,6 +2,7 @@ import { createPersistentState } from "@core/state";
 import { Button } from "@components/ui/Button";
 import { Text } from "@components/ui/Text";
 import { diffStates } from "@core/utils";
+import { logger } from "@core/logger";
 
 interface User {
 	id: number;
@@ -19,7 +20,7 @@ const userState = createPersistentState<UserState>("users-session", "session", [
 
 function IncreaseAgeButton({ userId }: { userId: number }) {
 	function increaseAge() {
-		console.log("Increase age for user", userId);
+		logger.info("Increase age for user", userId);
 		const users = userState.getState();
 		const userIndex = users.findIndex((user) => user.id === userId);
 		if (userIndex >= 0) {
@@ -59,7 +60,7 @@ function DecreaseAgeButton({ userId }: { userId: number }) {
 export function SessionState() {
 	// Subscribe to user state changes to update the UI
 	userState.subscribe((newState, oldState) => {
-		console.log("Local user state changed", newState);
+		logger.info("Local user state changed", newState, oldState);
 
 		const { updated } = diffStates(newState, oldState, "id");
 

@@ -18,7 +18,6 @@ export function FetchLoading() {
 
 export default function FetchPage({ data, error }: { data: any; error: any }) {
 	if (error) {
-		console.log("THERE IS AN ERROR", error);
 		return (
 			<div>
 				<h1>Error</h1>

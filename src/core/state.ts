@@ -1,6 +1,9 @@
+import { Logger } from "./logger";
+
 type Listener = () => void;
 type ListenerOnChangeEvent<T> = (newState: T, oldState: T) => void;
 
+export const tsfwStateLogger = new Logger("TSFW State");
 const stateCache: Record<string, TSFWState<any>> = {};
 const uniqueTabId = Math.random().toString(36).substring(2, 11);
 export const storageTypes = [
@@ -59,7 +62,7 @@ export class TSFWState<T extends object> {
 
 	getState(): T {
 		if (this.storageType === "idb" && !this.isReady) {
-			console.warn("State is not fully loaded from IndexedDB yet.");
+			tsfwStateLogger.warn("State is not fully loaded from IndexedDB yet.");
 		}
 		return this.proxy as T;
 	}

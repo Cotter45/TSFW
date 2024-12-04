@@ -1,6 +1,9 @@
+import { Logger } from "./logger";
 import type { RoutePaths } from "./routes";
 import { createState, createPersistentState, storageTypes } from "./state";
 import { updateMeta } from "./utils";
+
+const logger = new Logger("TSFW Router");
 
 export let notFoundComponent: () => HTMLElement = () => {
 	const notFoundElement = document.createElement("div");
@@ -331,7 +334,7 @@ export async function renderRouteHierarchy(
 					if (signal.aborted) {
 						return;
 					}
-					console.error("Error loading data:", err);
+					logger.error("Error loading data:", err);
 					cacheState.setState({
 						data: null,
 						error: err as Error,
@@ -512,7 +515,7 @@ export function fallbackRender(
 			if (props.signal?.aborted) {
 				// Do nothing
 			} else {
-				console.error("Fallback render error:", error);
+				logger.error("Fallback render error:", error);
 			}
 		});
 }

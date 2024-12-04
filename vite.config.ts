@@ -1,8 +1,10 @@
-import fs from "fs";
-import path from "path";
-import { defineConfig } from "vite";
+import fs from "node:fs";
+import path from "node:path";
 import { VitePWA } from "vite-plugin-pwa";
 import legacy from "@vitejs/plugin-legacy";
+import { defineConfig, createLogger } from "vite";
+
+const logger = createLogger();
 
 const registeredPaths = new Set<string>();
 
@@ -36,13 +38,15 @@ function crawlForRoutes() {
     const routeBlocks = content.match(/registerRoutes\((\{[\s\S]*?\})\)/g);
 
     if (routeBlocks) {
-      routeBlocks.forEach((block) => {
+      for (const block of routeBlocks) {
         const parentPathMatch = block.match(/path:\s*["'`](.*?)["'`]/);
         const parentPath = parentPathMatch ? parentPathMatch[1] : "";
 
         if (parentPath && !registeredPaths.has(parentPath)) {
           registeredPaths.add(parentPath);
-          console.log("Discovered route:", parentPath);
+          logger.info(`Discovered route: ${parentPath}`, {
+            timestamp: true,
+          });
         }
 
         const childMatches = [...block.matchAll(/path:\s*["'`](.*?)["'`]/g)];
@@ -56,13 +60,17 @@ function crawlForRoutes() {
 
           if (!registeredPaths.has(fullPath)) {
             registeredPaths.add(fullPath);
-            console.log("Discovered child route:", fullPath);
+            logger.info(`Discovered child route: ${fullPath}`, {
+              timestamp: true,
+            });
           }
         });
-      });
+      }
     }
   } else {
-    console.warn("src/index.ts not found.");
+    logger.warn("src/index.ts not found.", {
+      timestamp: true,
+    });
   }
 }
 

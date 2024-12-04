@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { createState, createPersistentState } from "./state";
+import { createState, createPersistentState, tsfwStateLogger } from "./state";
 import { TSFWState } from "./state";
 import "fake-indexeddb/auto";
 
@@ -75,7 +75,7 @@ describe("TSFWState", () => {
 
     it("should log a warning if state is not fully loaded from IndexedDB", () => {
       const consoleMock = vi
-        .spyOn(console, "warn")
+        .spyOn(tsfwStateLogger, "warn")
         .mockImplementation(() => undefined);
 
       const state = createPersistentState("idbtestKey2", "idb", {

@@ -169,6 +169,10 @@ const files = [
     path: "src/core/jsx.ts",
   },
   {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/core/logger.ts",
+    path: "src/core/logger.ts",
+  },
+  {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/core/router.ts",
     path: "src/core/router.ts",
   },
