@@ -32,19 +32,18 @@ export function Modal({
 }
 
 type ModalBoxProps = JSX.IntrinsicElements["div"] & {
+	id: string;
 	class?: string;
 	children: any;
 };
 
 export function ModalBox({
+	id,
 	children,
 	class: className,
 	...props
 }: ModalBoxProps) {
-	const modalBoxClasses = clsx(
-		"modal-box bg-white dark:bg-zinc-900",
-		className,
-	);
+	const modalBoxClasses = clsx("modal-box bg-base-300", className);
 
 	return (
 		<div class={modalBoxClasses} {...props}>
@@ -54,7 +53,7 @@ export function ModalBox({
 				<button
 					type="button"
 					class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-					onclick={() => closeModal("myModal")}
+					onclick={() => closeModal(id)}
 				>
 					✕
 				</button>

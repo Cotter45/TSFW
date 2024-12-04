@@ -21,12 +21,12 @@ export function ThemeController() {
 			</svg>
 			<input
 				type="checkbox"
-				checked={theme === "dim"}
+				checked={theme === "tsfwdark"}
 				onChange={() => {
 					const theme = document.documentElement.getAttribute("data-theme");
 					document.documentElement.setAttribute(
 						"data-theme",
-						theme === "dim" ? "emerald" : "dim",
+						theme === "tsfwdark" ? "tsfwlight" : "tsfwdark",
 					);
 				}}
 				class="toggle theme-controller"

@@ -69,7 +69,7 @@ export function AccordionPanel({
 				>
 					{title}
 				</SubHeading>
-				<div className="text-base/6 text-zinc-500 sm:text-sm/6 dark:text-zinc-400">
+				<div className="text-base/6 text-base-content sm:text-sm/6">
 					<svg
 						id={`accordion-icon-${id}`}
 						xmlns="http://www.w3.org/2000/svg"

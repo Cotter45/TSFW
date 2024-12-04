@@ -92,7 +92,7 @@ export function SubMenu({
 			<details id={title}>
 				<summary
 					class={clsx(
-						"text-base text-zinc-600 py-1 hover:text-zinc-700 dark:text-zinc-300 dark:hover:text-zinc-200 transition-colors duration-200 ease-in-out",
+						"text-base text-base-content hover:text-base-content/90 py-1 transition-colors duration-200 ease-in-out",
 					)}
 				>
 					{title}

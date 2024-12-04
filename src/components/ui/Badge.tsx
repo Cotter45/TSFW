@@ -1,6 +1,5 @@
 // src/components/ui/Badge.tsx
 import { clsx } from "@core/clsx";
-import { Button, type TouchTarget } from "./Button";
 
 const colors = {
 	red: "bg-red-500/15 text-red-700 group-data-[hover]:bg-red-500/25 dark:bg-red-500/10 dark:text-red-400 dark:group-data-[hover]:bg-red-500/20",
@@ -55,29 +54,5 @@ export function Badge({
 		>
 			{children}
 		</span>
-	);
-}
-
-export function BadgeButton({
-	color = "zinc",
-	class: className,
-	children,
-	...props
-}: BadgeProps & { className?: string; children: any } & (
-		| Omit<Parameters<typeof Button>[0], "as" | "className">
-		| Omit<Parameters<typeof TouchTarget>[0], "as" | "className">
-	)) {
-	return (
-		<Button
-			{...props}
-			variant="plain"
-			class={clsx(
-				"inline-flex items-center gap-x-1.5 rounded-md px-1.5 py-0.5 text-sm font-medium",
-				colors[color],
-				className,
-			)}
-		>
-			{children}
-		</Button>
 	);
 }

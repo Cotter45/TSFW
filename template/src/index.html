@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html
   lang="en"
-  class="min-h-screen bg-white lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950"
+  class="min-h-screen bg-base-100"
 >
   <head>
     <meta charset="UTF-8" />
@@ -14,16 +14,16 @@
     />
     <script rel="preload">
       if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        document.documentElement.setAttribute("data-theme", "dim");
+        document.documentElement.setAttribute("data-theme", "tsfwdark");
       } else {
-        document.documentElement.setAttribute("data-theme", "emerald");
+        document.documentElement.setAttribute("data-theme", "tsfwlight");
       }
 
       window.matchMedia("(prefers-color-scheme: dark)").addListener((e) => {
         if (e.matches) {
-          document.documentElement.setAttribute("data-theme", "dim");
+          document.documentElement.setAttribute("data-theme", "tsfwdark");
         } else {
-          document.documentElement.setAttribute("data-theme", "emerald");
+          document.documentElement.setAttribute("data-theme", "tsfwlight");
         }
       });
     </script>
@@ -75,11 +75,11 @@
     <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
   <body
-    class="min-h-screen bg-white lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950"
+    class="min-h-screen bg-base-100"
   >
     <div
       id="app"
-      class="min-h-screen bg-white lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950"
+      class="min-h-screen bg-base-100"
     ></div>
     <script type="module" src="./index.ts"></script>
   </body>

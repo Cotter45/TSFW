@@ -173,7 +173,7 @@ export default function WelcomePage() {
 					</ModalTrigger>
 
 					<Modal id="example-modal">
-						<ModalBox>
+						<ModalBox id="example-modal">
 							<div>
 								<Heading>Just a Demo Modal</Heading>
 								<Text class="mt-3 ml-3">

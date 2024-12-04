@@ -172,7 +172,7 @@ export function AddTodo() {
 				type="text"
 				name="task"
 				placeholder="New task"
-				class="rounded-md px-2 py-2.5 dark:bg-zinc-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-md border border-zinc-300 dark:border-zinc-700"
+				class="rounded-md px-2 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary shadow-md bg-base-300 border border-base-100 text-base-content"
 				required
 			/>
 			<Button type="submit">Add Todo</Button>
@@ -222,7 +222,7 @@ function TodoItem({ todo }: { todo: Todo }) {
 	return (
 		<li
 			id={`${TODO_ID}-${todo.id}`}
-			class="flex items-center justify-between p-4 bg-white dark:bg-zinc-800 shadow-md rounded-md gap-2 border border-zinc-300 dark:border-zinc-700"
+			class="flex items-center justify-between p-4 shadow-md rounded-md gap-2 border bg-base-300 border-base-100 text-base-content"
 			aria-label={`Todo item: ${todo.task}`}
 		>
 			<div class="flex items-center gap-4">
@@ -239,7 +239,7 @@ function TodoItem({ todo }: { todo: Todo }) {
 					id={`${TODO_ID}-status-${todo.id}`}
 					class={clsx(
 						"text-sm font-medium",
-						todo.completed ? "text-emerald-500" : "text-yellow-500",
+						todo.completed ? "text-primary" : "text-warning",
 					)}
 				>
 					{todo.completed ? "Completed" : "Pending"}

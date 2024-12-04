@@ -16,10 +16,7 @@ export function Text({
 			data-slot="text"
 			aria-label={ariaLabel}
 			{...rest}
-			class={clsx(
-				"text-base/6 text-zinc-500 sm:text-sm/6 dark:text-zinc-400",
-				className,
-			)}
+			class={clsx("text-base/6 text-base-content/80 sm:text-sm/6", className)}
 		>
 			{children}
 		</p>
@@ -38,10 +35,7 @@ export function Heading({
 			aria-level="1"
 			aria-label={ariaLabel}
 			{...rest}
-			class={clsx(
-				"text-2xl/6 font-bold text-zinc-900 dark:text-zinc-100",
-				className,
-			)}
+			class={clsx("text-2xl/6 font-bold text-base-content", className)}
 		>
 			{children}
 		</h1>
@@ -67,10 +61,7 @@ export function SubHeading({
 			aria-level="2"
 			aria-label={ariaLabel}
 			{...rest}
-			class={clsx(
-				"text-lg/6 font-bold text-zinc-800 dark:text-zinc-200",
-				className,
-			)}
+			class={clsx("text-lg/6 font-bold text-base-content", className)}
 		>
 			{children}
 		</Tag>

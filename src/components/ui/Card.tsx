@@ -20,7 +20,7 @@ export function Card({
 	...props
 }: CardProps) {
 	const cardClasses = clsx(
-		"card bg-zinc-100 dark:bg-zinc-800 p-4 shadow-md dark:shadow-black rounded-lg",
+		"card bg-base-300 p-4 shadow-md dark:shadow-black rounded-lg",
 		bordered && "card-bordered",
 		compact && "card-compact",
 		side && "card-side",

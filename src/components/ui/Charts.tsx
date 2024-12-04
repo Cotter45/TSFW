@@ -132,7 +132,7 @@ export class TSFWChart {
 
 		this.resizeCanvas();
 		this.textColor =
-			document.documentElement.getAttribute("data-theme") === "dim"
+			document.documentElement.getAttribute("data-theme") === "tsfwdark"
 				? "#d4d4d8"
 				: "#3f3f46";
 
@@ -158,7 +158,7 @@ export class TSFWChart {
 	private observeThemeChanges(): void {
 		const observer = new MutationObserver(() => {
 			this.textColor =
-				document.documentElement.getAttribute("data-theme") === "dim"
+				document.documentElement.getAttribute("data-theme") === "tsfwdark"
 					? "#d4d4d8"
 					: "#3f3f46";
 			this.redraw();

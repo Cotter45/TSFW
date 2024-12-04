@@ -30,7 +30,7 @@ export default function App() {
 	}, 100);
 
 	return (
-		<div class="relative w-full min-h-screen flex flex-col md:flex-row px-2 pb-24 md:px-0 md:pt-2 md:pr-2 md:pb-2 bg-zinc-100 dark:bg-zinc-950">
+		<div class="relative w-full min-h-screen flex flex-col md:flex-row px-2 pb-24 md:px-0 md:pt-2 md:pr-2 md:pb-2 bg-base-100">
 			<div class="w-full max-w-full md:max-w-[300px] min-w-[300px]">
 				{/* Sidebar for larger screens */}
 				<div class="sticky top-1 left-0 max-w-0 max-h-0 md:max-h-screen overflow-y-auto overflow-x-hidden md:w-full md:max-w-full md:flex flex-col gap-2 -my-1 rounded-r-md md:pb-4 md:p-4">
@@ -43,7 +43,7 @@ export default function App() {
 						href="https://www.buymeacoffee.com/cotter45"
 						target="_blank"
 						rel="noreferrer"
-						class="flex gap-2 bg-emerald-600 !text-white items-center justify-center px-8 py-2 rounded-md mx-4 mt-2"
+						class="flex gap-2 bg-primary !text-base-content items-center justify-center px-8 py-2 rounded-md mx-4 mt-2"
 					>
 						<svg
 							stroke="currentColor"
@@ -68,7 +68,7 @@ export default function App() {
 			{/* Main Content */}
 			<main
 				data-outlet
-				class="relative top-20 md:top-0 w-full max-w-[100dvw] overflow-hidden min-h-[calc(100dvh-3rem)] transition-all duration-300 ease-in-out rounded-xl md:rounded-md bg-white p-2 md:p-4 shadow-sm ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10"
+				class="relative top-20 md:top-0 w-full max-w-[100dvw] overflow-hidden min-h-[calc(100dvh-3rem)] transition-all duration-300 ease-in-out rounded-xl md:rounded-md p-2 md:p-4 shadow-sm ring-1 bg-base-200 ring-base-100/5"
 			/>
 
 			{/* Footer Content */}
@@ -138,7 +138,7 @@ function MobileMenu() {
 			</ModalTrigger>
 
 			<Modal size="xs" variant="left" id="mobile-menu">
-				<ModalBox>
+				<ModalBox id="mobile-menu">
 					<div class="flex flex-col gap-4">
 						<Routes />
 						<ToggleThemeButton />
@@ -146,7 +146,7 @@ function MobileMenu() {
 							href="https://www.buymeacoffee.com/cotter45"
 							target="_blank"
 							rel="noreferrer"
-							class="flex gap-2 bg-emerald-600 !text-white items-center justify-center px-8 py-2 rounded-md mx-4 mt-2"
+							class="flex gap-2 bg-primary !text-base-content items-center justify-center px-8 py-2 rounded-md mx-4 mt-2"
 						>
 							<svg
 								stroke="currentColor"

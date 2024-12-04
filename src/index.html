@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html
   lang="en"
-  class="min-h-screen bg-white lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950"
+  class="min-h-screen bg-base-100"
 >
   <head>
     <meta charset="UTF-8" />
     <meta name="theme-color" content="#000000" />
     <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
     <script rel="preload">
       if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        document.documentElement.setAttribute("data-theme", "dim");
+        document.documentElement.setAttribute("data-theme", "tsfwdark");
       } else {
-        document.documentElement.setAttribute("data-theme", "emerald");
+        document.documentElement.setAttribute("data-theme", "tsfwlight");
       }
 
       window.matchMedia("(prefers-color-scheme: dark)").addListener((e) => {
         if (e.matches) {
-          document.documentElement.setAttribute("data-theme", "dim");
+          document.documentElement.setAttribute("data-theme", "tsfwdark");
         } else {
-          document.documentElement.setAttribute("data-theme", "emerald");
+          document.documentElement.setAttribute("data-theme", "tsfwlight");
         }
       });
     </script>
@@ -84,11 +84,11 @@
     window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
   </script>
   <body
-    class="min-h-screen bg-white lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950"
+    class="min-h-screen bg-base-100"
   >
     <div
       id="app"
-      class="min-h-screen bg-white lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950"
+      class="min-h-screen bg-base-100"
     ></div>
     <script type="module" src="./index.ts"></script>
   </body>
