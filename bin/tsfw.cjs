@@ -92,6 +92,10 @@ const files = [
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/.gitignore",
     path: ".gitignore",
   },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/biome.json",
+    path: "biome.json",
+  },
   // Source files
   {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/template/src/index.ts",
