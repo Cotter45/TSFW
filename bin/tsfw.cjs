@@ -140,6 +140,10 @@ const files = [
     path: "src/components/ui/Card.tsx",
   },
   {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Carousel.tsx",
+    path: "src/components/ui/Carousel.tsx",
+  },
+  {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Dropdown.tsx",
     path: "src/components/ui/Dropdown.tsx",
   },
