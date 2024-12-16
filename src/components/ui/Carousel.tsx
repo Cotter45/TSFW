@@ -2,109 +2,109 @@ import { createState, type TSFWState } from "@core/state";
 import { clsx } from "@core/clsx";
 
 export interface CarouselState {
-  currentSlide: number;
+	currentSlide: number;
 }
 
 const initialState: CarouselState = {
-  currentSlide: 0,
+	currentSlide: 0,
 };
 
 let carouselState: TSFWState<CarouselState>;
 
 interface CarouselProps {
-  id: string;
-  class?: string;
-  images: {
-    id: string;
-    src: string;
-    alt: string;
-  }[];
+	id: string;
+	class?: string;
+	images: {
+		id: string;
+		src: string;
+		alt: string;
+	}[];
 }
 
 export function Carousel({ id, images, class: className }: CarouselProps) {
-  carouselState = createState<CarouselState>(id, initialState);
+	carouselState = createState<CarouselState>(id, initialState);
 
-  carouselState.subscribe((state) => {
-    const activeSlide = document.getElementById(images[state.currentSlide].id);
-    if (activeSlide) {
-      activeSlide.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "center",
-      });
-    }
-  });
-  return (
-    <div className="w-full flex flex-col gap-2">
-      <div className="carousel w-full">
-        {images.map(({ id, src, alt }) => (
-          <CarouselItem id={id} src={src} alt={alt} className={className} />
-        ))}
-      </div>
+	carouselState.subscribe((state) => {
+		const activeSlide = document.getElementById(images[state.currentSlide].id);
+		if (activeSlide) {
+			activeSlide.scrollIntoView({
+				behavior: "smooth",
+				block: "nearest",
+				inline: "center",
+			});
+		}
+	});
+	return (
+		<div className="w-full flex flex-col gap-2">
+			<div className="carousel w-full">
+				{images.map(({ id, src, alt }) => (
+					<CarouselItem id={id} src={src} alt={alt} className={className} />
+				))}
+			</div>
 
-      <CarouselThumbnails
-        thumbnails={images.map(({ id, src, alt }) => ({
-          id,
-          src: src,
-          alt: alt,
-        }))}
-      />
-    </div>
-  );
+			<CarouselThumbnails
+				thumbnails={images.map(({ id, src, alt }) => ({
+					id,
+					src: src,
+					alt: alt,
+				}))}
+			/>
+		</div>
+	);
 }
 
 interface CarouselItemProps {
-  id: string;
-  className?: string;
-  src: string;
-  alt: string;
+	id: string;
+	className?: string;
+	src: string;
+	alt: string;
 }
 
 export function CarouselItem({ id, src, alt, className }: CarouselItemProps) {
-  return (
-    <div id={id} className={clsx("carousel-item w-full", className)}>
-      <img src={src} alt={alt} className="w-full" />
-    </div>
-  );
+	return (
+		<div id={id} className={clsx("carousel-item w-full", className)}>
+			<img src={src} alt={alt} className="w-full" />
+		</div>
+	);
 }
 
 interface Thumbnail {
-  id: string;
-  src: string;
-  alt: string;
+	id: string;
+	src: string;
+	alt: string;
 }
 
 interface CarouselThumbnailsProps {
-  thumbnails: Thumbnail[];
+	thumbnails: Thumbnail[];
 }
 
 export function CarouselThumbnails({ thumbnails }: CarouselThumbnailsProps) {
-  return (
-    <div
-      className={clsx(
-        "flex min-h-fit w-full py-4 -space-x-3",
-        thumbnails.length > 4 ? "overflow-x-auto" : "justify-center"
-      )}
-    >
-      {thumbnails.map(({ id, src, alt }, index) => (
-        <a
-          key={id}
-          href={`#${id}`}
-          className="btn btn-sm"
-          onClick={(e: Event) => {
-            e.preventDefault();
-            carouselState.setState({ currentSlide: index });
-          }}
-        >
-          <img
-            src={src}
-            alt={alt}
-            className="h-full aspect-square object-cover rounded"
-          />
-        </a>
-      ))}
-    </div>
-  );
+	return (
+		<div
+			className={clsx(
+				"flex min-h-fit w-full py-4 -space-x-3",
+				thumbnails.length > 4 ? "overflow-x-auto" : "justify-center",
+			)}
+		>
+			{thumbnails.map(({ id, src, alt }, index) => (
+				<a
+					key={id}
+					href={`#${id}`}
+					className="btn btn-sm"
+					onClick={(e: Event) => {
+						e.preventDefault();
+						carouselState.setState({ currentSlide: index });
+					}}
+				>
+					<img
+						src={src}
+						alt={alt}
+						className="h-full aspect-square object-cover rounded"
+					/>
+				</a>
+			))}
+		</div>
+	);
 }
 
 // const images = [
