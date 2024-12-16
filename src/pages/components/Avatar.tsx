@@ -5,7 +5,7 @@ import { Avatar, AvatarGroup } from "@components/ui/Avatar";
 
 export default function AvatarDocumentationPage() {
   return (
-    <div className="flex flex-col gap-8">
+    <div class="flex flex-col gap-10 px-4 py-8 max-w-full">
       <section className="space-y-4">
         <Heading>Avatar Documentation</Heading>
 
