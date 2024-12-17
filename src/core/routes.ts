@@ -1,2 +1,2 @@
 // Auto-generated file
-export type RoutePaths = "/" | "/getting-started" | "/router" | "/state" | "/components" | "/avatar" | "/badge" | "/button" | "/card" | "/charts" | "/testing" | "/faq" | "/examples";
+export type RoutePaths = "/" | "/getting-started" | "/router" | "/state" | "/components" | "/accordion" | "/avatar" | "/badge" | "/button" | "/card" | "/carousel" | "/charts" | "/dropdown" | "/forms" | "/link" | "/testing" | "/faq" | "/examples";

@@ -2,81 +2,81 @@ import { clsx } from "@core/clsx";
 import { Button, type ButtonProps } from "./Button";
 
 type DropdownProps = JSX.IntrinsicElements["div"] & {
-	align?: "end" | "top" | "bottom" | "left" | "right";
-	hover?: boolean;
-	open?: boolean;
-	class?: string;
+  align?: "end" | "top" | "bottom" | "left" | "right";
+  hover?: boolean;
+  open?: boolean;
+  class?: string;
 };
 
 export function Dropdown({
-	align,
-	hover = false,
-	open = false,
-	class: className,
-	children,
+  align,
+  hover = false,
+  open = false,
+  class: className,
+  children,
 }: DropdownProps) {
-	const dropdownClasses = clsx(
-		"dropdown",
-		align && `dropdown-${align}`,
-		hover && "dropdown-hover",
-		open && "dropdown-open",
-		className,
-	);
+  const dropdownClasses = clsx(
+    "dropdown",
+    align && `dropdown-${align}`,
+    hover && "dropdown-hover",
+    open && "dropdown-open",
+    className
+  );
 
-	return <div class={dropdownClasses}>{children}</div>;
+  return <div class={dropdownClasses}>{children}</div>;
 }
 
 type DropdownTriggerProps = ButtonProps & {
-	class?: string;
+  class?: string;
 };
 
 export function DropdownTrigger({
-	children,
-	class: className,
-	...props
+  children,
+  class: className,
+  ...props
 }: DropdownTriggerProps) {
-	return (
-		<Button class={className} {...props}>
-			{children}
-		</Button>
-	);
+  return (
+    <Button class={className} {...props}>
+      {children}
+    </Button>
+  );
 }
 
 type DropdownListProps = JSX.IntrinsicElements["ul"] & {
-	class?: string;
+  class?: string;
 };
 
 export function DropdownList({
-	children,
-	class: className,
+  children,
+  class: className,
 }: DropdownListProps) {
-	const contentClasses = clsx(
-		"dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow",
-		className,
-	);
+  const contentClasses = clsx(
+    "dropdown-content menu bg-base-100 rounded-box z-[1000] w-52 p-2 shadow",
+    className
+  );
 
-	return (
-		<ul tabIndex={0} class={contentClasses}>
-			{children}
-		</ul>
-	);
+  return (
+    <ul tabIndex={0} class={contentClasses}>
+      {children}
+    </ul>
+  );
 }
 
 type DropdownItemProps = JSX.IntrinsicElements["li"] & {
-	class?: string;
-	onClick?: () => void;
+  class?: string;
+  onClick?: () => void;
 };
 
 export function DropdownItem({
-	children,
-	class: className,
-	onClick,
+  children,
+  class: className,
+  onClick,
 }: DropdownItemProps) {
-	return (
-		<li class={className}>
-			<button type="button" onClick={onClick}>
-				{children}
-			</button>
-		</li>
-	);
+  return (
+    <li class={className}>
+      <button type="button" onClick={onClick}>
+        {children}
+      </button>
+    </li>
+  );
 }
