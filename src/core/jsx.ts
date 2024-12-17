@@ -9,7 +9,7 @@ export function jsx(
 ): HTMLElement | null {
 	if (typeof type === "function") {
 		if (!children.length) {
-			return type(props);
+			return type(props ?? {});
 		}
 
 		return type({ ...props, children });

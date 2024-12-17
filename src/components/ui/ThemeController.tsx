@@ -21,6 +21,8 @@ export function ThemeController() {
 			</svg>
 			<input
 				type="checkbox"
+				aria-label="Toggle theme"
+				name="theme"
 				checked={theme === "tsfwdark"}
 				onChange={() => {
 					const theme = document.documentElement.getAttribute("data-theme");

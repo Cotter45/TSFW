@@ -148,8 +148,16 @@ const files = [
     path: "src/components/ui/Dropdown.tsx",
   },
   {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Form.tsx",
+    path: "src/components/ui/Form.tsx",
+  },
+  {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Link.tsx",
     path: "src/components/ui/Link.tsx",
+  },
+  {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Loading.tsx",
+    path: "src/components/ui/Loading.tsx",
   },
   {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Menu.tsx",
