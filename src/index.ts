@@ -135,6 +135,40 @@ registerRoutes({
 						description: "Learn how to use the Link component in TSFW.",
 					},
 				},
+				{
+					path: "/menu",
+					component: async () => await import("@pages/components/Menu"),
+					meta: {
+						title: "Menu Component",
+						description: "Learn how to use the Menu component in TSFW.",
+					},
+				},
+				{
+					path: "/modal",
+					component: async () => await import("@pages/components/Modal"),
+					meta: {
+						title: "Modal Component",
+						description: "Learn how to use the Modal component in TSFW.",
+					},
+				},
+				{
+					path: "/text",
+					component: async () => await import("@pages/components/Text"),
+					meta: {
+						title: "Text Component",
+						description: "Learn how to use the Text component in TSFW.",
+					},
+				},
+				{
+					path: "/theme-controller",
+					component: async () =>
+						await import("@pages/components/ThemeController"),
+					meta: {
+						title: "ThemeController Component",
+						description:
+							"Learn how to use the ThemeController component in TSFW.",
+					},
+				},
 			],
 			meta: {
 				title: "Components",
