@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import ts from "typescript";
 import path from "node:path";
 import { VitePWA } from "vite-plugin-pwa";
 import legacy from "@vitejs/plugin-legacy";
@@ -35,43 +36,68 @@ function crawlForRoutes() {
   if (fs.existsSync(indexPath)) {
     const content = fs.readFileSync(indexPath, "utf-8");
 
-    const routeBlocks = content.match(/registerRoutes\((\{[\s\S]*?\})\)/g);
+    // Step 1: Parse the content into a TypeScript AST
+    const sourceFile = ts.createSourceFile(
+      "index.ts",
+      content,
+      ts.ScriptTarget.Latest,
+      true,
+      ts.ScriptKind.TS
+    );
 
-    if (routeBlocks) {
-      for (const block of routeBlocks) {
-        const parentPathMatch = block.match(/path:\s*["'`](.*?)["'`]/);
-        const parentPath = parentPathMatch ? parentPathMatch[1] : "";
+    // Step 2: Traverse the AST to find route definitions
+    traverseNode(sourceFile);
 
-        if (parentPath && !registeredPaths.has(parentPath)) {
-          registeredPaths.add(parentPath);
-          logger.info(`Discovered route: ${parentPath}`, {
-            timestamp: true,
-          });
+    // Output the final list of registered routes
+    logger.info("Routes updated.");
+  } else {
+    logger.error("Index file not found.");
+  }
+}
+
+function traverseNode(node: ts.Node, parentPath = "") {
+  if (ts.isObjectLiteralExpression(node)) {
+    let currentPath = "";
+
+    for (const property of node.properties) {
+      // Find "path" properties
+      if (
+        ts.isPropertyAssignment(property) &&
+        ts.isIdentifier(property.name) &&
+        property.name.text === "path"
+      ) {
+        const pathValue = property.initializer;
+
+        if (ts.isStringLiteral(pathValue)) {
+          currentPath = combinePaths(parentPath, pathValue.text);
+          registeredPaths.add(currentPath);
         }
+      }
 
-        const childMatches = [...block.matchAll(/path:\s*["'`](.*?)["'`]/g)];
-        childMatches.forEach((childMatch, index) => {
-          if (index === 0) return;
-
-          const childPath = childMatch[1];
-          const fullPath = `${parentPath}${
-            childPath.startsWith("/") ? childPath : `/${childPath}`
-          }`.replaceAll("//", "/");
-
-          if (!registeredPaths.has(fullPath)) {
-            registeredPaths.add(fullPath);
-            logger.info(`Discovered child route: ${fullPath}`, {
-              timestamp: true,
-            });
+      // Recursively process "children" properties
+      if (
+        ts.isPropertyAssignment(property) &&
+        ts.isIdentifier(property.name) &&
+        property.name.text === "children" &&
+        ts.isArrayLiteralExpression(property.initializer)
+      ) {
+        for (const element of property.initializer.elements) {
+          if (ts.isObjectLiteralExpression(element)) {
+            traverseNode(element, currentPath);
           }
-        });
+        }
       }
     }
-  } else {
-    logger.warn("src/index.ts not found.", {
-      timestamp: true,
-    });
   }
+
+  // Continue traversing child nodes
+  ts.forEachChild(node, (child) => traverseNode(child, parentPath));
+}
+
+function combinePaths(parentPath: string, childPath: string): string {
+  return `${parentPath}${
+    childPath.startsWith("/") ? childPath : `/${childPath}`
+  }`.replace(/\/{2,}/g, "/");
 }
 
 function autoUpdateRoutesPlugin() {

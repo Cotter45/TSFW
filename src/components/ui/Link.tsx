@@ -1,6 +1,6 @@
-import { navigateTo, routerState } from "@core/router";
 import { clsx } from "@core/clsx";
 import type { RoutePaths } from "@core/routes";
+import { navigateTo, routerState } from "@core/router";
 
 interface LinkProps extends Omit<JSX.IntrinsicElements["a"], "className"> {
 	class?: string;
@@ -48,11 +48,37 @@ export function Link({
 			href={href}
 			onClick={handleClick}
 			class={clsx(
-				"text-base py-1 transition-colors duration-200 ease-in-out",
+				"text-base py-1 transition-colors duration-200 ease-in-out hover:underline",
 				activeClass,
 				className,
 			)}
 			aria-current={isActive ? "page" : undefined}
+			{...rest}
+		>
+			{children}
+		</a>
+	);
+}
+
+type ExternalLinkProps = Omit<LinkProps, "href"> & {
+	href: string;
+};
+
+export function ExternalLink({
+	href,
+	children,
+	className,
+	...rest
+}: ExternalLinkProps) {
+	return (
+		<a
+			href={href}
+			target="_blank"
+			rel="noopener"
+			class={clsx(
+				"text-base py-1 transition-colors duration-200 ease-in-out hover:underline",
+				className,
+			)}
 			{...rest}
 		>
 			{children}
