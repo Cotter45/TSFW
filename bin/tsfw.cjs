@@ -168,6 +168,10 @@ const files = [
     path: "src/components/ui/Modal.tsx",
   },
   {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Table.tsx",
+    path: "src/components/ui/Table.tsx",
+  },
+  {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Text.tsx",
     path: "src/components/ui/Text.tsx",
   },
