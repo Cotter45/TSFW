@@ -16,7 +16,7 @@ export default function TableDocumentationPage() {
   };
 
   return (
-    <div class="flex flex-col gap-10 px-4 py-8 max-w-full">
+    <div class="fade_in flex flex-col gap-10 px-4 py-8 max-w-full">
       <section className="space-y-4">
         <Heading>Table Component</Heading>
         <Text>
