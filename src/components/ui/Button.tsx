@@ -31,6 +31,8 @@ export interface ButtonProps {
   class?: string;
   onClick?: () => void | void;
   children: JSX.Element | string;
+  role?: string;
+  tabIndex?: number;
 }
 
 export function Button({

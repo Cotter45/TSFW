@@ -35,11 +35,16 @@ export function DropdownTrigger({
   class: className,
   ...props
 }: DropdownTriggerProps) {
-  const triggerClasses = clsx("btn", "dropdown-open", className);
+  const triggerClasses = clsx(
+    "btn btn-outline border-base-100 dark:border-base-100",
+    "dropdown-open",
+    className
+  );
   return (
-    <Button class={triggerClasses} {...props}>
+    // biome-ignore lint/a11y/useSemanticElements: <explanation>
+    <div class={triggerClasses} {...props} role="button" tabIndex={0}>
       {children}
-    </Button>
+    </div>
   );
 }
 
