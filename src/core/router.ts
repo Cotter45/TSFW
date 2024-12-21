@@ -483,6 +483,10 @@ export async function resolveComponent(
 
 let isInitialRender = true;
 
+export function setInitialRender(value: boolean) {
+	isInitialRender = value;
+}
+
 export async function render(
 	component: SyncComponent | AsyncComponent | (() => HTMLElement),
 	isChild: boolean,
@@ -528,9 +532,10 @@ export async function render(
 				if (!rootElement) {
 					throw new Error("Root element not found.");
 				}
+			} else {
+				rootElement.innerHTML = "";
+				rootElement.appendChild(element);
 			}
-			rootElement.innerHTML = "";
-			rootElement.appendChild(element);
 		}
 	};
 
@@ -567,7 +572,7 @@ export function fallbackRender(
 					lastOutlet.innerHTML = "";
 					lastOutlet.appendChild(element);
 				}
-			} else {
+			} else if (isInitialRender) {
 				rootElement.innerHTML = "";
 				rootElement.appendChild(element);
 			}

@@ -3,83 +3,83 @@ import { Badge } from "@components/ui/Badge";
 import { LocalState } from "@components/examples/Local";
 
 export default function StateManagementPage() {
-  return (
-    <div className="fade_in flex flex-col gap-8 mx-auto px-4 py-8">
-      <section className="space-y-4">
-        <Heading>State Management Documentation</Heading>
-        <Text>
-          TSFW’s state management solution is a flexible and efficient way to
-          manage application state, providing type-safe persistence across tabs
-          and storage types.
-        </Text>
-      </section>
+	return (
+		<div className="fade_in flex flex-col gap-8 mx-auto px-4 py-8">
+			<section className="space-y-4">
+				<Heading>State Management Documentation</Heading>
+				<Text>
+					TSFW’s state management solution is a flexible and efficient way to
+					manage application state, providing type-safe persistence across tabs
+					and storage types.
+				</Text>
+			</section>
 
-      <section>
-        <SubHeading>Overview of TSFW State</SubHeading>
-        <ul className="marker:!text-emerald-600 list-outside list-disc p-4 ml-6">
-          <li>
-            <Text>
-              <strong>Type-safe</strong> state management that provides strong
-              typing and validation options.
-            </Text>
-          </li>
-          <li>
-            <Text>
-              <strong>Cross-tab synchronization</strong> with the
-              BroadcastChannel API.
-            </Text>
-          </li>
-          <li>
-            <Text>
-              <strong>Multiple storage options</strong>, including memory,
-              local, and session storage.
-            </Text>
-          </li>
-          <li>
-            <Text>
-              <strong>Automatic state persistence</strong> and restoration.
-            </Text>
-          </li>
-        </ul>
-      </section>
+			<section>
+				<SubHeading>Overview of TSFW State</SubHeading>
+				<ul className="marker:!text-emerald-600 list-outside list-disc p-4 ml-6">
+					<li>
+						<Text>
+							<strong>Type-safe</strong> state management that provides strong
+							typing and validation options.
+						</Text>
+					</li>
+					<li>
+						<Text>
+							<strong>Cross-tab synchronization</strong> with the
+							BroadcastChannel API.
+						</Text>
+					</li>
+					<li>
+						<Text>
+							<strong>Multiple storage options</strong>, including memory,
+							local, and session storage.
+						</Text>
+					</li>
+					<li>
+						<Text>
+							<strong>Automatic state persistence</strong> and restoration.
+						</Text>
+					</li>
+				</ul>
+			</section>
 
-      <section className="space-y-4">
-        <SubHeading>Creating and Using State</SubHeading>
-        <Text>
-          You can create state using <Badge>createState</Badge> for in-memory
-          state or
-          <Badge>createPersistentState</Badge> for persistent storage. State can
-          be synchronized across tabs as long as it is created with
-          <Badge>createPersistentState</Badge>.
-        </Text>
+			<section className="space-y-4">
+				<SubHeading>Creating and Using State</SubHeading>
+				<Text>
+					You can create state using <Badge>createState</Badge> for in-memory
+					state or
+					<Badge>createPersistentState</Badge> for persistent storage. State can
+					be synchronized across tabs as long as it is created with
+					<Badge>createPersistentState</Badge>.
+				</Text>
 
-        <pre className="language-javascript !rounded-md">
-          <code>{`import { createState } from "@core/state";
+				<pre className="language-javascript !rounded-md">
+					<code>{`import { createState } from "@core/state";
 
 const counterState = createState("counter", { count: 0 });
 
 function incrementCounter() {
   counterState.setState({ count: counterState.getState().count + 1 });
 }`}</code>
-        </pre>
+				</pre>
 
-        <Text>
-          In this example, we define a simple in-memory counter state using
-          <Badge>createState</Badge>. This state is only available in the
-          current tab.
-        </Text>
-      </section>
+				<Text>
+					In this example, we define a simple in-memory counter state using
+					<Badge>createState</Badge>. This state is only available in the
+					current tab.
+				</Text>
+			</section>
 
-      <section className="space-y-4">
-        <SubHeading>Persistent State with Cross-Tab Sync</SubHeading>
-        <Text>
-          Use <Badge>createPersistentState</Badge> to store state in local, or
-          session storage. This allows state persistence across sessions and
-          tabs.
-        </Text>
+			<section className="space-y-4">
+				<SubHeading>Persistent State with Cross-Tab Sync</SubHeading>
+				<Text>
+					Use <Badge>createPersistentState</Badge> to store state in local, or
+					session storage. This allows state persistence across sessions and
+					tabs.
+				</Text>
 
-        <pre className="language-javascript !rounded-md">
-          <code>{`import { createPersistentState } from "@core/state";
+				<pre className="language-javascript !rounded-md">
+					<code>{`import { createPersistentState } from "@core/state";
 
 const userListState = createPersistentState("users", "local", [
   { id: 1, name: "Alice", age: 30 },
@@ -90,53 +90,53 @@ function addUser(name, age) {
   const users = userListState.getState();
   userListState.setState([...users, { id: users.length + 1, name, age }]);
 }`}</code>
-        </pre>
+				</pre>
 
-        <Text>
-          Here, <Badge>createPersistentState</Badge> stores the user list in
-          local storage, synchronizing changes across tabs. Changes are
-          automatically broadcasted using the BroadcastChannel API.
-        </Text>
-      </section>
+				<Text>
+					Here, <Badge>createPersistentState</Badge> stores the user list in
+					local storage, synchronizing changes across tabs. Changes are
+					automatically broadcasted using the BroadcastChannel API.
+				</Text>
+			</section>
 
-      <section className="space-y-4">
-        <SubHeading>Subscribing to State Changes</SubHeading>
-        <Text>
-          To react to state changes, use <Badge>subscribe</Badge>. This
-          registers a callback that will be triggered on every update.
-        </Text>
+			<section className="space-y-4">
+				<SubHeading>Subscribing to State Changes</SubHeading>
+				<Text>
+					To react to state changes, use <Badge>subscribe</Badge>. This
+					registers a callback that will be triggered on every update.
+				</Text>
 
-        <pre className="language-javascript !rounded-md">
-          <code>{`userListState.subscribe((oldState, newState) => {
+				<pre className="language-javascript !rounded-md">
+					<code>{`userListState.subscribe((oldState, newState) => {
   console.log("User list updated:", oldState, newState);
 });`}</code>
-        </pre>
+				</pre>
 
-        <Text>
-          The <Badge>subscribe</Badge> function enables responsive UI updates
-          whenever state changes, making it useful for managing components that
-          depend on the current state.
-        </Text>
+				<Text>
+					The <Badge>subscribe</Badge> function enables responsive UI updates
+					whenever state changes, making it useful for managing components that
+					depend on the current state.
+				</Text>
 
-        <Badge color="amber">Note:</Badge>
-        <Text>
-          In order to subscribe to state changes across multiple components, you
-          must pass a unique ID to the <Badge>subscribe</Badge> function. This
-          ID is used to identify the subscription and prevent duplicate
-          listeners.
-        </Text>
-      </section>
+				<Badge color="amber">Note:</Badge>
+				<Text>
+					In order to subscribe to state changes across multiple components, you
+					must pass a unique ID to the <Badge>subscribe</Badge> function. This
+					ID is used to identify the subscription and prevent duplicate
+					listeners.
+				</Text>
+			</section>
 
-      <section className="space-y-4">
-        <SubHeading>State Validation</SubHeading>
-        <Text>
-          You can provide a validation function when creating a state. If the
-          validation fails, the state will not update.
-        </Text>
+			<section className="space-y-4">
+				<SubHeading>State Validation</SubHeading>
+				<Text>
+					You can provide a validation function when creating a state. If the
+					validation fails, the state will not update.
+				</Text>
 
-        <pre className="language-javascript !rounded-md">
-          <code>
-            {`const validatedState =
+				<pre className="language-javascript !rounded-md">
+					<code>
+						{`const validatedState =
   createPersistentState(
     "validated",
     "local",
@@ -147,25 +147,25 @@ function addUser(name, age) {
 // This will not update because count < 0
 validatedState.setState({ count: -1 });
 `}
-          </code>
-        </pre>
+					</code>
+				</pre>
 
-        <Text>
-          This example ensures the <Badge>count</Badge> is always non-negative
-          by using a validation function.
-        </Text>
-      </section>
+				<Text>
+					This example ensures the <Badge>count</Badge> is always non-negative
+					by using a validation function.
+				</Text>
+			</section>
 
-      <section className="space-y-4">
-        <SubHeading>Broadcasting and Cross-Tab Sync</SubHeading>
-        <Text>
-          By default, persistent states synchronize across tabs using the
-          BroadcastChannel API. Changes in one tab are broadcasted and reflected
-          in other open tabs.
-        </Text>
+			<section className="space-y-4">
+				<SubHeading>Broadcasting and Cross-Tab Sync</SubHeading>
+				<Text>
+					By default, persistent states synchronize across tabs using the
+					BroadcastChannel API. Changes in one tab are broadcasted and reflected
+					in other open tabs.
+				</Text>
 
-        <pre className="language-javascript !rounded-md">
-          <code>{`const sharedState =
+				<pre className="language-javascript !rounded-md">
+					<code>{`const sharedState =
     createPersistentState(
       "sharedCount",
       "local",
@@ -175,50 +175,50 @@ validatedState.setState({ count: -1 });
 sharedState.subscribe((oldState, newState) => {
   console.log("Shared count updated:", oldState.count, newState.count);
 });`}</code>
-        </pre>
+				</pre>
 
-        <Text>
-          The <Badge>sharedState</Badge> updates in real-time across tabs,
-          allowing for multi-tab applications with shared state.
-        </Text>
-      </section>
+				<Text>
+					The <Badge>sharedState</Badge> updates in real-time across tabs,
+					allowing for multi-tab applications with shared state.
+				</Text>
+			</section>
 
-      <section className="space-y-4">
-        <SubHeading>Storage Options</SubHeading>
-        <Text>
-          TSFWState supports different storage options for persistence:
-        </Text>
+			<section className="space-y-4">
+				<SubHeading>Storage Options</SubHeading>
+				<Text>
+					TSFWState supports different storage options for persistence:
+				</Text>
 
-        <ul className="marker:!text-emerald-600 list-outside list-disc p-4 pt-0 ml-6">
-          <li>
-            <Text>
-              <strong>Local Storage</strong> – Persists data across sessions and
-              tabs.
-            </Text>
-          </li>
-          <li>
-            <Text>
-              <strong>Session Storage</strong> – Persists data across tabs in a
-              single session.
-            </Text>
-          </li>
-        </ul>
+				<ul className="marker:!text-emerald-600 list-outside list-disc p-4 pt-0 ml-6">
+					<li>
+						<Text>
+							<strong>Local Storage</strong> – Persists data across sessions and
+							tabs.
+						</Text>
+					</li>
+					<li>
+						<Text>
+							<strong>Session Storage</strong> – Persists data across tabs in a
+							single session.
+						</Text>
+					</li>
+				</ul>
 
-        <Text>
-          Specify a storage type when creating state to control where data is
-          stored and how it persists. For example,{" "}
-          <Badge>
-            createPersistentState("example", "local", {"{...data}"})
-          </Badge>
-          will persist data in Local Storage.
-        </Text>
-      </section>
+				<Text>
+					Specify a storage type when creating state to control where data is
+					stored and how it persists. For example,{" "}
+					<Badge>
+						createPersistentState("example", "local", {"{...data}"})
+					</Badge>
+					will persist data in Local Storage.
+				</Text>
+			</section>
 
-      <section className="space-y-4">
-        <SubHeading>Full Example</SubHeading>
+			<section className="space-y-4">
+				<SubHeading>Full Example</SubHeading>
 
-        <pre className="language-javascript !rounded-md">
-          <code>{`import { createPersistentState } from "@core/state";
+				<pre className="language-javascript !rounded-md">
+					<code>{`import { createPersistentState } from "@core/state";
 import { Button } from "@components/ui/Button";
 import { Text } from "@components/ui/Text";
 
@@ -240,10 +240,10 @@ const userState =
       { id: 3, name: "Charlie", age: 35 },
     ]);
 `}</code>
-        </pre>
+				</pre>
 
-        <pre className="language-javascript !rounded-md">
-          <code>{`function IncreaseAgeButton({ userId }: { userId: number }) {
+				<pre className="language-javascript !rounded-md">
+					<code>{`function IncreaseAgeButton({ userId }: { userId: number }) {
   function increaseAge() {
     console.log("Increase age for user", userId);
     const users = userState.getState();
@@ -262,10 +262,10 @@ const userState =
     </Button>
   );
 }`}</code>
-        </pre>
+				</pre>
 
-        <pre className="language-javascript !rounded-md">
-          <code>{`function DecreaseAgeButton({ userId }: { userId: number }) {
+				<pre className="language-javascript !rounded-md">
+					<code>{`function DecreaseAgeButton({ userId }: { userId: number }) {
   function decreaseAge() {
     const users = userState.getState();
     const userIndex = users.findIndex((user) => user.id === userId);
@@ -283,10 +283,10 @@ const userState =
     </Button>
   );
 }`}</code>
-        </pre>
+				</pre>
 
-        <pre className="language-javascript !rounded-md">
-          <code>{`export function LocalState() {
+				<pre className="language-javascript !rounded-md">
+					<code>{`export function LocalState() {
   // Subscribe to user state changes to update the UI
   userState.subscribe((newState, oldState) => {
     console.log("Local user state changed", newState);
@@ -332,20 +332,20 @@ const userState =
     </table>
   );
 }`}</code>
-        </pre>
+				</pre>
 
-        <div className="flex items-center justify-center">
-          <LocalState />
-        </div>
+				<div className="flex items-center justify-center">
+					<LocalState />
+				</div>
 
-        <Text>
-          In this example, we create a user list state that is stored in local
-          storage. The user list is updated with buttons that increase or
-          decrease the age of each user. The UI is automatically updated by
-          subscribing to state changes, allowing for real-time updates and
-          whatever else you can imagine.
-        </Text>
-      </section>
-    </div>
-  );
+				<Text>
+					In this example, we create a user list state that is stored in local
+					storage. The user list is updated with buttons that increase or
+					decrease the age of each user. The UI is automatically updated by
+					subscribing to state changes, allowing for real-time updates and
+					whatever else you can imagine.
+				</Text>
+			</section>
+		</div>
+	);
 }
