@@ -95,7 +95,10 @@ export function AccordionPanel({
 				id={`accordion-content-${id}`}
 				className="accordion-content overflow-hidden transition-all duration-300 ease-in-out"
 				aria-labelledby={`accordion-header-${id}`}
-				style={{ maxHeight: 0, opacity: 0 }}
+				style={{
+					maxHeight: panelState.getState().isOpen ? "auto" : 0,
+					opacity: panelState.getState().isOpen ? 1 : 0,
+				}}
 			>
 				<Text class="pb-2 !text-sm px-2">{children}</Text>
 			</div>

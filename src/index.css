@@ -5,136 +5,136 @@
 html,
 body,
 #app {
-  min-height: 100dvh;
-  overscroll-behavior: none;
-  touch-action: manipulation;
-  font-family: "Helvetica", "Arial", sans-serif;
+	min-height: 100dvh;
+	overscroll-behavior: none;
+	touch-action: manipulation;
+	font-family: "Helvetica", "Arial", sans-serif;
 }
 
 @view-transition {
-  navigation: auto;
+	navigation: auto;
 }
 
 .visible {
-  visibility: visible;
-  opacity: 1;
-  transition: opacity 1s linear;
+	visibility: visible;
+	opacity: 1;
+	transition: opacity 1s linear;
 }
 
 .hidden {
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0s 1s, opacity 1s linear;
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 0s 1s, opacity 1s linear;
 }
 
 .fade_in {
-  animation: fadeIn 0.5s ease-in-out;
+	animation: fadeIn 0.5s ease-in-out;
 }
 
 .fade_in_slow {
-  animation: fadeIn 2s ease-in-out;
+	animation: fadeIn 2s ease-in-out;
 }
 
 @keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
 .fade_out {
-  animation: fadeOut 0.5s ease-in-out;
+	animation: fadeOut 0.5s ease-in-out;
 }
 
 @keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
 }
 
 .dialog-backdrop {
-  opacity: 0;
-  transition: opacity 0.3s ease;
+	opacity: 0;
+	transition: opacity 0.3s ease;
 }
 
 .dialog-enter-active {
-  opacity: 1;
+	opacity: 1;
 }
 
 .dialog-exit-active {
-  opacity: 0;
+	opacity: 0;
 }
 
 .accordion-content {
-  transition: max-height 0.3s ease, opacity 0.3s ease;
+	transition: max-height 0.3s ease, opacity 0.3s ease;
 }
 
 .accordion-header span {
-  transition: transform 0.3s ease;
+	transition: transform 0.3s ease;
 }
 
 .toast-right {
-  animation: slide-in-right 0.3s;
+	animation: slide-in-right 0.3s;
 }
 
 .toast-right-exit {
-  animation: slide-out-right 0.3s;
+	animation: slide-out-right 0.3s;
 }
 
 .toast-left {
-  animation: slide-in-left 0.3s;
+	animation: slide-in-left 0.3s;
 }
 
 .toast-left-exit {
-  animation: slide-out-left 0.3s;
+	animation: slide-out-left 0.3s;
 }
 
 /* Toast animations */
 @keyframes slide-in-right {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+	from {
+		transform: translateX(100%);
+		opacity: 0;
+	}
+	to {
+		transform: translateX(0);
+		opacity: 1;
+	}
 }
 
 @keyframes slide-out-right {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(100%);
-    opacity: 0;
-  }
+	from {
+		transform: translateX(0);
+		opacity: 1;
+	}
+	to {
+		transform: translateX(100%);
+		opacity: 0;
+	}
 }
 
 @keyframes slide-in-left {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+	from {
+		transform: translateX(-100%);
+		opacity: 0;
+	}
+	to {
+		transform: translateX(0);
+		opacity: 1;
+	}
 }
 
 @keyframes slide-out-left {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
+	from {
+		transform: translateX(0);
+		opacity: 1;
+	}
+	to {
+		transform: translateX(-100%);
+		opacity: 0;
+	}
 }
