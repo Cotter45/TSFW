@@ -176,6 +176,10 @@ const files = [
     path: "src/components/ui/Text.tsx",
   },
   {
+    url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/Toast.tsx",
+    path: "src/components/ui/Toast.tsx",
+  },
+  {
     url: "https://raw.githubusercontent.com/Cotter45/TSFW/main/src/components/ui/ThemeController.tsx",
     path: "src/components/ui/ThemeController.tsx",
   },

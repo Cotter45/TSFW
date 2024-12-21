@@ -1,7 +1,7 @@
 {
   "name": "@cotter45/tsfw",
   "description": "Unopinionated React like framework with data binding, type safe routing, nested layouts, plus built in local, global, and persistant state management.",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "author": "Sean Cotter <sd.cotter45@gmail.com>",
   "license": "ISC",
   "keywords": [],

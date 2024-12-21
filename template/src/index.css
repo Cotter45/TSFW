@@ -91,3 +91,64 @@ body,
 .accordion-header span {
   transition: transform 0.3s ease;
 }
+
+.toast-right {
+  animation: slide-in-right 0.3s;
+}
+
+.toast-right-exit {
+  animation: slide-out-right 0.3s;
+}
+
+.toast-left {
+  animation: slide-in-left 0.3s;
+}
+
+.toast-left-exit {
+  animation: slide-out-left 0.3s;
+}
+
+/* Toast animations */
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out-right {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out-left {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}

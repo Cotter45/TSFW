@@ -1,4 +1,5 @@
 import { Heading, Text } from "@components/ui/Text";
+import { GlobalToastContainer } from "@components/ui/Toast";
 
 export default function App() {
   return (
@@ -20,6 +21,8 @@ export default function App() {
       >
         Learn More about TSFW
       </a>
+
+      <GlobalToastContainer duration={2500} />
     </div>
   );
 }
