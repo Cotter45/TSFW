@@ -1,5 +1,10 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { createState, createPersistentState, tsfwStateLogger } from "./state";
+import {
+  createState,
+  createPersistentState,
+  tsfwStateLogger,
+  Signal,
+} from "./state";
 import { TSFWState } from "./state";
 import "fake-indexeddb/auto";
 
@@ -327,6 +332,145 @@ describe("TSFWState", () => {
       const instance2 = createPersistentState(key, "local", { foo: "baz" });
       const instance3 = createPersistentState(key, "local", { foo: "baz" });
       expect(instance2).toBe(instance3);
+    });
+  });
+});
+
+describe("Signal", () => {
+  let signal: Signal<number>;
+  let listener: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    signal = new Signal(0);
+    listener = vi.fn();
+  });
+
+  describe("get", () => {
+    it("should return the initial value", () => {
+      expect(signal.get()).toBe(0);
+    });
+
+    it("should return the updated value after set", () => {
+      signal.set(42);
+      expect(signal.get()).toBe(42);
+    });
+  });
+
+  describe("set", () => {
+    it("should update the value", () => {
+      signal.set(100);
+      expect(signal.get()).toBe(100);
+    });
+
+    it("should notify listeners when the value changes", () => {
+      signal.subscribe(listener);
+      signal.set(200);
+      expect(listener).toHaveBeenCalledWith(200, 0);
+    });
+
+    it("should not notify listeners when the value does not change", () => {
+      signal.subscribe(listener);
+      signal.set(0); // Setting the same value
+      expect(listener).not.toHaveBeenCalled();
+    });
+
+    it("should pass both new and old values to listeners", () => {
+      signal.subscribe(listener);
+      signal.set(10);
+      expect(listener).toHaveBeenCalledWith(10, 0);
+    });
+  });
+
+  describe("subscribe", () => {
+    it("should add a listener", () => {
+      signal.subscribe(listener);
+      signal.set(1);
+      expect(listener).toHaveBeenCalled();
+    });
+
+    it("should allow multiple listeners", () => {
+      const secondListener = vi.fn();
+      signal.subscribe(listener);
+      signal.subscribe(secondListener);
+
+      signal.set(2);
+
+      expect(listener).toHaveBeenCalledWith(2, 0);
+      expect(secondListener).toHaveBeenCalledWith(2, 0);
+    });
+
+    it("should return an unsubscribe function", () => {
+      const unsubscribe = signal.subscribe(listener);
+      unsubscribe();
+
+      signal.set(3);
+      expect(listener).not.toHaveBeenCalled();
+    });
+
+    it("should remove a listener when unsubscribed", () => {
+      const unsubscribe = signal.subscribe(listener);
+      unsubscribe();
+
+      signal.set(4);
+      expect(listener).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("unsubscribe", () => {
+    it("should only remove the specific listener", () => {
+      const secondListener = vi.fn();
+      const unsubscribeFirst = signal.subscribe(listener);
+      signal.subscribe(secondListener);
+
+      unsubscribeFirst();
+
+      signal.set(5);
+
+      expect(listener).not.toHaveBeenCalled();
+      expect(secondListener).toHaveBeenCalledWith(5, 0);
+    });
+
+    it("should not affect listeners that remain subscribed", () => {
+      const secondListener = vi.fn();
+      signal.subscribe(listener);
+      const unsubscribeSecond = signal.subscribe(secondListener);
+
+      unsubscribeSecond();
+
+      signal.set(6);
+
+      expect(listener).toHaveBeenCalledWith(6, 0);
+      expect(secondListener).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("edge cases", () => {
+    it("should handle unsubscribing a listener that was never added", () => {
+      const unsubscribe = signal.subscribe(listener);
+      unsubscribe(); // Unsubscribe the listener
+
+      // Attempting to unsubscribe again should not throw
+      expect(() => unsubscribe()).not.toThrow();
+
+      signal.set(7);
+      expect(listener).not.toHaveBeenCalled();
+    });
+
+    it("should handle subscribing and unsubscribing multiple times", () => {
+      const unsubscribe = signal.subscribe(listener);
+      unsubscribe();
+
+      signal.subscribe(listener);
+      signal.set(8);
+      expect(listener).toHaveBeenCalledWith(8, 0);
+    });
+
+    it("should not notify unsubscribed listeners of state changes", () => {
+      const unsubscribe = signal.subscribe(listener);
+      unsubscribe();
+
+      signal.set(9);
+      expect(listener).not.toHaveBeenCalled();
     });
   });
 });

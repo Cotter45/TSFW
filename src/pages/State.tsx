@@ -1,6 +1,8 @@
 import { Heading, SubHeading, Text } from "@components/ui/Text";
 import { Badge } from "@components/ui/Badge";
 import { LocalState } from "@components/examples/Local";
+import { Table } from "@components/ui/Table";
+import { CountButtonExample } from "@components/examples/Signal";
 
 export default function StateManagementPage() {
 	return (
@@ -118,7 +120,14 @@ function addUser(name, age) {
 					depend on the current state.
 				</Text>
 
-				<Badge color="amber">Note:</Badge>
+				<Badge color="amber">
+					Note:
+					<br />
+					<br />
+					In order to subscribe to state changes across multiple components, you
+					must pass a unique ID to the subscribe function. This ID is used to
+					identify the subscription and prevent duplicate listeners.
+				</Badge>
 				<Text>
 					In order to subscribe to state changes across multiple components, you
 					must pass a unique ID to the <Badge>subscribe</Badge> function. This
@@ -345,6 +354,171 @@ const userState =
 					subscribing to state changes, allowing for real-time updates and
 					whatever else you can imagine.
 				</Text>
+			</section>
+
+			<section className="space-y-4">
+				<SubHeading>Signals for Lightweight State Management</SubHeading>
+				<Text>
+					For managing simpler data types or scenarios where persistence isn't
+					required, TSFW provides a lightweight <Badge>Signal</Badge> class.
+					Signals are perfect for scenarios that demand minimal overhead and
+					instant reactivity without cross-tab synchronization or storage.
+				</Text>
+
+				<Text>
+					Signals represent a single state value and notify listeners whenever
+					the state changes.
+				</Text>
+
+				<pre className="language-javascript !rounded-md">
+					<code>{`import { Signal } from "@core/signal";
+
+const counter = new Signal(0);
+
+// Subscribe to changes
+counter.subscribe((newValue, oldValue) => {
+  console.log(\`Counter changed from \${oldValue} to \${newValue}\`);
+});
+
+// Update the signal
+counter.set(counter.get() + 1); // Logs: Counter changed from 0 to 1
+`}</code>
+				</pre>
+
+				<Text>
+					<strong>Features of Signals</strong>:
+				</Text>
+				<ul className="marker:!text-emerald-600 list-outside list-disc p-4 pt-0 ml-6">
+					<li>
+						<Text>
+							<strong>Lightweight</strong>: Designed for simple state management
+							without persistence or complex storage.
+						</Text>
+					</li>
+					<li>
+						<Text>
+							<strong>Reactive</strong>: Automatically notifies subscribers of
+							changes.
+						</Text>
+					</li>
+					<li>
+						<Text>
+							<strong>Easy-to-use API</strong>: Minimal boilerplate for managing
+							state.
+						</Text>
+					</li>
+				</ul>
+
+				<Text>
+					Listeners can be subscribed to a signal to react to state changes.
+					Subscriptions return an unsubscribe function, ensuring cleanup is
+					straightforward.
+				</Text>
+
+				<SubHeading>Signal Example</SubHeading>
+
+				<Text>
+					This example shows how to use a <Badge>Signal</Badge> for a simple
+					data type and reactive state without requiring persistence or
+					cross-tab sync.
+				</Text>
+
+				<CountButtonExample />
+
+				<pre className="language-javascript !rounded-md">
+					<code>{`import { Signal } from "@core/state";
+import { Button } from "@components/ui/Button";
+import { Text } from "@components/ui/Text";
+import { updateTextContent } from "@core/utils";
+import { logger } from "@core/logger";
+
+// Create a Signal to manage the count
+const countSignal = new Signal(0);
+
+function IncrementButton() {
+	function incrementCounter() {
+		countSignal.set(countSignal.get() + 1);
+	}
+
+	return (
+		<Button color="success" onClick={incrementCounter}>
+			Increment
+		</Button>
+	);
+}
+
+function DecrementButton() {
+	function decrementCounter() {
+		countSignal.set(countSignal.get() - 1);
+	}
+
+	return (
+		<Button color="error" onClick={decrementCounter}>
+			Decrement
+		</Button>
+	);
+}
+
+export function CountButtonExample() {
+	// Subscribe to countSignal changes
+	countSignal.subscribe((newValue) => {
+		logger.info("Count changed to", newValue);
+
+		// Update the count text directly by ID
+		updateTextContent("#count-text", \`\${newValue}\`);
+	});
+
+	return (
+		<div class="h-full w-full flex flex-col items-center justify-center gap-10">
+			<div class="flex gap-4">
+				<Text class="flex gap-4">Count:</Text>
+				<Text id="count-text">{\`\${countSignal.get()}\`}</Text>
+			</div>
+			<div class="space-x-4">
+				<IncrementButton />
+				<DecrementButton />
+			</div>
+		</div>
+	);
+}
+`}</code>
+				</pre>
+
+				<SubHeading>Comparison: Persistent State vs. Signals</SubHeading>
+				<Table
+					id="state-comparison"
+					columns={["Feature", "Persistent State", "Signals"]}
+					rows={[
+						{
+							id: 1,
+							feature: "Persistence",
+							"persistent state": "Yes (local, session, IndexedDB)",
+							signals: "No",
+						},
+						{
+							id: 2,
+							feature: "Cross-tab synchronization",
+							"persistent state": "Yes",
+							signals: "No",
+						},
+						{
+							id: 3,
+							feature: "Best suited for",
+							"persistent state": "Complex or persistent data",
+							signals: "Lightweight, transient data",
+						},
+						{
+							id: 4,
+							feature: "API Complexity",
+							"persistent state": "Higher (storage, broadcast, validation)",
+							signals: "Minimal",
+						},
+					]}
+					striped
+					searchable={false}
+					toggleableColumns={false}
+					class="mt-4"
+				/>
 			</section>
 		</div>
 	);

@@ -317,3 +317,41 @@ export function createPersistentState<T extends object>(
 
 	return stateInstance;
 }
+
+type SignalListener<T> = (newValue: T, oldValue: T) => void;
+
+export class Signal<T> {
+	private value: T;
+	private listeners: Set<SignalListener<T>> = new Set();
+
+	constructor(initialValue: T) {
+		this.value = initialValue;
+	}
+
+	// Get the current value of the signal
+	get(): T {
+		return this.value;
+	}
+
+	// Set a new value and notify listeners
+	set(newValue: T): void {
+		if (newValue !== this.value) {
+			const oldValue = this.value;
+			this.value = newValue;
+			this.notifyListeners(newValue, oldValue);
+		}
+	}
+
+	// Subscribe a listener to changes
+	subscribe(listener: SignalListener<T>): () => void {
+		this.listeners.add(listener);
+		return () => this.listeners.delete(listener); // Return an unsubscribe function
+	}
+
+	// Notify all listeners
+	private notifyListeners(newValue: T, oldValue: T) {
+		for (const listener of this.listeners) {
+			listener(newValue, oldValue);
+		}
+	}
+}

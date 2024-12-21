@@ -10,6 +10,7 @@ import { LocalState } from "@components/examples/Local";
 import { SessionState } from "@components/examples/Session";
 import { Avatar } from "@components/ui/Avatar";
 import { Modal, ModalBox, ModalTrigger } from "@components/ui/Modal";
+import { CountButtonExample } from "@components/examples/Signal";
 
 export default function WelcomePage() {
 	return (
@@ -183,6 +184,18 @@ export default function WelcomePage() {
 							</div>
 						</ModalBox>
 					</Modal>
+				</div>
+
+				<div class="mt-12 space-y-4">
+					<SubHeading>Signal State Example</SubHeading>
+					<Text class="mt-4">
+						This example demonstrates a simple counter using in memory signal
+						state that is centralized to the current tab and does not persist
+						across tabs or refreshes. This type of state is meant for primitive
+						data types.
+					</Text>
+
+					<CountButtonExample />
 				</div>
 
 				<div class="mt-12 space-y-4">
